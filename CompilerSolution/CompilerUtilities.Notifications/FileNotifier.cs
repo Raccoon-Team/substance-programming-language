@@ -6,9 +6,9 @@ namespace CompilerUtilities.Notifications
 {
     public class FileNotifier:INotifier
     {
-        private StreamWriter _fileWriter;
-        private INotifier _decoratedNotifier;
-        private static object _notifySyncObject;
+        private readonly StreamWriter _fileWriter;
+        private readonly INotifier _decoratedNotifier;
+        private static readonly object _notifySyncObject = new object();
 
         public FileNotifier(string path, FileMode fileMode)
         {
