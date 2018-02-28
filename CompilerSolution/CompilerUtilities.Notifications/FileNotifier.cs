@@ -13,7 +13,7 @@ namespace CompilerUtilities.Notifications
 
         public FileNotifier(string path)
         {
-            _fileWriter = new StreamWriter(path);
+            _fileWriter = new StreamWriter(new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Write, 4096, true));
         }
 
         public FileNotifier(INotifier decoratedNotifier, string path):this(path)
@@ -25,7 +25,7 @@ namespace CompilerUtilities.Notifications
         {
             _decoratedNotifier?.Notify(level, message);
             await _fileWriter.WriteLineAsync($"{level.ToString()}:{message}\n");
-            _fileWriter.Flush();
+            await _fileWriter.FlushAsync();
         }
     }
 }
