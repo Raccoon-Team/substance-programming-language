@@ -22,7 +22,8 @@ namespace CompilerUtilities.Notifications
         public async void Notify(NotifyLevel level, string message)
         {
             _decoratedNotifier?.Notify(level, message);
-            await _fileWriter.WriteAsync($"{level.ToString()}:{message}");
+            using (_fileWriter)
+                await _fileWriter.WriteAsync($"{level.ToString()}:{message}");
         }
     }
 }
