@@ -17,7 +17,7 @@ namespace CompilerUtilities.Notifications
 
         public void Notify(NotifyLevel level, string message)
         {
-            Console.Out.WriteLine($"{level.ToString()}:{0}");
+            Console.Out.WriteLine($"{level.ToString()}:{message}");
             _decoratedNotifier?.Notify(level, message);
         }
     }

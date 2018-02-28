@@ -6,7 +6,7 @@ namespace CompilerUtilities.Notifications
 {
     public class ColoredConsoleNotifier:INotifier
     {
-        private INotifier _decoratedNotifier;
+        private readonly INotifier _decoratedNotifier;
         private ConsoleColor _backupForegroundColor = Console.ForegroundColor;
 
         public ColoredConsoleNotifier() { }
@@ -19,7 +19,7 @@ namespace CompilerUtilities.Notifications
         public void Notify(NotifyLevel level, string message)
         {
             SetColorByLevel(level);
-            Console.Out.WriteLine($"{level.ToString()}:{0}");
+            Console.Out.WriteLine($"{level.ToString()}:{message}");
             ResetColor();
 
             _decoratedNotifier?.Notify(level, message);
@@ -33,7 +33,7 @@ namespace CompilerUtilities.Notifications
             switch (level)
             {
                 case NotifyLevel.Debug:
-                    newColor = ConsoleColor.Gray;
+                    newColor = ConsoleColor.DarkGray;
                     break;
                 case NotifyLevel.Info:
                     newColor = ConsoleColor.White;
@@ -42,8 +42,10 @@ namespace CompilerUtilities.Notifications
                     newColor = ConsoleColor.DarkYellow;
                     break;
                 case NotifyLevel.Error:
-                case NotifyLevel.Fatal:
                     newColor = ConsoleColor.Red;
+                    break;
+                case NotifyLevel.Fatal:
+                    newColor = ConsoleColor.DarkRed;
                     break;
             }
 
