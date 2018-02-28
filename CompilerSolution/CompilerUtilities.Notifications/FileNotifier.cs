@@ -8,7 +8,6 @@ namespace CompilerUtilities.Notifications
     {
         private readonly StreamWriter _fileWriter;
         private readonly INotifier _decoratedNotifier;
-        private static readonly object _notifySyncObject = new object();
 
         public FileNotifier(string path, FileMode fileMode)
         {
@@ -22,8 +21,7 @@ namespace CompilerUtilities.Notifications
 
         public void Notify(NotifyLevel level, string message)
         {
-            lock (_notifySyncObject)
-                _fileWriter.Write($"{level.ToString()}:{message}");
+            _fileWriter.Write($"{level.ToString()}:{message}");
             _decoratedNotifier?.Notify(level, message);
         }
     }
