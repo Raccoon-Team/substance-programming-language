@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,17 +7,17 @@ using CompilerUtilities.Notifications.Structs.Enums;
 
 namespace CompilerUtilities.Notifications
 {
-    public class FileNotifier:INotifier
+    public class FileNotifier : INotifier
     {
-        private readonly StreamWriter _fileWriter;
         private readonly INotifier _decoratedNotifier;
+        private readonly StreamWriter _fileWriter;
 
         private readonly BlockingCollection<(NotifyLevel level, string message)> _queueMessages;
 
         public FileNotifier(string path)
         {
-            FileStream stram = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Write, 4096, true);
-            _fileWriter = new StreamWriter(stram);
+            var stream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Write, 4096, true);
+            _fileWriter = new StreamWriter(stream);
 
             _queueMessages = new BlockingCollection<(NotifyLevel level, string message)>();
 
@@ -26,7 +25,7 @@ namespace CompilerUtilities.Notifications
         }
 
 
-        public FileNotifier(INotifier decoratedNotifier, string path):this(path)
+        public FileNotifier(INotifier decoratedNotifier, string path) : this(path)
         {
             _decoratedNotifier = decoratedNotifier;
         }
@@ -46,7 +45,6 @@ namespace CompilerUtilities.Notifications
         private void MessageProccessingLoop()
         {
             while (true)
-            {
                 if (_queueMessages.Count > 0)
                 {
                     var args = _queueMessages.Take();
@@ -56,7 +54,6 @@ namespace CompilerUtilities.Notifications
                 {
                     Thread.Sleep(100);
                 }
-            }
         }
     }
 }
