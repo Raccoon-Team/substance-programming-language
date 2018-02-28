@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="ColoredConsoleNotifier.cs" />
     <Compile Include="ConsoleNotifier.cs" />
+    <Compile Include="DefaultNotifier.cs" />
     <Compile Include="FileNotifier.cs" />
     <Compile Include="Interfaces\INotifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
