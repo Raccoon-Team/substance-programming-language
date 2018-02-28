@@ -14,7 +14,7 @@ namespace CompilerUtilities.Notifications
 
         public static void Notify(NotifyLevel level, string message)
         {
-            _defaultNotifier.Notify(level, message);
+            _defaultNotifier?.Notify(level, message);
         }
     }
 }
