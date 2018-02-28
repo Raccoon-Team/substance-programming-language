@@ -16,13 +16,13 @@ namespace CompilerUtilities.Notifications
             _decoratedNotifier = decoratedNotifier;
         }
 
-        public void Notify(NotifyLevel level, string message)
+        public async void Notify(NotifyLevel level, string message)
         {
-            SetColorByLevel(level);
-            Console.Out.WriteLine($"{level.ToString()}:{message}");
-            ResetColor();
-
             _decoratedNotifier?.Notify(level, message);
+
+            SetColorByLevel(level);
+            await Console.Out.WriteLineAsync($"{level.ToString()}:{message}");
+            ResetColor();
         }
 
         private void SetColorByLevel(NotifyLevel level)

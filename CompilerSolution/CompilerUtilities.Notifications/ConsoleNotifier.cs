@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using CompilerUtilities.Notifications.Interfaces;
 using CompilerUtilities.Notifications.Structs.Enums;
 
@@ -15,10 +16,10 @@ namespace CompilerUtilities.Notifications
             _decoratedNotifier = decoratedNotifier;
         }
 
-        public void Notify(NotifyLevel level, string message)
+        public async void Notify(NotifyLevel level, string message)
         {
-            Console.Out.WriteLine($"{level.ToString()}:{message}");
             _decoratedNotifier?.Notify(level, message);
+            await Console.Out.WriteLineAsync($"{level.ToString()}:{message}");
         }
     }
 }
