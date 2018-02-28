@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using CompilerUtilities.Notifications.Interfaces;
 using CompilerUtilities.Notifications.Structs.Enums;
 
@@ -8,10 +9,11 @@ namespace CompilerUtilities.Notifications
     {
         private readonly StreamWriter _fileWriter;
         private readonly INotifier _decoratedNotifier;
+        private object _syncWriteObject = new object();
 
         public FileNotifier(string path, FileMode fileMode)
         {
-            _fileWriter = new StreamWriter(new FileStream(path, fileMode));
+            _fileWriter = new StreamWriter(path);
         }
 
         public FileNotifier(INotifier decoratedNotifier, string path, FileMode fileMode):this(path, fileMode)
@@ -22,8 +24,8 @@ namespace CompilerUtilities.Notifications
         public async void Notify(NotifyLevel level, string message)
         {
             _decoratedNotifier?.Notify(level, message);
-            using (_fileWriter)
-                await _fileWriter.WriteAsync($"{level.ToString()}:{message}");
+            await _fileWriter.WriteLineAsync($"{level.ToString()}:{message}\n");
+            _fileWriter.Flush();
         }
     }
 }
