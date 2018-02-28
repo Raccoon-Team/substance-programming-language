@@ -19,10 +19,10 @@ namespace CompilerUtilities.Notifications
             _decoratedNotifier = decoratedNotifier;
         }
 
-        public void Notify(NotifyLevel level, string message)
+        public async void Notify(NotifyLevel level, string message)
         {
-            _fileWriter.Write($"{level.ToString()}:{message}");
             _decoratedNotifier?.Notify(level, message);
+            await _fileWriter.WriteAsync($"{level.ToString()}:{message}");
         }
     }
 }
