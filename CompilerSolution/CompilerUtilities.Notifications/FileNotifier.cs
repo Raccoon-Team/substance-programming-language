@@ -11,12 +11,12 @@ namespace CompilerUtilities.Notifications
         private readonly INotifier _decoratedNotifier;
         private object _syncWriteObject = new object();
 
-        public FileNotifier(string path, FileMode fileMode)
+        public FileNotifier(string path)
         {
             _fileWriter = new StreamWriter(path);
         }
 
-        public FileNotifier(INotifier decoratedNotifier, string path, FileMode fileMode):this(path, fileMode)
+        public FileNotifier(INotifier decoratedNotifier, string path):this(path)
         {
             _decoratedNotifier = decoratedNotifier;
         }
