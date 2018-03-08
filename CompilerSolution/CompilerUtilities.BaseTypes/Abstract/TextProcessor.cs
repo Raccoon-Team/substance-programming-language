@@ -28,6 +28,6 @@ namespace CompilerUtilities.BaseTypes.Abstract
 
         public abstract override string ToString();
 
-        public abstract IEnumerable<string> GetPresentation();
+        public abstract IEnumerable<string> Presentation { get; set; }
     }
 }

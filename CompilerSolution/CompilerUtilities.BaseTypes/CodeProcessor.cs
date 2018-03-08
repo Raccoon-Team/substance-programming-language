@@ -99,9 +99,10 @@ namespace CompilerUtilities.BaseTypes
         public override string ToString()
             => String.Join("\n", _lines);
 
-        public override IEnumerable<string> GetPresentation()
+        public override IEnumerable<string> Presentation
         {
-            return _lines;
+            get => _lines;
+            set => _lines = value.ToList();
         }
     }
 }
