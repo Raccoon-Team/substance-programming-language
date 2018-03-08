@@ -13,6 +13,27 @@ namespace CompilerUtilities.BaseTypes
     {
         private List<string> _lines;
 
+        public override IEnumerable<string> Presentation
+        {
+            get => _lines;
+            set => _lines = value.ToList();
+        }
+
+        public CodeProcessor()
+        {
+            Presentation = Enumerable.Empty<string>();
+        }
+
+        public CodeProcessor(IEnumerable<string> lines)
+        {
+            Presentation = lines;
+        }
+
+        public CodeProcessor(string path)
+        {
+            LoadFromFile(path);
+        }
+
         public override string Cut(int lineIndex)
         {
             var tmp = _lines[lineIndex];
@@ -99,10 +120,6 @@ namespace CompilerUtilities.BaseTypes
         public override string ToString()
             => String.Join("\n", _lines);
 
-        public override IEnumerable<string> Presentation
-        {
-            get => _lines;
-            set => _lines = value.ToList();
-        }
+        
     }
 }
