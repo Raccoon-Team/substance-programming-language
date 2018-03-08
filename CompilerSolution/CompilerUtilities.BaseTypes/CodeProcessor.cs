@@ -76,8 +76,8 @@ namespace CompilerUtilities.BaseTypes
         {
             string[] CutOperation(int begin, int end)
             {
-                var tmpLines = _lines.GetRange(beginIndex, endIndex - beginIndex + 1);
-                _lines.RemoveRange(beginIndex, endIndex - beginIndex + 1);
+                var tmpLines = _lines.GetRange(begin, end - begin + 1);
+                _lines.RemoveRange(begin, end - begin + 1);
                 return tmpLines.ToArray();
             }
 
