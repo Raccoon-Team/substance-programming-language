@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Sequences.Generic;
 
 namespace CompilerUtilities.BaseTypes.Abstract
 {

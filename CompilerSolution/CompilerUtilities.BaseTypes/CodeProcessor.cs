@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Sequences.Generic;
 using System.IO;
 using System.Linq;
 using CompilerUtilities.BaseTypes.Abstract;

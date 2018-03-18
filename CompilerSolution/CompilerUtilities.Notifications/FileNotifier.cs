@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Sequences.Concurrent;
 using System.IO;
 using System.Threading.Tasks;
 using CompilerUtilities.Notifications.Interfaces;
@@ -11,7 +11,7 @@ namespace CompilerUtilities.Notifications
     {
         private readonly INotifier _decoratedNotifier;
         private readonly StreamWriter _fileWriter;
-        private readonly BlockingCollection<(NotifyLevel level, string message)> _queueMessages;
+        private readonly BlockingSequence<(NotifyLevel level, string message)> _queueMessages;
 
         private Task _messageLoopTask = Task.Run(() => { });
 
@@ -20,7 +20,7 @@ namespace CompilerUtilities.Notifications
             var stream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Write, 4096, true);
             _fileWriter = new StreamWriter(stream);
 
-            _queueMessages = new BlockingCollection<(NotifyLevel level, string message)>();
+            _queueMessages = new BlockingSequence<(NotifyLevel level, string message)>();
         }
 
 
