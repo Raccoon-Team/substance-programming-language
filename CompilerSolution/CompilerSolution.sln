@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.Notificat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.BaseTypes", "CompilerUtilities.BaseTypes\CompilerUtilities.BaseTypes.csproj", "{FFB904E8-EA39-4C13-BACB-426770D347FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.ExtendedOperations", "CompilerUtilities.ExtendedOperations\CompilerUtilities.ExtendedOperations.csproj", "{54E8FDDE-B6EF-4033-AC13-3EA332FB28A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{FFB904E8-EA39-4C13-BACB-426770D347FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFB904E8-EA39-4C13-BACB-426770D347FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFB904E8-EA39-4C13-BACB-426770D347FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54E8FDDE-B6EF-4033-AC13-3EA332FB28A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54E8FDDE-B6EF-4033-AC13-3EA332FB28A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54E8FDDE-B6EF-4033-AC13-3EA332FB28A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54E8FDDE-B6EF-4033-AC13-3EA332FB28A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

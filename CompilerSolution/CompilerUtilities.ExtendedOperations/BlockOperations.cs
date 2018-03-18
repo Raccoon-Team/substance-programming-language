@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CompilerUtilities.ExtendedOperations
 {
@@ -11,7 +8,7 @@ namespace CompilerUtilities.ExtendedOperations
     {
         public static List<(int Open, int Close)> FindAllBlocks<T>(this IEnumerable<T> collection, T openElem, T closeElem)
         {
-            List<(int Open, int Close)> BlocksId = new List<(int Open, int Close)>();
+            List<(int Open, int Close)> blocksId = new List<(int Open, int Close)>();
             var blockCollection = collection.Select((elem, index) => ((T Value, int Index))(elem, index))
                                             .Where(elem => elem.Value.Equals(openElem) || elem.Value.Equals(closeElem))
                                             .ToList();
@@ -21,12 +18,12 @@ namespace CompilerUtilities.ExtendedOperations
                 var pair = FindFirstBlock(blockCollection, openElem, closeElem);
                 if (pair.Open == -1 || pair.Close == -1)
                     throw new InvalidDataException($"Didn't expected complete block. OpenIndex: {pair.Open}, CloseIndex: {pair.Close}");
-                BlocksId.Add(pair);
+                blocksId.Add(pair);
                 blockCollection.RemoveAll(elem => elem.Index == pair.Open);
                 blockCollection.RemoveAll(elem => elem.Index == pair.Close);
             }
 
-            return BlocksId;
+            return blocksId;
         }
 
         private static (int Open, int Close) FindFirstBlock<T>(List<(T Value, int Index)> blockCollection, T openElem, T closeElem)
@@ -53,19 +50,17 @@ namespace CompilerUtilities.ExtendedOperations
                         closeIndex = i;
                         break;
                     }
+
                     if (isClose)
-                    {
                         nestingAcc--;
-                    }
                     else
-                    {
                         nestingAcc++;
-                    }
                 }
             }
 
             if (openIndex == -1)
                 return (-1, -1);
+
             if (closeIndex == -1)
                 return (blockCollection[openIndex].Index, -1);
 
