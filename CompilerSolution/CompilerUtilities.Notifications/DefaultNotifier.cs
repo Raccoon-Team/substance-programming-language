@@ -13,12 +13,12 @@ namespace CompilerUtilities.Notifications
 
         public static void InitializeFileLoggerNotifier(INotifier anotherNotifier)
         {
-            var TodayLogDirectoryPath = Path.Combine(DefaultLogDirectory, DateTime.Now.ToShortDateString());
-            Directory.CreateDirectory(TodayLogDirectoryPath);
+            var todayLogDirectoryPath = Path.Combine(DefaultLogDirectory, DateTime.Now.ToShortDateString());
+            Directory.CreateDirectory(todayLogDirectoryPath);
 
-            var TimeForLogFileName = DateTime.Now.ToShortTimeString().Replace(':', ';');
-            var LogFilePath = Path.Combine(TodayLogDirectoryPath, $"{TimeForLogFileName}.txt");
-            _defaultNotifier = new FileNotifier(anotherNotifier, LogFilePath);
+            var timeForLogFileName = DateTime.Now.ToShortTimeString().Replace(':', ';');
+            var logFilePath = Path.Combine(todayLogDirectoryPath, $"{timeForLogFileName}.txt");
+            _defaultNotifier = new FileNotifier(anotherNotifier, logFilePath);
         }
 
         public static void InitializeNotifier(INotifier newNotifier)

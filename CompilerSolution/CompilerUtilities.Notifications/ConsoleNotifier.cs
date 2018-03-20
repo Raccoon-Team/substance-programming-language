@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using CompilerUtilities.Notifications.Interfaces;
 using CompilerUtilities.Notifications.Structs.Enums;
 
