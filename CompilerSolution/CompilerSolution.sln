@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.BaseTypes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.ExtendedOperations", "CompilerUtilities.ExtendedOperations\CompilerUtilities.ExtendedOperations.csproj", "{54E8FDDE-B6EF-4033-AC13-3EA332FB28A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.PluginContract", "..\..\..\MEGA\MVS Projects\GenericImportingDemo\PluginContract\CompilerUtilities.PluginContract.csproj", "{7EFA9347-8592-41C5-A8B3-C4509B1F0867}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.PluginContract", "CompilerUtilities.PluginContract\CompilerUtilities.PluginContract.csproj", "{7EFA9347-8592-41C5-A8B3-C4509B1F0867}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.PluginImporter", "..\..\..\MEGA\MVS Projects\GenericImportingDemo\GenericImportingDemo\CompilerUtilities.PluginImporter.csproj", "{E4BFC0E9-850A-4454-B602-3EFD257E1FBD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.PluginImporter", "CompilerUtilities.PluginImporter\CompilerUtilities.PluginImporter.csproj", "{E4BFC0E9-850A-4454-B602-3EFD257E1FBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
