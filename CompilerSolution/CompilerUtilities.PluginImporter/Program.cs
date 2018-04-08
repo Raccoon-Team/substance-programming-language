@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace GenericImportingDemo
+namespace CompilerUtilities.PluginImporter
 {
     internal class Program
     {

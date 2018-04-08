@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using PluginContract;
+using CompilerUtilities.PluginContract;
 
-namespace GenericImportingDemo
+namespace CompilerUtilities.PluginImporter
 {
     internal class PluginManager
     {

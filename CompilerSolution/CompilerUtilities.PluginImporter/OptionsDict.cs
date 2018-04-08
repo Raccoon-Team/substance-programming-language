@@ -1,16 +1,11 @@
 ﻿using System.Collections.Generic;
-using PluginContract;
+using CompilerUtilities.PluginContract;
 
-namespace GenericImportingDemo
+namespace CompilerUtilities.PluginImporter
 {
-    class OptionsDict:ICompileOptions
+    internal class OptionsDict : ICompileOptions
     {
         private readonly Dictionary<string, string> _dictionary;
-
-        private static bool IsSingleKey(string key)
-        {
-            return false;
-        }
 
         public OptionsDict(IReadOnlyList<string> args)
         {
@@ -28,6 +23,11 @@ namespace GenericImportingDemo
         public bool Contains(string key)
         {
             return _dictionary.ContainsKey(key);
+        }
+
+        private static bool IsSingleKey(string key)
+        {
+            return false;
         }
     }
 }
