@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CompilerUtilities.ExtendedOperations
 {
-    static class BlockOperations
+    internal static class BlockOperations
     {
         public static List<(int Open, int Close)> FindAllBlocks<T>(this IEnumerable<T> collection, T openElem, T closeElem)
         {
