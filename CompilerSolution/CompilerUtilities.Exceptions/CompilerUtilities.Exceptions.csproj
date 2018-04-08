@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E4BFC0E9-850A-4454-B602-3EFD257E1FBD}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>CompilerUtilities.PluginImporter</RootNamespace>
-    <AssemblyName>CompilerUtilities.PluginImporter</AssemblyName>
+    <ProjectGuid>{2301F0D4-BABE-4D47-8375-E1EC9BDD13A5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CompilerUtilities.Exceptions</RootNamespace>
+    <AssemblyName>CompilerUtilities.Exceptions</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,7 +31,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,24 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OptionsDict.cs" />
-    <Compile Include="PluginGenericArgs.cs" />
-    <Compile Include="PluginManager.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="StagesCompositionException.cs" />
+    <Compile Include="InvalidCompilerOptionsException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CompilerUtilities.Exceptions\CompilerUtilities.Exceptions.csproj">
-      <Project>{2301F0D4-BABE-4D47-8375-E1EC9BDD13A5}</Project>
-      <Name>CompilerUtilities.Exceptions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CompilerUtilities.PluginContract\CompilerUtilities.PluginContract.csproj">
-      <Project>{7efa9347-8592-41c5-a8b3-c4509b1f0867}</Project>
-      <Name>CompilerUtilities.PluginContract</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

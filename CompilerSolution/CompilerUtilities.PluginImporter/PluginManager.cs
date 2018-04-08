@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
+using CompilerUtilities.Exceptions;
 using CompilerUtilities.PluginContract;
 
 namespace CompilerUtilities.PluginImporter
@@ -28,22 +29,30 @@ namespace CompilerUtilities.PluginImporter
             Compile(chain);
         }
 
-        private static void Compile(IReadOnlyList<object> sequence)
+        private static void Compile(IEnumerable<object> sequence)
         {
             object param = new Blanket();
-            for (var i = 0; i < sequence.Count; i++)
-                param = sequence[i].GetType().GetMethod("DoStage").Invoke(sequence[i], new[] {param});
+            foreach (var item in sequence)
+                param = item.GetType().GetMethod("DoStage").Invoke(item, new[] {param});
         }
 
         public void CheckForDuplicate()
         {
-            var converted = _stages.Select(x => new PluginGenericArgs(x));
+            var converted = _stages.Select(x => new PluginGenericArgs(x)).ToList();
 
-            if (converted.All(x => x.TIn != typeof(Blanket)) || converted.All(x => x.TOut != typeof(Blanket)))
-                throw new Exception("Не обнаружены начальная или конечная стадии");
+            if (converted.All(x => x.TIn != typeof(Blanket)))
+                throw new StageNotFoundException("Start stage not found");
+            if (converted.All(x => x.TOut != typeof(Blanket)))
+                throw new StageNotFoundException("End stage not found");
 
-            if (converted.Any(stage => converted.Count(x => x.TIn == stage.TIn && x.TOut == stage.TOut) > 1))
-                throw new Exception("Обнаружены одинаковые стадии");
+            for (var i = 0; i < converted.Count; i++)
+            {
+                for (var j = i+1; j < converted.Count; j++)
+                {
+                    if (converted[i].TIn == converted[j].TIn && converted[i].TOut == converted[j].TOut)
+                        throw new DuplicatedStagesException($"The same stages are found with the parameters <{converted[i].TIn.Name}, {converted[i].TOut.Name}>");
+                }
+            }
         }
 
         public void GetInfo()
@@ -79,7 +88,7 @@ namespace CompilerUtilities.PluginImporter
                     copy.FirstOrDefault(o => new PluginGenericArgs(o).TIn == new PluginGenericArgs(outp.Last()).TOut);
                 if (current is null)
                     if (throwException)
-                        throw new NotImplementedException();
+                        throw new StagesCompositionException();
                     else return outp;
                 outp.Add(current);
                 copy.Remove(current);
