@@ -21,7 +21,7 @@ namespace CompilerUtilities.Notifications
             _decoratedNotifier?.Notify(level, message);
 
             SetColorByLevel(level);
-            await Console.Out.WriteLineAsync($"{level.ToString()}:{message}");
+            await Console.Out.WriteLineAsync($"{message}");
             ResetColor();
         }
 

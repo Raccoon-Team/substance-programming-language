@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FFB904E8-EA39-4C13-BACB-426770D347FF}</ProjectGuid>
+    <ProjectGuid>{A5895BBA-AD6F-41AA-8F05-A17B305C7116}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CompilerUtilities.BaseTypes</RootNamespace>
-    <AssemblyName>CompilerUtilities.BaseTypes</AssemblyName>
+    <RootNamespace>CompilerUtilities.Plugins.Management</RootNamespace>
+    <AssemblyName>CompilerUtilities.Plugins.Management</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,14 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeProcessor.cs" />
+    <Compile Include="PluginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CompilerUtilities.BaseTypes.Interfaces\CompilerUtilities.BaseTypes.Interfaces.csproj">
-      <Project>{38eaa0c3-8b8e-41b3-afad-f36e170fe9fa}</Project>
+      <Project>{38EAA0C3-8B8E-41B3-AFAD-F36E170FE9FA}</Project>
       <Name>CompilerUtilities.BaseTypes.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CompilerUtilities.Notifications\CompilerUtilities.Notifications.csproj">
+      <Project>{9e9074be-fe06-4f7c-b2ad-c286fe3fcfa1}</Project>
+      <Name>CompilerUtilities.Notifications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CompilerUtilities.Plugins\CompilerUtilities.Plugins.csproj">
+      <Project>{517bd50a-6ff3-4913-87ac-4a6d9b5edace}</Project>
+      <Name>CompilerUtilities.Plugins</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

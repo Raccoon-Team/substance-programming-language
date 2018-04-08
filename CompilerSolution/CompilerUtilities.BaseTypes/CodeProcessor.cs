@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using CompilerUtilities.BaseTypes.Abstract;
+using CompilerUtilities.BaseTypes.Interfaces;
 
 namespace CompilerUtilities.BaseTypes
 {
-    public class CodeProcessor : TextProcessor
+    public class CodeProcessor : ITextProcessor
     {
         private List<string> _lines;
 
@@ -25,22 +25,22 @@ namespace CompilerUtilities.BaseTypes
             LoadFromFile(path);
         }
 
-        public override IEnumerable<string> Presentation
+        public  IEnumerable<string> Presentation
         {
             get => _lines;
             set => _lines = value.ToList();
         }
 
 
-        public override string this[int index]
+        public  string this[int index]
         {
             get => _lines[index];
             set => _lines[index] = value;
         }
 
-        public override int Length => _lines.Count;
+        public  int Length => _lines.Count;
 
-        public override string Cut(int lineIndex)
+        public  string Cut(int lineIndex)
         {
             var tmp = _lines[lineIndex];
             _lines.RemoveAt(lineIndex);
@@ -72,7 +72,7 @@ namespace CompilerUtilities.BaseTypes
             return tmpLines.ToArray();
         }
 
-        public override string[] CutRange(int beginIndex, int endIndex)
+        public  string[] CutRange(int beginIndex, int endIndex)
         {
             string[] CutOperation(int begin, int end)
             {
@@ -84,32 +84,32 @@ namespace CompilerUtilities.BaseTypes
             return RangeOperation(beginIndex, endIndex, CutOperation);
         }
 
-        public override void Insert(int lineIndex, string newLine)
+        public  void Insert(int lineIndex, string newLine)
         {
             _lines.Insert(lineIndex, newLine);
         }
 
-        public override void InsertRange(int beginIndex, string[] newLines)
+        public  void InsertRange(int beginIndex, string[] newLines)
         {
             _lines.InsertRange(beginIndex, newLines);
         }
 
-        public override int FindIndex(string targetLine)
+        public  int FindIndex(string targetLine)
         {
             return _lines.IndexOf(targetLine);
         }
 
-        public override int FindIndex(Predicate<string> predicate)
+        public  int FindIndex(Predicate<string> predicate)
         {
             return _lines.FindIndex(predicate);
         }
 
-        public override string Find(Predicate<string> predicate)
+        public  string Find(Predicate<string> predicate)
         {
             return _lines.Find(predicate);
         }
 
-        public override string[] GetRange(int beginIndex, int endIndex)
+        public  string[] GetRange(int beginIndex, int endIndex)
         {
             string[] GetOperation(int begin, int end)
             {
@@ -119,12 +119,12 @@ namespace CompilerUtilities.BaseTypes
             return RangeOperation(beginIndex, endIndex, GetOperation);
         }
 
-        public override void LoadFromFile(string path)
+        public  void LoadFromFile(string path)
         {
             _lines = File.ReadAllLines(path).ToList();
         }
 
-        public override void SaveToFile(string path)
+        public  void SaveToFile(string path)
         {
             File.WriteAllLines(path, _lines);
         }

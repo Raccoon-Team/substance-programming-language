@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FFB904E8-EA39-4C13-BACB-426770D347FF}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CompilerUtilities.BaseTypes</RootNamespace>
-    <AssemblyName>CompilerUtilities.BaseTypes</AssemblyName>
+    <ProjectGuid>{68EB6A98-BFF2-4F02-8C9E-E9A0C45D6061}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ExampleConsoleApp</RootNamespace>
+    <AssemblyName>ExampleConsoleApp</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -40,14 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeProcessor.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\CompilerUtilities.BaseTypes.Interfaces\CompilerUtilities.BaseTypes.Interfaces.csproj">
-      <Project>{38eaa0c3-8b8e-41b3-afad-f36e170fe9fa}</Project>
-      <Name>CompilerUtilities.BaseTypes.Interfaces</Name>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CompilerUtilities.Plugins.Manager\CompilerUtilities.Plugins.Manager.csproj">
+      <Project>{a5895bba-ad6f-41aa-8f05-a17b305c7116}</Project>
+      <Name>CompilerUtilities.Plugins.Manager</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

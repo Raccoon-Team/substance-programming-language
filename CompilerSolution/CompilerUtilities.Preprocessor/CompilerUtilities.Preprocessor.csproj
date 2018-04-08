@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FFB904E8-EA39-4C13-BACB-426770D347FF}</ProjectGuid>
+    <ProjectGuid>{5D834753-BFF4-4EFC-BBCB-67100F51FAEF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CompilerUtilities.BaseTypes</RootNamespace>
-    <AssemblyName>CompilerUtilities.BaseTypes</AssemblyName>
+    <RootNamespace>CompilerUtilities.Preprocessor</RootNamespace>
+    <AssemblyName>CompilerUtilities.Preprocessor</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,14 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeProcessor.cs" />
+    <Compile Include="Preprocessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CompilerUtilities.BaseTypes.Interfaces\CompilerUtilities.BaseTypes.Interfaces.csproj">
       <Project>{38eaa0c3-8b8e-41b3-afad-f36e170fe9fa}</Project>
       <Name>CompilerUtilities.BaseTypes.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CompilerUtilities.BaseTypes\CompilerUtilities.BaseTypes.csproj">
+      <Project>{ffb904e8-ea39-4c13-bacb-426770d347ff}</Project>
+      <Name>CompilerUtilities.BaseTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CompilerUtilities.Plugins\CompilerUtilities.Plugins.csproj">
+      <Project>{517bd50a-6ff3-4913-87ac-4a6d9b5edace}</Project>
+      <Name>CompilerUtilities.Plugins</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
