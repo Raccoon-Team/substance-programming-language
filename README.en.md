@@ -10,7 +10,41 @@ Substance PL is an experimental, object-oriented programming language with suppo
 # About metalanguage and creation of own constructions
 Constructions can be described in two ways:
 1. IL code
-1. Based on existing structures
+```C#
+il
+{
+  //IL Code here
+}
+```
+
+2. Based on existing structures
+```C#
+//Описание конструкции while-else из Python
+Interface: //блок описания конструкции
+
+while (|boolExpression|)
+{
+	|whileBody|
+}
+else 
+{
+	|elseBody|
+}
+
+Implementation: //блок реализации конструкции
+
+var breaked = false;
+while (|boolExpression|)
+{
+	breaked = true;
+	|whileBody|
+	breaked = false;
+}
+if (!breaked) 
+{
+	|elseBody|
+}
+```
 
 Since the compiler has a Full-Plugin architecture, it will not initially have any constructs. Therefore, the first constructions will be possible to describe only using IL code.
 
@@ -18,3 +52,7 @@ Since the compiler has a Full-Plugin architecture, it will not initially have an
 Code translation occurs in 2 stages:
 1. Translation of source code into intermediate
 1. Translation from intermediate to machine
+
+## License
+
+This project is licensed under the LGPL-3.0 License - see the [LICENSE.md](LICENSE.md) file for details
