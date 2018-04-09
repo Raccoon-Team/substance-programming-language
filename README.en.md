@@ -20,7 +20,7 @@ il
 2. Based on existing structures
 ```C#
 //Описание конструкции while-else из Python
-Interface: //блок описания конструкции
+Interface:
 
 while (|boolExpression|)
 {
@@ -31,7 +31,7 @@ else
 	|elseBody|
 }
 
-Implementation: //блок реализации конструкции
+Implementation:
 
 var breaked = false;
 while (|boolExpression|)
