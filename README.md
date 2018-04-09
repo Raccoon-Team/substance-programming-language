@@ -1,5 +1,5 @@
 # Substance PL
-> English translation of README.md is available [here](https://github.com/Raccoon-Team/substance-programming-language/README.en.md)
+> English translation of README.md is available [here](https://github.com/Raccoon-Team/substance-programming-language/blob/master/README.en.md)
 # О языке и компиляторе
 Substance PL - это экспериментальный, объектно-ориентированный язык программирования с поддержкой метаязыка для создания новых конструкций.
 
