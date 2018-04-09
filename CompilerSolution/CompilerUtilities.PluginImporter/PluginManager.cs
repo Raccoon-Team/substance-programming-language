@@ -46,13 +46,10 @@ namespace CompilerUtilities.PluginImporter
                 throw new StageNotFoundException("End stage not found");
 
             for (var i = 0; i < converted.Count; i++)
-            {
-                for (var j = i+1; j < converted.Count; j++)
-                {
-                    if (converted[i].TIn == converted[j].TIn && converted[i].TOut == converted[j].TOut)
-                        throw new DuplicatedStagesException($"The same stages are found with the parameters <{converted[i].TIn.Name}, {converted[i].TOut.Name}>");
-                }
-            }
+            for (var j = i + 1; j < converted.Count; j++)
+                if (converted[i].TIn == converted[j].TIn && converted[i].TOut == converted[j].TOut)
+                    throw new DuplicatedStagesException(
+                        $"The same stages are found with the parameters <{converted[i].TIn.Name}, {converted[i].TOut.Name}>");
         }
 
         public void GetInfo()

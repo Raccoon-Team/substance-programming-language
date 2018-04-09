@@ -57,6 +57,10 @@
       <Project>{ffb904e8-ea39-4c13-bacb-426770d347ff}</Project>
       <Name>CompilerUtilities.BaseTypes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CompilerUtilities.Exceptions\CompilerUtilities.Exceptions.csproj">
+      <Project>{2301F0D4-BABE-4D47-8375-E1EC9BDD13A5}</Project>
+      <Name>CompilerUtilities.Exceptions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CompilerUtilities.Plugins\CompilerUtilities.Plugins.csproj">
       <Project>{517bd50a-6ff3-4913-87ac-4a6d9b5edace}</Project>
       <Name>CompilerUtilities.Plugins</Name>

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
+using CompilerUtilities.Exceptions;
 using CompilerUtilities.Notifications;
 using CompilerUtilities.Notifications.Interfaces;
 using CompilerUtilities.Notifications.Structs.Enums;
@@ -14,31 +14,30 @@ namespace CompilerUtilities.Plugins.Management
 {
     public class PluginManager : IPluginManager
     {
-        public EventHandler<FileReaderEventArgs> OnFileReadEnd { get; set; }
-        public EventHandler<LexerEventArgs> OnTokenized { get; set; }
-        public EventHandler<ParserEventArgs> OnParsed { get; set; }
-        public EventHandler<GenIntermediateEventArgs> OnIntermediateCodeGenerated { get; set; }
-        public EventHandler OnTranslated { get; set; }
-
-        private INotifier _notifier;
-
-        public void Notify(string message)
-        {
-            _notifier.Notify(NotifyLevel.Info, message);
-        }
-
-        [ImportMany(typeof(IPlugin))] private List<IPlugin> _plugins;
-
+        private readonly INotifier _notifier;
         [Import(typeof(IFileReader))] private IFileReader _fileReader;
+        [Import(typeof(IGeneratorIntermediate))] private IGeneratorIntermediate _generatorIntermediate;
         [Import(typeof(ILexer))] private ILexer _lexer;
         [Import(typeof(IParser))] private IParser _parser;
-        [Import(typeof(IGeneratorIntermediate))] private IGeneratorIntermediate _generatorIntermediate;
+
+        [ImportMany(typeof(IPlugin))] private List<IPlugin> _plugins;
         [Import(typeof(ITranslator))] private ITranslator _translator;
 
         public PluginManager(string componentPath)
         {
             _notifier = new ColoredConsoleNotifier(new FileNotifier("log.txt"));
             ComponentsActivate(componentPath);
+        }
+
+        public EventHandler<FileReaderEventArgs> OnFileReadEnd { get; set; }
+        public EventHandler<LexerEventArgs> OnTokenized { get; set; }
+        public EventHandler<ParserEventArgs> OnParsed { get; set; }
+        public EventHandler<GenIntermediateEventArgs> OnIntermediateCodeGenerated { get; set; }
+        public EventHandler OnTranslated { get; set; }
+
+        public void Notify(string message)
+        {
+            _notifier.Notify(NotifyLevel.Info, message);
         }
 
         private void ComponentsActivate(string componentPath)
@@ -57,12 +56,10 @@ namespace CompilerUtilities.Plugins.Management
                 _notifier.Notify(NotifyLevel.Fatal, "Stage component not found");
                 throw;
             }
-            
+
 
             foreach (var plugin in _plugins.OrderByDescending(plug => plug.Priority))
-            {
                 plugin.Activate(this);
-            }
         }
 
         public void Run(string inputPath, string outputPath)

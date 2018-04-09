@@ -4,9 +4,9 @@ using CompilerUtilities.Plugins.Management;
 
 namespace ExampleConsoleApp
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var manager = new PluginManager(Path.Combine(Directory.GetCurrentDirectory(), "plugins"));
             manager.Run("source.txt", "output.exe");

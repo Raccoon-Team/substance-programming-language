@@ -9,8 +9,10 @@ namespace ExampleStages
 {
     [Export(typeof(ILexer))]
     [Export(typeof(IPlugin))]
-    public class Lexer:ILexer, IPlugin
+    public class Lexer : ILexer, IPlugin
     {
+        private IPluginManager _manager;
+
         public IList<IToken> Tokenize(ITextProcessor sourceCode)
         {
             _manager.Notify("Tokenize");
@@ -24,8 +26,6 @@ namespace ExampleStages
         public uint Priority { get; }
         public VersionInfo Version { get; }
         public VersionInfo RequreCompilerVersion { get; }
-
-        private IPluginManager _manager;
 
         public void Activate(IPluginManager manager)
         {

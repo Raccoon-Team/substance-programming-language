@@ -49,6 +49,10 @@
       <Project>{38EAA0C3-8B8E-41B3-AFAD-F36E170FE9FA}</Project>
       <Name>CompilerUtilities.BaseTypes.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CompilerUtilities.Exceptions\CompilerUtilities.Exceptions.csproj">
+      <Project>{2301F0D4-BABE-4D47-8375-E1EC9BDD13A5}</Project>
+      <Name>CompilerUtilities.Exceptions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CompilerUtilities.Notifications\CompilerUtilities.Notifications.csproj">
       <Project>{9e9074be-fe06-4f7c-b2ad-c286fe3fcfa1}</Project>
       <Name>CompilerUtilities.Notifications</Name>

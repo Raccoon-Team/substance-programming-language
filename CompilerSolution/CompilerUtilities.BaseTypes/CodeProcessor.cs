@@ -25,26 +25,82 @@ namespace CompilerUtilities.BaseTypes
             LoadFromFile(path);
         }
 
-        public  IEnumerable<string> Presentation
+        public IEnumerable<string> Presentation
         {
             get => _lines;
             set => _lines = value.ToList();
         }
 
-
-        public  string this[int index]
+        public string this[int index]
         {
             get => _lines[index];
             set => _lines[index] = value;
         }
 
-        public  int Length => _lines.Count;
+        public int Length => _lines.Count;
 
-        public  string Cut(int lineIndex)
+        public string Cut(int lineIndex)
         {
             var tmp = _lines[lineIndex];
             _lines.RemoveAt(lineIndex);
             return tmp;
+        }
+
+        public string[] CutRange(int beginIndex, int endIndex)
+        {
+            string[] CutOperation(int begin, int end)
+            {
+                var tmpLines = _lines.GetRange(begin, end - begin + 1);
+                _lines.RemoveRange(begin, end - begin + 1);
+                return tmpLines.ToArray();
+            }
+
+            return RangeOperation(beginIndex, endIndex, CutOperation);
+        }
+
+        public void Insert(int lineIndex, string newLine)
+        {
+            _lines.Insert(lineIndex, newLine);
+        }
+
+        public void InsertRange(int beginIndex, string[] newLines)
+        {
+            _lines.InsertRange(beginIndex, newLines);
+        }
+
+        public int FindIndex(string targetLine)
+        {
+            return _lines.IndexOf(targetLine);
+        }
+
+        public int FindIndex(Predicate<string> predicate)
+        {
+            return _lines.FindIndex(predicate);
+        }
+
+        public string Find(Predicate<string> predicate)
+        {
+            return _lines.Find(predicate);
+        }
+
+        public string[] GetRange(int beginIndex, int endIndex)
+        {
+            string[] GetOperation(int begin, int end)
+            {
+                return _lines.GetRange(begin, end - begin + 1).ToArray();
+            }
+
+            return RangeOperation(beginIndex, endIndex, GetOperation);
+        }
+
+        public void LoadFromFile(string path)
+        {
+            _lines = File.ReadAllLines(path).ToList();
+        }
+
+        public void SaveToFile(string path)
+        {
+            File.WriteAllLines(path, _lines);
         }
 
         private void Swap(ref int first, ref int second)
@@ -70,63 +126,6 @@ namespace CompilerUtilities.BaseTypes
                 tmpLines = tmpLines.Reverse();
 
             return tmpLines.ToArray();
-        }
-
-        public  string[] CutRange(int beginIndex, int endIndex)
-        {
-            string[] CutOperation(int begin, int end)
-            {
-                var tmpLines = _lines.GetRange(begin, end - begin + 1);
-                _lines.RemoveRange(begin, end - begin + 1);
-                return tmpLines.ToArray();
-            }
-
-            return RangeOperation(beginIndex, endIndex, CutOperation);
-        }
-
-        public  void Insert(int lineIndex, string newLine)
-        {
-            _lines.Insert(lineIndex, newLine);
-        }
-
-        public  void InsertRange(int beginIndex, string[] newLines)
-        {
-            _lines.InsertRange(beginIndex, newLines);
-        }
-
-        public  int FindIndex(string targetLine)
-        {
-            return _lines.IndexOf(targetLine);
-        }
-
-        public  int FindIndex(Predicate<string> predicate)
-        {
-            return _lines.FindIndex(predicate);
-        }
-
-        public  string Find(Predicate<string> predicate)
-        {
-            return _lines.Find(predicate);
-        }
-
-        public  string[] GetRange(int beginIndex, int endIndex)
-        {
-            string[] GetOperation(int begin, int end)
-            {
-                return _lines.GetRange(begin, end - begin + 1).ToArray();
-            }
-
-            return RangeOperation(beginIndex, endIndex, GetOperation);
-        }
-
-        public  void LoadFromFile(string path)
-        {
-            _lines = File.ReadAllLines(path).ToList();
-        }
-
-        public  void SaveToFile(string path)
-        {
-            File.WriteAllLines(path, _lines);
         }
 
         public override string ToString()

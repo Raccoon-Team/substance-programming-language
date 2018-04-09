@@ -1,18 +1,18 @@
 ﻿using System;
 
-namespace CompilerUtilities.Plugins
+namespace CompilerUtilities.Exceptions
 {
-    public class CompileException:Exception
+    public class CompileException : Exception
     {
-        public override string Message { get; }
-
         public CompileException()
         {
         }
-        
+
         public CompileException(string message)
         {
             Message = message;
         }
+
+        public override string Message { get; }
     }
 }

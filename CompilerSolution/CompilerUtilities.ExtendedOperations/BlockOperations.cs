@@ -6,7 +6,8 @@ namespace CompilerUtilities.ExtendedOperations
 {
     internal static class BlockOperations
     {
-        public static List<(int Open, int Close)> FindAllBlocks<T>(this IEnumerable<T> collection, T openElem, T closeElem)
+        public static List<(int Open, int Close)> FindAllBlocks<T>(this IEnumerable<T> collection, T openElem,
+            T closeElem)
         {
             var blockIndexPairs = new List<(int Open, int Close)>();
             var sourceSequence = collection as T[] ?? collection.ToArray();
@@ -17,7 +18,8 @@ namespace CompilerUtilities.ExtendedOperations
                 var blockPair = FindFirstBlock(blockSequence, openElem, closeElem);
 
                 if (!IsCorrectPair(sourceSequence, blockPair))
-                    throw new InvalidDataException($"Didn't expected complete block. OpenIndex: {blockPair.Open}, CloseIndex: {blockPair.Close}");
+                    throw new InvalidDataException(
+                        $"Didn't expected complete block. OpenIndex: {blockPair.Open}, CloseIndex: {blockPair.Close}");
 
                 blockIndexPairs.Add(blockPair);
                 DeleteBlock(blockSequence, blockPair);
@@ -33,10 +35,11 @@ namespace CompilerUtilities.ExtendedOperations
                 collection.Select((elem, index) => ((T Value, int Index)) (elem, index));
             var withoutNonBlockSequence =
                 numeratedSequence.Where(elem => elem.Value.Equals(openElem) || elem.Value.Equals(closeElem));
-            return  withoutNonBlockSequence.ToList();
+            return withoutNonBlockSequence.ToList();
         }
 
-        private static (int Open, int Close) FindFirstBlock<T>(List<(T Value, int Index)> blockSequence, T openElem, T closeElem)
+        private static (int Open, int Close) FindFirstBlock<T>(List<(T Value, int Index)> blockSequence, T openElem,
+            T closeElem)
         {
             if (!blockSequence.All(elem => elem.Value.Equals(openElem) || elem.Value.Equals(closeElem)))
                 throw new InvalidDataException("Detected not valid block elements");
@@ -46,15 +49,15 @@ namespace CompilerUtilities.ExtendedOperations
 
             var firstClose = blockSequence.FindIndex(elem => elem.Value.Equals(closeElem));
             if (firstClose < openIndex)
-                throw new InvalidDataException($"Close elem detected before open (first openIndex {blockSequence[openIndex].Index}; first closeIndex {blockSequence[firstClose].Index})");
+                throw new InvalidDataException(
+                    $"Close elem detected before open (first openIndex {blockSequence[openIndex].Index}; first closeIndex {blockSequence[firstClose].Index})");
 
             var closeIndex = -1;
 
             if (openIndex != -1)
-            {
-                for (int i = openIndex + 1; i < blockSequence.Count; i++)
+                for (var i = openIndex + 1; i < blockSequence.Count; i++)
                 {
-                    bool isClose = blockSequence[i].Value.Equals(closeElem);
+                    var isClose = blockSequence[i].Value.Equals(closeElem);
 
                     if (isClose && nestingAcc == 0)
                     {
@@ -67,7 +70,6 @@ namespace CompilerUtilities.ExtendedOperations
                     else
                         nestingAcc++;
                 }
-            }
 
             if (openIndex == -1)
                 return (-1, -1);
@@ -82,7 +84,7 @@ namespace CompilerUtilities.ExtendedOperations
         {
             var collectionSize = sequence.Count();
             return blockPair.Open < collectionSize && blockPair.Open >= 0
-                && blockPair.Close < collectionSize && blockPair.Close >= 0;
+                   && blockPair.Close < collectionSize && blockPair.Close >= 0;
         }
 
         private static void DeleteBlock<T>(List<(T Value, int Index)> blockSequence, (int Open, int Close) blockPair)

@@ -3,10 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace CompilerUtilities.Plugins.Versions
 {
-    public struct VersionInfo
+    public struct VersionInfo : IEquatable<VersionInfo>
     {
-        public readonly int Major;
-        public readonly int Minor;
+        public readonly int Major, Minor;
         public readonly VersionPrefix Prefix;
 
         public VersionInfo(int major, int minor, VersionPrefix prefix)
@@ -18,12 +17,12 @@ namespace CompilerUtilities.Plugins.Versions
 
         public override string ToString()
         {
-            return $"{PrefixToString()}{Major}.{Minor}";
+            return $"{PrefixToString(Prefix)}{Major}.{Minor}";
         }
 
-        private string PrefixToString()
+        private static string PrefixToString(VersionPrefix prefix)
         {
-            switch (Prefix)
+            switch (prefix)
             {
                 case VersionPrefix.Alpha:
                     return "a";
@@ -34,7 +33,7 @@ namespace CompilerUtilities.Plugins.Versions
             }
         }
 
-        private static VersionPrefix PrefixFromString(string str)
+        private static VersionPrefix GetPrefixFromString(string str)
         {
             switch (str)
             {
@@ -49,22 +48,38 @@ namespace CompilerUtilities.Plugins.Versions
 
         public static VersionInfo Parse(string str)
         {
-            Regex regex = new Regex(@"^([ab])?(\d+).(\d+)$");
-            if (regex.IsMatch(str))
+            var match = Regex.Match(str, @"^([ab])?(\d+).(\d+)$");
+
+            if (!match.Success)
+                throw new ArgumentException("Incorrect VersionInfo format");
+
+            var prefix = GetPrefixFromString(match.Groups[1].Value);
+            var major = int.Parse(match.Groups[2].Value);
+            var minor = int.Parse(match.Groups[3].Value);
+
+            var newVersion = new VersionInfo(major, minor, prefix);
+
+            return newVersion;
+        }
+
+        public bool Equals(VersionInfo other)
+        {
+            return Major == other.Major && Minor == other.Minor && Prefix == other.Prefix;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is VersionInfo && Equals((VersionInfo) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
             {
-                var match = regex.Match(str);
-
-                var prefix = PrefixFromString(match.Groups[1].Value);
-                var major = Int32.Parse(match.Groups[2].Value);
-                var minor = Int32.Parse(match.Groups[3].Value);
-
-                var newVersion = new VersionInfo(major, minor, prefix);
-
-                return newVersion;
-            }
-            else
-            {
-                throw new ArgumentException("Incorrect str format");
+                var hashCode = Major;
+                hashCode = (hashCode * 397) ^ Minor;
+                hashCode = (hashCode * 397) ^ (int) Prefix;
+                return hashCode;
             }
         }
     }

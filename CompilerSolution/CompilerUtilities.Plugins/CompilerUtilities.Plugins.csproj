@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompileException.cs" />
     <Compile Include="EventArgs\FileReaderEventArgs.cs" />
     <Compile Include="EventArgs\GenIntermediateEventArgs.cs" />
     <Compile Include="EventArgs\LexerEventArgs.cs" />

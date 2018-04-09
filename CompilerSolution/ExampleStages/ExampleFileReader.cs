@@ -2,6 +2,7 @@
 using System.IO;
 using CompilerUtilities.BaseTypes;
 using CompilerUtilities.BaseTypes.Interfaces;
+using CompilerUtilities.Exceptions;
 using CompilerUtilities.Plugins;
 using CompilerUtilities.Plugins.Stages;
 using CompilerUtilities.Plugins.Versions;
@@ -10,8 +11,10 @@ namespace ExampleStages
 {
     [Export(typeof(IFileReader))]
     [Export(typeof(IPlugin))]
-    public class ExampleFileReader:IFileReader, IPlugin
+    public class ExampleFileReader : IFileReader, IPlugin
     {
+        private IPluginManager _manager;
+
         public ITextProcessor ReadFromFile(string path)
         {
             _manager.Notify("ReadFromFile");
@@ -30,8 +33,6 @@ namespace ExampleStages
         public uint Priority { get; }
         public VersionInfo Version { get; }
         public VersionInfo RequreCompilerVersion { get; }
-
-        private IPluginManager _manager;
 
         public void Activate(IPluginManager manager)
         {
