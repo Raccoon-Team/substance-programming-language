@@ -34,7 +34,7 @@ else
 Implementation: //блок реализации конструкции
 
 var breaked = false;
-while (boolExpression)
+while (|boolExpression|)
 {
 	breaked = true;
 	|whileBody|
