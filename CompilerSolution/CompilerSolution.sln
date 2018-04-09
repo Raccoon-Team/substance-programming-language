@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleStages", "ExampleSta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.Preprocessor", "CompilerUtilities.Preprocessor\CompilerUtilities.Preprocessor.csproj", "{5D834753-BFF4-4EFC-BBCB-67100F51FAEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.PluginContract", "CompilerUtilities.PluginContract\CompilerUtilities.PluginContract.csproj", "{7EFA9347-8592-41C5-A8B3-C4509B1F0867}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.Plugins.Contract", "CompilerUtilities.PluginContract\CompilerUtilities.Plugins.Contract.csproj", "{7EFA9347-8592-41C5-A8B3-C4509B1F0867}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.PluginImporter", "CompilerUtilities.PluginImporter\CompilerUtilities.PluginImporter.csproj", "{E4BFC0E9-850A-4454-B602-3EFD257E1FBD}"
 EndProject

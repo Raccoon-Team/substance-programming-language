@@ -1,7 +1,16 @@
-﻿namespace CompilerUtilities.PluginContract
+﻿using CompilerUtilities.Plugins.Versions;
+
+namespace CompilerUtilities.Plugins.Contract
 {
     public interface IPlugin<T>
     {
-        T Process(T input);
+        VersionInfo VersionInfo { get; }
+        VersionInfo RequreCompilerVersion { get; }
+
+        string Name { get; }
+        string Author { get; }
+        string Description { get; }
+
+        T Activate(T input);
     }
 }

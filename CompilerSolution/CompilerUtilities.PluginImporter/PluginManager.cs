@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using CompilerUtilities.Exceptions;
 using CompilerUtilities.PluginContract;
+using CompilerUtilities.Plugins.Contract;
 
 namespace CompilerUtilities.PluginImporter
 {
@@ -32,8 +33,9 @@ namespace CompilerUtilities.PluginImporter
         private static void Compile(IEnumerable<object> sequence)
         {
             object param = new Blanket();
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var item in sequence)
-                param = item.GetType().GetMethod("DoStage").Invoke(item, new[] {param});
+                param = item.GetType().GetMethod("Process").Invoke(item, new[] {param});
         }
 
         public void CheckForDuplicate()
