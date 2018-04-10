@@ -5,7 +5,6 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using CompilerUtilities.Exceptions;
-using CompilerUtilities.PluginContract;
 using CompilerUtilities.Plugins.Contract;
 
 namespace CompilerUtilities.PluginImporter
@@ -13,11 +12,13 @@ namespace CompilerUtilities.PluginImporter
     internal class PluginManager
     {
         [ImportMany(typeof(IStage<,>))] private List<object> _stages;
+        [Import(typeof(ICompileOptions))] private ICompileOptions _compileOptions;
 
         public PluginManager()
         {
             var cat = new AggregateCatalog();
             cat.Catalogs.Add(new DirectoryCatalog(Directory.GetCurrentDirectory() + "\\plugins"));
+            cat.Catalogs.Add(new DirectoryCatalog(Directory.GetCurrentDirectory() + "\\stages"));
             var container = new CompositionContainer(cat);
             container.ComposeParts(this);
 
@@ -27,10 +28,10 @@ namespace CompilerUtilities.PluginImporter
         public void Compile()
         {
             var chain = ComposeChain(_stages, false);
-            Compile(chain);
+            Compile(chain, _compileOptions);
         }
 
-        private static void Compile(IEnumerable<object> sequence)
+        private static void Compile(IEnumerable<object> sequence, ICompileOptions compileOptions)
         {
             object param = new Blanket();
             // ReSharper disable once LoopCanBeConvertedToQuery

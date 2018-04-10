@@ -52,9 +52,9 @@
       <Project>{ffb904e8-ea39-4c13-bacb-426770d347ff}</Project>
       <Name>CompilerUtilities.BaseTypes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CompilerUtilities.Plugins\CompilerUtilities.Plugins.csproj">
-      <Project>{517bd50a-6ff3-4913-87ac-4a6d9b5edace}</Project>
-      <Name>CompilerUtilities.Plugins</Name>
+    <ProjectReference Include="..\CompilerUtilities.PluginContract\CompilerUtilities.Plugins.Contract.csproj">
+      <Project>{7EFA9347-8592-41C5-A8B3-C4509B1F0867}</Project>
+      <Name>CompilerUtilities.Plugins.Contract</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

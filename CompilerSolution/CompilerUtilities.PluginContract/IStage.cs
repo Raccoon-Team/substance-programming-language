@@ -1,5 +1,5 @@
-﻿using CompilerUtilities.PluginContract;
-using CompilerUtilities.Plugins.Versions;
+﻿using CompilerUtilities.Plugins.Versions;
+using VersionInfo = CompilerUtilities.Plugins.Contract.Versions.VersionInfo;
 
 namespace CompilerUtilities.Plugins.Contract
 {

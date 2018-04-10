@@ -1,4 +1,4 @@
-﻿namespace CompilerUtilities.PluginContract
+﻿namespace CompilerUtilities.Plugins.Contract
 {
     public interface ICompileOptions
     {

@@ -1,10 +1,10 @@
-﻿using CompilerUtilities.Plugins.Versions;
+﻿using CompilerUtilities.Plugins.Contract.Versions;
 
 namespace CompilerUtilities.Plugins.Contract
 {
     public interface IPlugin<T>
     {
-        VersionInfo VersionInfo { get; }
+        VersionInfo Version { get; }
         VersionInfo RequreCompilerVersion { get; }
 
         string Name { get; }

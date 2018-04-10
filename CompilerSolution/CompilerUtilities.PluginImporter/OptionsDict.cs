@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CompilerUtilities.PluginContract;
+using CompilerUtilities.Plugins.Contract;
 
 namespace CompilerUtilities.PluginImporter
 {

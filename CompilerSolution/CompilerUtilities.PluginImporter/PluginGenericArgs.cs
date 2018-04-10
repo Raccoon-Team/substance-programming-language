@@ -2,7 +2,7 @@
 
 namespace CompilerUtilities.PluginImporter
 {
-    public class PluginGenericArgs
+    internal class PluginGenericArgs
     {
         public Type TIn, TOut;
 
