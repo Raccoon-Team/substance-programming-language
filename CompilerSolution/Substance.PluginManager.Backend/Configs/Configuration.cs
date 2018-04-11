@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Substance.PluginManager.Backend.Configs
 {
     public class Configuration
     {
-        private Dictionary<string, ConfigParameter> _parameters = new Dictionary<string, ConfigParameter>();
-
         private const string GlobalConfigName = "global.xml";
-        private string _source;
-        
-        public Configuration():this(GlobalConfigName)
+        private readonly Dictionary<string, ConfigParameter> _parameters = new Dictionary<string, ConfigParameter>();
+        private readonly string _source;
+
+        public Configuration() : this(GlobalConfigName)
         {
         }
 
@@ -24,6 +22,8 @@ namespace Substance.PluginManager.Backend.Configs
             _source = path;
         }
 
+        public ConfigParameter this[string name] => _parameters[name];
+
         private void ParseSettings(string path)
         {
             if (File.Exists(path))
@@ -31,7 +31,6 @@ namespace Substance.PluginManager.Backend.Configs
                 var xmlDocument = new XmlDocument();
                 xmlDocument.Load(path);
                 foreach (XmlNode node in xmlDocument.SelectNodes("//*/*"))
-                {
                     try
                     {
                         var parameter = ConfigParse(node);
@@ -41,11 +40,10 @@ namespace Substance.PluginManager.Backend.Configs
                     {
                         throw new InvalidDataException("Invalid node format");
                     }
-                }
             }
             else
             {
-                throw new ArgumentException($"\"{Path.GetFullPath(path)}\" not found");
+                throw new FileNotFoundException($"\"{Path.GetFullPath(path)}\" not found");
             }
         }
 
@@ -54,8 +52,8 @@ namespace Substance.PluginManager.Backend.Configs
             var attribute = node.SelectSingleNode("@Type");
 
             var name = node.Name;
-            ConfigType type = ConfigType.String;
-            string value = node.InnerText.Trim();
+            var type = ConfigType.String;
+            var value = node.InnerText.Trim();
 
             if (attribute != null)
                 Enum.TryParse(attribute.InnerText, out type);
@@ -81,11 +79,10 @@ namespace Substance.PluginManager.Backend.Configs
                 xmlDocument.InsertBefore(xmlDocument.CreateElement("Configures"), null);
             var root = xmlDocument.DocumentElement;
 
-            
 
             foreach (var parameter in _parameters.Values)
             {
-                XmlElement element = xmlDocument.CreateElement(parameter.Name);
+                var element = xmlDocument.CreateElement(parameter.Name);
                 element.InnerText = parameter.Value;
                 var configType = parameter.ConfigType.ToString();
                 element.SetAttribute("Type", configType);
@@ -97,8 +94,6 @@ namespace Substance.PluginManager.Backend.Configs
             }
             xmlDocument.Save(path);
         }
-
-        public ConfigParameter this[string name] => _parameters[name];
 
         public bool IsDefined(string name)
         {

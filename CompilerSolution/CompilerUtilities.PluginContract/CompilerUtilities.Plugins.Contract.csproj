@@ -48,11 +48,5 @@
     <Compile Include="Versions\VersionInfo.cs" />
     <Compile Include="Versions\VersionPrefix.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CompilerUtilities.Plugins\CompilerUtilities.Plugins.csproj">
-      <Project>{517BD50A-6FF3-4913-87AC-4A6D9B5EDACE}</Project>
-      <Name>CompilerUtilities.Plugins</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

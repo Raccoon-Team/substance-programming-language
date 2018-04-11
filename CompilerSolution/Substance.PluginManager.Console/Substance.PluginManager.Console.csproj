@@ -53,7 +53,7 @@
       <Project>{31759540-3371-412b-8d68-0217ec7dc524}</Project>
       <Name>Substance.PluginManager.Backend</Name>
     </ProjectReference>
-    <ProjectReference Include="G:\ProgrammingProject\substance-programming-language\CompilerSolution\CompilerUtilities.PluginContract\CompilerUtilities.Plugins.Contract.csproj">
+    <ProjectReference Include="..\CompilerUtilities.PluginContract\CompilerUtilities.Plugins.Contract.csproj">
       <Project>{7efa9347-8592-41c5-a8b3-c4509b1f0867}</Project>
       <Name>CompilerUtilities.Plugins.Contract</Name>
     </ProjectReference>

@@ -56,7 +56,7 @@
     <Compile Include="StageBox.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="G:\ProgrammingProject\substance-programming-language\CompilerSolution\CompilerUtilities.PluginContract\CompilerUtilities.Plugins.Contract.csproj">
+    <ProjectReference Include="..\CompilerUtilities.PluginContract\CompilerUtilities.Plugins.Contract.csproj">
       <Project>{7EFA9347-8592-41C5-A8B3-C4509B1F0867}</Project>
       <Name>CompilerUtilities.Plugins.Contract</Name>
     </ProjectReference>

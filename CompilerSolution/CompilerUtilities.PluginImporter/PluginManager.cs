@@ -9,7 +9,7 @@ using CompilerUtilities.Plugins.Contract;
 
 namespace CompilerUtilities.PluginImporter
 {
-    internal class PluginManager
+    public class PluginManager
     {
         [ImportMany(typeof(IStage<,>))] private List<object> _stages;
         [Import(typeof(ICompileOptions))] private ICompileOptions _compileOptions;
