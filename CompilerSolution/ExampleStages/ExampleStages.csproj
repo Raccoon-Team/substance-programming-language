@@ -61,6 +61,10 @@
       <Project>{2301F0D4-BABE-4D47-8375-E1EC9BDD13A5}</Project>
       <Name>CompilerUtilities.Exceptions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CompilerUtilities.PluginContract\CompilerUtilities.Plugins.Contract.csproj">
+      <Project>{7EFA9347-8592-41C5-A8B3-C4509B1F0867}</Project>
+      <Name>CompilerUtilities.Plugins.Contract</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

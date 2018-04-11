@@ -1,36 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using CompilerUtilities.BaseTypes;
 using CompilerUtilities.BaseTypes.Interfaces;
-using CompilerUtilities.Plugins;
-using CompilerUtilities.Plugins.Stages;
-using CompilerUtilities.Plugins.Versions;
+using CompilerUtilities.Plugins.Contract;
+using CompilerUtilities.Plugins.Contract.Versions;
 
 namespace ExampleStages
 {
-    [Export(typeof(IGeneratorIntermediate))]
-    [Export(typeof(IPlugin))]
-    public class GeneratorIntermediate:IGeneratorIntermediate, IPlugin
+    [Export(typeof(IStage<,>))]
+    public class GeneratorIntermediate : IStage<ISyntaxTree, ITextProcessor>
     {
-        public ITextProcessor Generate(ISyntaxTree tree)
-        {
-            _manager.Notify("Generate");
-            return new CodeProcessor();
-        }
+        public uint Priority { get; }
 
         public string Name { get; }
         public string Author { get; }
         public string Description { get; }
-        public uint Priority { get; }
-        public VersionInfo Version { get; }
-        public VersionInfo RequreCompilerVersion { get; }
-
-        private IPluginManager _manager;
-
-        public void Activate(IPluginManager manager)
+        public void Initialize(ICompileOptions options)
         {
-            _manager = manager;
+            throw new System.NotImplementedException();
         }
+
+        public ITextProcessor Process(ISyntaxTree input)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public VersionInfo Version { get; }
+        public VersionInfo VersionInfo { get; }
+        public VersionInfo RequreCompilerVersion { get; }
+        
     }
 }

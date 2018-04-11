@@ -3,21 +3,36 @@ using System.IO;
 using CompilerUtilities.BaseTypes;
 using CompilerUtilities.BaseTypes.Interfaces;
 using CompilerUtilities.Exceptions;
-using CompilerUtilities.Plugins;
-using CompilerUtilities.Plugins.Stages;
-using CompilerUtilities.Plugins.Versions;
+using CompilerUtilities.Plugins.Contract;
+using CompilerUtilities.Plugins.Contract.Versions;
 
 namespace ExampleStages
 {
-    [Export(typeof(IFileReader))]
-    [Export(typeof(IPlugin))]
-    public class ExampleFileReader : IFileReader, IPlugin
+    [Export(typeof(IStage<,>))]
+    public class ExampleFileReader : IStage<Blanket, ITextProcessor>
     {
-        private IPluginManager _manager;
+        public uint Priority { get; }
+
+        public string Name { get; }
+        public string Author { get; }
+        public string Description { get; }
+
+        public void Initialize(ICompileOptions options)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ITextProcessor Process(Blanket input)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public VersionInfo Version { get; }
+        public VersionInfo VersionInfo { get; }
+        public VersionInfo RequreCompilerVersion { get; }
 
         public ITextProcessor ReadFromFile(string path)
         {
-            _manager.Notify("ReadFromFile");
             if (File.Exists(path))
             {
                 var source = new CodeProcessor();
@@ -25,18 +40,6 @@ namespace ExampleStages
                 return source;
             }
             throw new CompileException($"{nameof(ExampleFileReader)}: Файл \"{path}\" не найден");
-        }
-
-        public string Name { get; }
-        public string Author { get; }
-        public string Description { get; }
-        public uint Priority { get; }
-        public VersionInfo Version { get; }
-        public VersionInfo RequreCompilerVersion { get; }
-
-        public void Activate(IPluginManager manager)
-        {
-            _manager = manager;
         }
     }
 }

@@ -1,37 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using CompilerUtilities.BaseTypes.Interfaces;
-using CompilerUtilities.Plugins;
-using CompilerUtilities.Plugins.Stages;
-using CompilerUtilities.Plugins.Versions;
+using CompilerUtilities.Plugins.Contract;
+using CompilerUtilities.Plugins.Contract.Versions;
 
 namespace ExampleStages
 {
-    public class ExampleSyntaxTree : ISyntaxTree
-    { }
-
-    [Export(typeof(IParser))]
-    [Export(typeof(IPlugin))]
-    public class Parser:IParser, IPlugin
+    [Export(typeof(IStage<,>))]
+    public class Parser : IStage<IList<IToken>, ISyntaxTree>
     {
-        public ISyntaxTree Parse(IList<IToken> tokens)
-        {
-            _manager.Notify("Parse");
-            return new ExampleSyntaxTree();
-        }
-
+        public uint Priority { get; }
+        public VersionInfo Version { get; }
         public string Name { get; }
         public string Author { get; }
         public string Description { get; }
-        public uint Priority { get; }
-        public VersionInfo Version { get; }
-        public VersionInfo RequreCompilerVersion { get; }
 
-        private IPluginManager _manager;
-
-        public void Activate(IPluginManager manager)
+        public void Initialize(ICompileOptions options)
         {
-            _manager = manager;
+            throw new NotImplementedException();
         }
+
+        public ISyntaxTree Process(IList<IToken> input)
+        {
+            throw new NotImplementedException();
+        }
+
+        public VersionInfo VersionInfo { get; }
+        public VersionInfo RequreCompilerVersion { get; }
     }
 }

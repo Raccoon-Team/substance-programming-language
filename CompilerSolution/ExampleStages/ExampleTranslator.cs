@@ -1,32 +1,31 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using CompilerUtilities.BaseTypes.Interfaces;
-using CompilerUtilities.Plugins;
-using CompilerUtilities.Plugins.Stages;
-using CompilerUtilities.Plugins.Versions;
+using CompilerUtilities.Plugins.Contract;
+using CompilerUtilities.Plugins.Contract.Versions;
 
 namespace ExampleStages
 {
-    [Export(typeof(ITranslator))]
-    [Export(typeof(IPlugin))]
-    public class ExampleTranslator:ITranslator, IPlugin
+    [Export(typeof(IStage<,>))]
+    public class ExampleTranslator : IStage<ITextProcessor, Blanket>
     {
-        public void Translate(ITextProcessor intermediateCode, string outputPath)
-        {
-            _manager.Notify("Translate");
-        }
-
+        public uint Priority { get; }
+        public VersionInfo Version { get; }
         public string Name { get; }
         public string Author { get; }
         public string Description { get; }
-        public uint Priority { get; }
-        public VersionInfo Version { get; }
-        public VersionInfo RequreCompilerVersion { get; }
 
-        private IPluginManager _manager;
-
-        public void Activate(IPluginManager manager)
+        public void Initialize(ICompileOptions options)
         {
-            _manager = manager;
+            throw new NotImplementedException();
         }
+
+        public Blanket Process(ITextProcessor input)
+        {
+            throw new NotImplementedException();
+        }
+
+        public VersionInfo VersionInfo { get; }
+        public VersionInfo RequreCompilerVersion { get; }
     }
 }
