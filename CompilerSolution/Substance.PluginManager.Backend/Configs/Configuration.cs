@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -33,7 +34,7 @@ namespace Substance.PluginManager.Backend.Configs
                 {
                     try
                     {
-                        var parameter = ConfigParameter.XmlParse(node);
+                        var parameter = ConfigParse(node);
                         _parameters.Add(parameter.Name, parameter);
                     }
                     catch (XmlException e)
@@ -46,6 +47,26 @@ namespace Substance.PluginManager.Backend.Configs
             {
                 throw new ArgumentException($"\"{Path.GetFullPath(path)}\" not found");
             }
+        }
+
+        private static ConfigParameter ConfigParse(XmlNode node)
+        {
+            var attribute = node.SelectSingleNode("@Type");
+
+            var name = node.Name;
+            ConfigType type = ConfigType.String;
+            string value = node.InnerText.Trim();
+
+            if (attribute != null)
+                Enum.TryParse(attribute.InnerText, out type);
+            if (type == ConfigType.Values)
+            {
+                attribute = node.SelectSingleNode("@Values");
+                var values = attribute.InnerText.Split(',').Select(x => x.Trim()).ToArray();
+                return new ConfigParameter(name, value, values);
+            }
+
+            return new ConfigParameter(name, type, value);
         }
 
         public void Save(string path = "")
