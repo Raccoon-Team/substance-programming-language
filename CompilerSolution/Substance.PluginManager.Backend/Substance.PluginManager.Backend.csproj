@@ -46,11 +46,11 @@
     <Compile Include="Configs\Configuration.cs" />
     <Compile Include="DependenciesCondition.cs" />
     <Compile Include="DependenciesInfo.cs" />
-    <Compile Include="Extension.cs" />
+    <Compile Include="IExtension.cs" />
     <Compile Include="ExtensionInfo.cs" />
     <Compile Include="ExtensionManager.cs" />
     <Compile Include="ExtensionStatus.cs" />
-    <Compile Include="Plugin.cs" />
+    <Compile Include="PluginExtension.cs" />
     <Compile Include="PluginBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StageBox.cs" />

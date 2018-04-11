@@ -27,7 +27,7 @@ namespace Substance.PluginManager.Backend
 
         private void ParsePlugins()
         {
-            PluginsExtension = _plugins.Plugins.Select(elem =>(IExtension) new Plugin(elem)).ToList();
+            PluginsExtension = _plugins.Plugins.Select(elem =>(IExtension) new PluginExtension(elem)).ToList();
         }
     }
 }

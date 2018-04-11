@@ -4,9 +4,9 @@ using Substance.PluginManager.Backend.Configs;
 
 namespace Substance.PluginManager.Backend
 {
-    public class Plugin : IExtension
+    public class PluginExtension : IExtension
     {
-        public Plugin(object plugin)
+        public PluginExtension(object plugin)
         {
             var interfaces = plugin.GetType().FindInterfaces((type, criteria) => true, null);
             if (interfaces.Length != 1)
