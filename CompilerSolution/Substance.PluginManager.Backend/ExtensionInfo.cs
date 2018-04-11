@@ -1,6 +1,4 @@
-﻿using CompilerUtilities.Plugins.Contract.Versions;
-
-namespace Substance.PluginManager.Backend
+﻿namespace Substance.PluginManager.Backend
 {
     public class ExtensionInfo
     {
@@ -11,14 +9,11 @@ namespace Substance.PluginManager.Backend
         public string ProjectUrl;
         public string[] Tags;
 
-        public VersionInfo Version;
-
-        public ExtensionInfo(string title, string description, VersionInfo version, params string[] authors)
+        public ExtensionInfo(string title, string description, params string[] authors)
         {
             Title = title;
             Description = description;
             Authors = authors;
-            Version = version;
         }
     }
 }

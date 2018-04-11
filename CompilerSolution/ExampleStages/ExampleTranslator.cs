@@ -11,6 +11,7 @@ namespace ExampleStages
     {
         public uint Priority { get; }
         public VersionInfo Version { get; }
+        public VersionInfo RequreCompilerVersion { get; }
         public string Name { get; }
         public string Author { get; }
         public string Description { get; }
@@ -24,8 +25,6 @@ namespace ExampleStages
         {
             throw new NotImplementedException();
         }
-
-        public VersionInfo VersionInfo { get; }
-        public VersionInfo RequreCompilerVersion { get; }
+        
     }
 }
