@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Blanket.cs" />
     <Compile Include="ICompileOptions.cs" />
+    <Compile Include="ICompilerExtension.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="IStage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

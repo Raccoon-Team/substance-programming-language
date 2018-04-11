@@ -41,11 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExampleTypes\CompileOptions.cs" />
     <Compile Include="ExampleFileReader.cs" />
+    <Compile Include="ExampleTypes\ExampleSyntaxTree.cs" />
+    <Compile Include="ExampleTypes\ExampleSyntaxTreeNode.cs" />
+    <Compile Include="ExampleTypes\ExampleTextProcessor.cs" />
+    <Compile Include="ExampleTypes\ExampleToken.cs" />
     <Compile Include="ExampleTranslator.cs" />
     <Compile Include="GeneratorIntermediate.cs" />
-    <Compile Include="Lexer.cs" />
-    <Compile Include="Parser.cs" />
+    <Compile Include="ExampleLexer.cs" />
+    <Compile Include="ExampleParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

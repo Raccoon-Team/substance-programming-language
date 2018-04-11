@@ -1,16 +1,7 @@
-﻿using CompilerUtilities.Plugins.Contract.Versions;
-
-namespace CompilerUtilities.Plugins.Contract
+﻿namespace CompilerUtilities.Plugins.Contract
 {
-    public interface IStage<in TIn, out TOut>
+    public interface IStage<in TIn, out TOut> : ICompilerExtension
     {
-        VersionInfo VersionInfo { get; }
-        VersionInfo RequreCompilerVersion { get; }
-
-        string Name { get; }
-        string Author { get; }
-        string Description { get; }
-
         void Initialize(ICompileOptions options);
 
         TOut Process(TIn input);

@@ -13,21 +13,25 @@ namespace ExampleStages
     {
         public uint Priority { get; }
 
+        public VersionInfo Version { get; }
+
         public string Name { get; }
         public string Author { get; }
         public string Description { get; }
 
+        private ICompileOptions _options;
+
         public void Initialize(ICompileOptions options)
         {
-            throw new System.NotImplementedException();
+            _options = options;
         }
 
         public ITextProcessor Process(Blanket input)
         {
-            throw new System.NotImplementedException();
+            var fileName = _options["input_file"];
+            return new ExampleTextProcessor(fileName);
         }
 
-        public VersionInfo Version { get; }
         public VersionInfo VersionInfo { get; }
         public VersionInfo RequreCompilerVersion { get; }
 

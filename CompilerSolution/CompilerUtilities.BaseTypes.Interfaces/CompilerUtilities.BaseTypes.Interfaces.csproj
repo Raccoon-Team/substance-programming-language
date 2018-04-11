@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ISyntaxTree.cs" />
+    <Compile Include="ISyntaxTreeNode.cs" />
     <Compile Include="ITextProcessor.cs" />
     <Compile Include="IToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
