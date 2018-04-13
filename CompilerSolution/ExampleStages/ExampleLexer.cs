@@ -22,7 +22,7 @@ namespace ExampleStages
 
         public void Initialize(ICompileOptions options)
         {
-            throw new NotImplementedException();
+            
         }
 
         private readonly string[] ops = {"mov"};
@@ -48,12 +48,12 @@ namespace ExampleStages
                 //Match match;
                 if (ops.Contains(accum.ToString()))
                 {
-                    outp.Add(new ExampleToken(accum.ToString(), "Opertation"));
+                    outp.Add(new ExampleToken(accum.ToString(), "Operation"));
                     accum.Clear();
                 }
                 else if (singleOps.Contains(accum.ToString()))
                 {
-                    outp.Add(new ExampleToken(accum.ToString(), "Single Opertation"));
+                    outp.Add(new ExampleToken(accum.ToString(), "Single Operation"));
                     accum.Clear();
                 }
                 else if (Regex.IsMatch(accum.ToString(), @"^e?(([a-d]x)|([sd]i))$"))

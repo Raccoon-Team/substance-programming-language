@@ -12,15 +12,17 @@ namespace CompilerUtilities.PluginImporter
     public class PluginManager
     {
         [ImportMany(typeof(IStage<,>))] private List<object> _stages;
-        [Import(typeof(ICompileOptions))] private ICompileOptions _compileOptions;
+        /*[Import(typeof(ICompileOptions))]*/ private ICompileOptions _compileOptions;
 
-        public PluginManager()
+        public PluginManager(string[] args)
         {
             var cat = new AggregateCatalog();
             cat.Catalogs.Add(new DirectoryCatalog(Directory.GetCurrentDirectory() + "\\plugins"));
             cat.Catalogs.Add(new DirectoryCatalog(Directory.GetCurrentDirectory() + "\\stages"));
             var container = new CompositionContainer(cat);
             container.ComposeParts(this);
+
+            _compileOptions = new OptionsDict(args);
 
             CheckForDuplicate();
         }
@@ -36,7 +38,10 @@ namespace CompilerUtilities.PluginImporter
             object param = new Blanket();
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var item in sequence)
+            {
+                item.GetType().GetMethod("Initialize").Invoke(item, new[] {compileOptions});
                 param = item.GetType().GetMethod("Process").Invoke(item, new[] {param});
+            }
         }
 
         public void CheckForDuplicate()
@@ -47,6 +52,8 @@ namespace CompilerUtilities.PluginImporter
                 throw new StageNotFoundException("Start stage not found");
             if (converted.All(x => x.TOut != typeof(Blanket)))
                 throw new StageNotFoundException("End stage not found");
+
+
 
             for (var i = 0; i < converted.Count; i++)
             for (var j = i + 1; j < converted.Count; j++)
@@ -74,7 +81,13 @@ namespace CompilerUtilities.PluginImporter
         {
             if (input.Count == 1)
                 return input;
-            var copy = new List<object>(input);
+            var copy = new List<object>(input.OrderBy(o =>
+            {
+                var t = new PluginGenericArgs(o);
+                if (t.TIn == typeof(Blanket)) return 0;
+                if (t.TOut == typeof(Blanket)) return 2;
+                return 1;
+            }));
 
             var outp = new List<object>();
 

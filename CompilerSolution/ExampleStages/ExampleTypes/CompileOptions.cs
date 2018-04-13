@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using CompilerUtilities.Plugins.Contract;
 
 namespace ExampleStages.ExampleTypes
 {
+    [Export(typeof(ICompileOptions))]
     public class CompileOptions:ICompileOptions
     {
         private readonly Dictionary<string, string> _dictionary;

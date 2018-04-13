@@ -18,7 +18,7 @@ namespace ExampleStages.ExampleTypes
 
         public override string ToString()
         {
-            return $"{Value.Type}: {Value.Value}\r\n{string.Join("\r\n", Nodes)}";
+            return $"{Value.Type}: {Value.Value}\r\n\t{string.Join("\r\n\t", Nodes)}";
         }
     }
 }

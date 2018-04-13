@@ -32,6 +32,7 @@ namespace ExampleStages
 
             for (var i = 1; i < input.Count; i++)
             {
+                //if (input[i].Type == "Comma") continue;
                 currentNode.Nodes.Add(new ExampleSyntaxTreeNode(input[i], currentNode));
                 if (input[i].Type == "Operation" || input[i].Type == "Single Operation")
                 {
@@ -41,7 +42,7 @@ namespace ExampleStages
                 {
                     if (currentNode.Value.Type == "Single Operation")
                         currentNode = currentNode.Parent;
-                    else if (currentNode.Value.Type == "Operation" && currentNode.Nodes.Count == 2)
+                    else if (currentNode.Value.Type == "Operation" && currentNode.Nodes.Count > 2)
                         currentNode = currentNode.Parent;
                 }
             }
