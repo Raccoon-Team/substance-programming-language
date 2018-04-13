@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CompilerUtilities.BaseTypes.Interfaces;
 
-namespace ExampleStages
+namespace ExampleStages.ExampleTypes
 {
     public class ExampleSyntaxTree : ISyntaxTree
     {
@@ -11,5 +11,10 @@ namespace ExampleStages
         }
 
         public IList<ISyntaxTreeNode> Nodes { get; }
+
+        public override string ToString()
+        {
+            return string.Join("\r\n", Nodes);
+        }
     }
 }

@@ -7,7 +7,7 @@ using CompilerUtilities.Notifications.Structs.Enums;
 
 namespace CompilerUtilities.Notifications
 {
-    public class FileNotifier : INotifier
+    public class FileNotifier : INotifier, IDisposable
     {
         private readonly INotifier _decoratedNotifier;
         private readonly StreamWriter _fileWriter;
@@ -51,6 +51,13 @@ namespace CompilerUtilities.Notifications
                 var args = _queueMessages.Take();
                 NotifyAsync(args.level, args.message);
             }
+        }
+
+        public void Dispose()
+        {
+            _fileWriter?.Dispose();
+            _queueMessages?.Dispose();
+            _messageLoopTask?.Dispose();
         }
     }
 }

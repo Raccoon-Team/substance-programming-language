@@ -3,6 +3,7 @@ using CompilerUtilities.BaseTypes;
 using CompilerUtilities.BaseTypes.Interfaces;
 using CompilerUtilities.Plugins.Contract;
 using CompilerUtilities.Plugins.Contract.Versions;
+using ExampleStages.ExampleTypes;
 
 namespace ExampleStages
 {
@@ -14,14 +15,15 @@ namespace ExampleStages
         public string Name { get; }
         public string Author { get; }
         public string Description { get; }
+
         public void Initialize(ICompileOptions options)
         {
-            throw new System.NotImplementedException();
         }
 
         public ITextProcessor Process(ISyntaxTree input)
         {
-            throw new System.NotImplementedException();
+            var outp = new ExampleTextProcessor {Presentation = new[] {input.ToString()}};
+            return outp;
         }
 
         public VersionInfo Version { get; }

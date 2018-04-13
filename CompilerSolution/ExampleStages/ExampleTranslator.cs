@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.IO;
 using CompilerUtilities.BaseTypes.Interfaces;
 using CompilerUtilities.Plugins.Contract;
 using CompilerUtilities.Plugins.Contract.Versions;
@@ -16,14 +17,18 @@ namespace ExampleStages
         public string Author { get; }
         public string Description { get; }
 
+        private ICompileOptions _options;
+
         public void Initialize(ICompileOptions options)
         {
-            throw new NotImplementedException();
+            _options = options;
         }
 
         public Blanket Process(ITextProcessor input)
         {
-            throw new NotImplementedException();
+            File.WriteAllLines(_options["output_file"], input.Presentation);
+
+            return null;
         }
         
     }

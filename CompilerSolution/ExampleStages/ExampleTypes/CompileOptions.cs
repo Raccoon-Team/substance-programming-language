@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CompilerUtilities.Plugins.Contract;
 
-namespace ExampleStages
+namespace ExampleStages.ExampleTypes
 {
     public class CompileOptions:ICompileOptions
     {
         private readonly Dictionary<string, string> _dictionary;
+
+        private static readonly string[] SingleKeys = { };
 
         public CompileOptions(IReadOnlyList<string> args)
         {
@@ -27,7 +30,7 @@ namespace ExampleStages
 
         private static bool IsSingleKey(string key)
         {
-            return false;
+            return SingleKeys.Contains(key);
         }
     }
 }

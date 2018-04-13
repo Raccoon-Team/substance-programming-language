@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CompilerUtilities.BaseTypes.Interfaces;
 
-namespace ExampleStages
+namespace ExampleStages.ExampleTypes
 {
     public class ExampleSyntaxTreeNode : ISyntaxTreeNode
     {
@@ -15,5 +15,10 @@ namespace ExampleStages
         public IToken Value { get; }
         public IList<ISyntaxTreeNode> Nodes { get; set; }
         public ISyntaxTreeNode Parent { get; }
+
+        public override string ToString()
+        {
+            return $"{Value.Type}: {Value.Value}\r\n{string.Join("\r\n", Nodes)}";
+        }
     }
 }

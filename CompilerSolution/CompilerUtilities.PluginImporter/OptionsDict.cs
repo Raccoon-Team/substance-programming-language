@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CompilerUtilities.Plugins.Contract;
 
 namespace CompilerUtilities.PluginImporter
@@ -6,6 +7,8 @@ namespace CompilerUtilities.PluginImporter
     internal class OptionsDict : ICompileOptions
     {
         private readonly Dictionary<string, string> _dictionary;
+
+        private static readonly string[] SingleKeys = { };
 
         public OptionsDict(IReadOnlyList<string> args)
         {
@@ -27,7 +30,7 @@ namespace CompilerUtilities.PluginImporter
 
         private static bool IsSingleKey(string key)
         {
-            return false;
+            return SingleKeys.Contains(key);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using CompilerUtilities.BaseTypes.Interfaces;
 
-namespace ExampleStages
+namespace ExampleStages.ExampleTypes
 {
     public class ExampleToken : IToken
     {

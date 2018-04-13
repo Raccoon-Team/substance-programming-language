@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using CompilerUtilities.BaseTypes.Interfaces;
 using CompilerUtilities.Plugins.Contract;
 using CompilerUtilities.Plugins.Contract.Versions;
+using ExampleStages.ExampleTypes;
 
 namespace ExampleStages
 {

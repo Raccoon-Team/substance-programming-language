@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using CompilerUtilities.BaseTypes.Interfaces;
 
-namespace ExampleStages
+namespace ExampleStages.ExampleTypes
 {
     public class ExampleTextProcessor : ITextProcessor
     {
@@ -16,18 +16,27 @@ namespace ExampleStages
             Length = Presentation.Count();
         }
 
+        public ExampleTextProcessor()
+        {
+            
+        }
+
         public string this[int index]
         {
             get => _presentation[index];
             set => _presentation[index] = value;
         }
 
-        public int Length { get; }
+        public int Length { get; private set; }
 
         public IEnumerable<string> Presentation
         {
             get => _presentation;
-            set => _presentation = value.ToList();
+            set
+            {
+                _presentation = value.ToList();
+                Length = _presentation.Count;
+            }
         }
 
         public string Cut(int lineIndex)

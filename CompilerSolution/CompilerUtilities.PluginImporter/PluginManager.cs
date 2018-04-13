@@ -27,7 +27,7 @@ namespace CompilerUtilities.PluginImporter
 
         public void Compile()
         {
-            var chain = ComposeChain(_stages, false);
+            var chain = ComposeStages(_stages, false);
             Compile(chain, _compileOptions);
         }
 
@@ -70,7 +70,7 @@ namespace CompilerUtilities.PluginImporter
             }
         }
 
-        public List<object> ComposeChain(List<object> input, bool throwException = true)
+        public List<object> ComposeStages(List<object> input, bool throwException = true)
         {
             if (input.Count == 1)
                 return input;

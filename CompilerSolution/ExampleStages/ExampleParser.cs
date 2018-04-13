@@ -5,6 +5,7 @@ using System.Linq;
 using CompilerUtilities.BaseTypes.Interfaces;
 using CompilerUtilities.Plugins.Contract;
 using CompilerUtilities.Plugins.Contract.Versions;
+using ExampleStages.ExampleTypes;
 
 namespace ExampleStages
 {
@@ -19,7 +20,7 @@ namespace ExampleStages
 
         public void Initialize(ICompileOptions options)
         {
-            throw new NotImplementedException();
+
         }
 
         public ISyntaxTree Process(IList<IToken> input)
