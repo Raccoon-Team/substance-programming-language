@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="CompileException.cs" />
     <Compile Include="DuplicatedStagesException.cs" />
+    <Compile Include="MismatchOfArgumentCount.cs" />
     <Compile Include="StageNotFoundException.cs" />
     <Compile Include="StagesCompositionException.cs" />
     <Compile Include="InvalidCompilerOptionsException.cs" />

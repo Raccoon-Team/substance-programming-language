@@ -40,10 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\InvalidMemberType.cs" />
+    <Compile Include="Exceptions\InvalidMethodArgumentTypes.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="ConsoleParameters.cs" />
     <Compile Include="ParameterAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CompilerUtilities.Exceptions\CompilerUtilities.Exceptions.csproj">
+      <Project>{2301f0d4-babe-4d47-8375-e1ec9bdd13a5}</Project>
+      <Name>CompilerUtilities.Exceptions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

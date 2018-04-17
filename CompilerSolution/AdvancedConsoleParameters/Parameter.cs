@@ -1,30 +1,77 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AdvancedConsoleParameters
 {
-    public sealed class Parameter
+    public sealed class Parameter : IEquatable<Parameter>
     {
+        private readonly List<string> _flagValue = new List<string> {"true"};
+        private List<string> _values;
+
         private Parameter()
         {
             Values = new List<string>();
+            PossibleValues = new string[0];
         }
 
-        internal Parameter(string name) : this()
+        internal Parameter(string key) : this()
         {
-            Name = name;
+            Key = key;
         }
 
-        internal Parameter(string name, bool isSingle, string[] possibleValues) : this()
+        public string Key { get; }
+        public bool IsFlag { get; private set; }
+        public string[] PossibleValues { get; private set; }
+
+        public List<string> Values
         {
-            Name = name;
-            IsSingle = isSingle;
-            PossibleValues = possibleValues;
+            get => !IsFlag ? _values : _flagValue;
+            set => _values = value;
         }
 
-        public string Name { get; }
-        public bool IsSingle { get; }
-        public string[] PossibleValues { get; }
+        internal void SetUp(ParameterAttribute attribute)
+        {
+            PossibleValues = attribute.PossibleValues.Split(new[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
+            IsFlag = attribute.IsFlag;
 
-        public List<string> Values { get; set; }
+            Validate();
+        }
+
+        private void Validate()
+        {
+            if (PossibleValues.Length != 0)
+                if (!IsFlag)
+                {
+                    if (PossibleValues.Intersect(Values).Count() != 0)
+                    {
+                        //todo throw Exception. Недопустимые параметры
+                    }
+                }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Parameter);
+        }
+
+        public bool Equals(Parameter other)
+        {
+            return other != null &&
+                   Key == other.Key &&
+                   IsFlag == other.IsFlag &&
+                   EqualityComparer<string[]>.Default.Equals(PossibleValues, other.PossibleValues) &&
+                   EqualityComparer<List<string>>.Default.Equals(Values, other.Values);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 538221694;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Key);
+            hashCode = hashCode * -1521134295 + IsFlag.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string[]>.Default.GetHashCode(PossibleValues);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<string>>.Default.GetHashCode(Values);
+            return hashCode;
+        }
     }
 }
