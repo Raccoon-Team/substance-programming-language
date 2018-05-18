@@ -13,7 +13,6 @@ namespace ExampleStages
     public class ExampleParser : IStage<IList<IToken>, ISyntaxTree>
     {
         public uint Priority { get; }
-        public VersionInfo Version { get; }
         public string Name { get; }
         public string Author { get; }
         public string Description { get; }
@@ -49,8 +48,5 @@ namespace ExampleStages
 
             return outp;
         }
-
-        public VersionInfo VersionInfo { get; }
-        public VersionInfo RequreCompilerVersion { get; }
     }
 }

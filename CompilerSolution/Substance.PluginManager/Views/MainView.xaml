@@ -1,43 +1,43 @@
-﻿<controls:MetroWindow 
-        x:Class="Substance.PluginManager.Views.MainView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:local="clr-namespace:Substance.PluginManager.Views"
-        xmlns:services="clr-namespace:Substance.PluginManager.Services"
-        mc:Ignorable="d"
-        Title="Main" 
-        TitleCharacterCasing="Normal"
-        Height="480" Width="640"
-        MinHeight="480" MinWidth="640"
-        FontFamily="Segoe UI"
-        FontSize="16">
-    
+﻿<controls:MetroWindow
+    x:Class="Substance.PluginManager.Views.MainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:services="clr-namespace:Substance.PluginManager.Services"
+    xmlns:cal="http://www.caliburnproject.org"
+    mc:Ignorable="d"
+    Title="Main"
+    TitleCharacterCasing="Normal"
+    Height="480" Width="640"
+    MinHeight="480" MinWidth="640"
+    FontFamily="Segoe UI"
+    FontSize="16">
+
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Background="#66000000">
-            <Button >
-                <Rectangle Grid.Column="1" Fill="White" Width="16px" Height="16px">
+            <Button>
+                <Rectangle Fill="White" Width="16px" Height="16px">
                     <Rectangle.OpacityMask>
                         <VisualBrush Visual="{StaticResource appbar_control_play}" Stretch="Fill" />
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>
             <Button>
-                <Rectangle Grid.Column="1" Fill="White" Width="16px" Height="16px">
+                <Rectangle Fill="White" Width="16px" Height="16px">
                     <Rectangle.OpacityMask>
                         <VisualBrush Visual="{StaticResource appbar_settings}" Stretch="Fill" />
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>
             <Button>
-                <Rectangle Grid.Column="1" Fill="White" Width="16px" Height="16px">
+                <Rectangle Fill="White" Width="16px" Height="16px">
                     <Rectangle.OpacityMask>
                         <VisualBrush Visual="{StaticResource appbar_download}" Stretch="Fill" />
                     </Rectangle.OpacityMask>
@@ -46,14 +46,14 @@
         </StackPanel>
         <Grid Grid.Column="1" Margin="5,0,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Background="DarkGray">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <AdornerDecorator Grid.Column="0" x:Name="SearchBox">
                     <TextBox BorderBrush="Transparent">
@@ -70,21 +70,24 @@
             </Grid>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <Button Content="Plugins" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16"/>
-                <Button Content="Stages" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16"/>
+                <Button Content="Plugins" Background="Transparent" BorderBrush="Transparent" Foreground="White"
+                        FontSize="16" cal:Message.Attach="[Event Click] = [Action PluginsBtn_Click]" />
+                <Button Content="Stages" Background="Transparent" BorderBrush="Transparent" Foreground="White"
+                        FontSize="16" />
             </StackPanel>
-            
-            <ListView Grid.Row="2" ItemsSource="{Binding ExtensionsCollection}" SelectedItem="{Binding SelectedExtension}">
+
+            <ListView Grid.Row="2" ItemsSource="{Binding ExtensionsCollection}"
+                      SelectedItem="{Binding SelectedExtension}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
-                            <TextBlock Text="{Binding Title}"/>
-                            <TextBlock Text="{Binding Description}"></TextBlock>
+                            <TextBlock Text="{Binding Title}" />
+                            <TextBlock Text="{Binding Description}" />
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        
+
     </Grid>
 </controls:MetroWindow>

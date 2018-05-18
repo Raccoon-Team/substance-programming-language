@@ -11,11 +11,6 @@ namespace ExampleStages
     public class ExampleTranslator : IStage<ITextProcessor, Blanket>
     {
         public uint Priority { get; }
-        public VersionInfo Version { get; }
-        public VersionInfo RequreCompilerVersion { get; }
-        public string Name { get; }
-        public string Author { get; }
-        public string Description { get; }
 
         private ICompileOptions _options;
 

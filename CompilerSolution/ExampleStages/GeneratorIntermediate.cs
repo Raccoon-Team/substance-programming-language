@@ -25,10 +25,5 @@ namespace ExampleStages
             var outp = new ExampleTextProcessor {Presentation = new[] {input.ToString()}};
             return outp;
         }
-
-        public VersionInfo Version { get; }
-        public VersionInfo VersionInfo { get; }
-        public VersionInfo RequreCompilerVersion { get; }
-        
     }
 }

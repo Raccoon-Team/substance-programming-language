@@ -14,12 +14,6 @@ namespace ExampleStages
     {
         public uint Priority { get; }
 
-        public VersionInfo Version { get; }
-
-        public string Name { get; }
-        public string Author { get; }
-        public string Description { get; }
-
         private ICompileOptions _options;
 
         public void Initialize(ICompileOptions options)
@@ -32,9 +26,6 @@ namespace ExampleStages
             var fileName = _options["input_file"];
             return new ExampleTextProcessor(fileName);
         }
-
-        public VersionInfo VersionInfo { get; }
-        public VersionInfo RequreCompilerVersion { get; }
 
         public ITextProcessor ReadFromFile(string path)
         {

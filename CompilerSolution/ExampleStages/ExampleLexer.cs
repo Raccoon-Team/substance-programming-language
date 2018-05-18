@@ -15,10 +15,6 @@ namespace ExampleStages
     public class ExampleLexer : IStage<ITextProcessor, IList<IToken>>
     {
         public uint Priority { get; }
-        public VersionInfo Version { get; }
-        public string Name { get; }
-        public string Author { get; }
-        public string Description { get; }
 
         public void Initialize(ICompileOptions options)
         {
@@ -70,8 +66,5 @@ namespace ExampleStages
 
             return outp;
         }
-
-        public VersionInfo VersionInfo { get; }
-        public VersionInfo RequreCompilerVersion { get; }
     }
 }

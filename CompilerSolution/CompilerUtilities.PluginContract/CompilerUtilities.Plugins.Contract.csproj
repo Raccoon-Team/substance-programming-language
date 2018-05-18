@@ -30,18 +30,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Versions\RequiredCompilerVersionAttribute.cs" />
     <Compile Include="Blanket.cs" />
     <Compile Include="ICompileOptions.cs" />
     <Compile Include="ICompilerExtension.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="IStage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Versions\VersionInfo.cs" />
     <Compile Include="Versions\VersionPrefix.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

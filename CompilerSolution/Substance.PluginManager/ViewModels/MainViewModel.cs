@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 using Caliburn.Micro;
 using Substance.PluginManager.Models;
 
@@ -39,6 +40,9 @@ namespace Substance.PluginManager.ViewModels
             }
         }
 
-
+        public void PluginsBtn_Click()
+        {
+            MessageBox.Show("Success!");
+        }
     }
 }

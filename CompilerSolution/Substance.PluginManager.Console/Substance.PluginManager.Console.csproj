@@ -43,6 +43,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CompilerUtilities.PluginContract\CompilerUtilities.Plugins.Contract.csproj">
+      <Project>{7EFA9347-8592-41C5-A8B3-C4509B1F0867}</Project>
+      <Name>CompilerUtilities.Plugins.Contract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Substance.PluginManager.Backend\Substance.PluginManager.Backend.csproj">
       <Project>{31759540-3371-412b-8d68-0217ec7dc524}</Project>
       <Name>Substance.PluginManager.Backend</Name>

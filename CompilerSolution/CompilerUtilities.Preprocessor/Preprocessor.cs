@@ -5,6 +5,7 @@ using CompilerUtilities.Plugins.Contract.Versions;
 
 namespace CompilerUtilities.Preprocessor
 {
+    [RequiredCompilerVersion("a0.1")]
     public class Preprocessor : IPlugin<ITextProcessor>
     {
         public uint Priority { get; } = 100;
@@ -18,8 +19,5 @@ namespace CompilerUtilities.Preprocessor
         {
             throw new NotImplementedException();
         }
-
-        public VersionInfo Version { get; } = VersionInfo.Parse("a0.1");
-        public VersionInfo RequreCompilerVersion { get; } = VersionInfo.Parse("a0.1");
     }
 }

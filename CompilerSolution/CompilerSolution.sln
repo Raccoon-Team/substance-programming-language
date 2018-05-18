@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Substance.PluginManager.Con
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedConsoleParameters", "AdvancedConsoleParameters\AdvancedConsoleParameters.csproj", "{282191F8-E9F4-4F24-8A9C-9D32F47405CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Substance.PluginManager", "Substance.PluginManager\Substance.PluginManager.csproj", "{4E5A6084-D6C4-4F54-9387-360BA003DBC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{282191F8-E9F4-4F24-8A9C-9D32F47405CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{282191F8-E9F4-4F24-8A9C-9D32F47405CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{282191F8-E9F4-4F24-8A9C-9D32F47405CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E5A6084-D6C4-4F54-9387-360BA003DBC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E5A6084-D6C4-4F54-9387-360BA003DBC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E5A6084-D6C4-4F54-9387-360BA003DBC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E5A6084-D6C4-4F54-9387-360BA003DBC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,11 +9,7 @@ namespace Substance.PluginManager.Backend
     {
         public PluginExtension(object plugin)
         {
-
-            var interfaces = plugin.GetType().FindInterfaces((type, criteria) 
-                => typeof(IPlugin<>).Name == type.Name && 
-                   typeof(IPlugin<>).Namespace == type.Namespace && 
-                   typeof(IPlugin<>).Assembly == type.Assembly, null);
+            var interfaces = plugin.GetType().FindInterfaces((type, criteria) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IPlugin<>), null);
 
             if (interfaces.Length != 1)
                 throw new ArgumentException("Invalid object type");
