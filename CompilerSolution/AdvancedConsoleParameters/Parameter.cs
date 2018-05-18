@@ -40,10 +40,10 @@ namespace AdvancedConsoleParameters
 
         private void Validate()
         {
-            if (PossibleValues.Length != 0)
+            if (PossibleValues.Length > 0)
                 if (!IsFlag)
                 {
-                    if (PossibleValues.Intersect(Values).Count() != 0)
+                    if (PossibleValues.Intersect(Values).Any())
                     {
                         //todo throw Exception. Недопустимые параметры
                     }

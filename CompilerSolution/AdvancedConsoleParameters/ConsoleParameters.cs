@@ -25,29 +25,26 @@ namespace AdvancedConsoleParameters
 
         private static void ValidateAttributedMembersTypes(IEnumerable<MemberInfo> members)
         {
-            var validFieldTypes = new[] {typeof(string[]), typeof(int), typeof(double), typeof(long)};
+            void CheckArray(Type type, MemberInfo memberInfo)
+            {
+                if (type.IsArray && type.GetElementType() != typeof(string[]))
+                    throw new InvalidMemberType(memberInfo, type);
+            }
 
             foreach (var member in members)
                 switch (member)
                 {
                     case FieldInfo fieldInfo:
-                        var type = fieldInfo.FieldType;
-                        if (type.IsArray)
-                            if (type.GetElementType() != typeof(string[]))
-                                throw new InvalidMemberType(fieldInfo, type);
+                        CheckArray(fieldInfo.FieldType, fieldInfo);
                         break;
                     case PropertyInfo propertyInfo:
-                        type = propertyInfo.PropertyType;
-                        if (type.IsArray)
-                            if (type.GetElementType() != typeof(string[]))
-                                throw new InvalidMemberType(propertyInfo, type);
+                        CheckArray(propertyInfo.PropertyType, propertyInfo);
                         break;
                     case MethodInfo methodInfo:
                         var paramsInfo = methodInfo.GetParameters();
-                        ParameterInfo parameterInfo;
-                        if ((parameterInfo = paramsInfo.FirstOrDefault(x => x.ParameterType.IsArray)) != null)
-                            if (paramsInfo.Length != 1 || parameterInfo.ParameterType != typeof(string[]))
-                                throw new InvalidMethodArgumentTypes(methodInfo);
+                        var parameterInfo = paramsInfo.FirstOrDefault(x => x.ParameterType.IsArray);
+                        if (parameterInfo != null && (paramsInfo.Length != 1 || parameterInfo.ParameterType != typeof(string[])))
+                            throw new InvalidMethodArgumentTypes(methodInfo);
                         break;
                 }
         }
@@ -98,10 +95,12 @@ namespace AdvancedConsoleParameters
             {
                 var (member, parameter) = members[i];
 
+                var values = parameter.Values;
+
                 switch (member)
                 {
                     case FieldInfo fieldInfo:
-                        SetValue(fieldInfo, parameter.Values);
+                        SetValue(fieldInfo, values);
                         break;
                     case MethodInfo methodInfo:
                         var paramsInfo = methodInfo.GetParameters();
@@ -109,21 +108,21 @@ namespace AdvancedConsoleParameters
                         object[] methodParams;
                         if (paramsInfo[0].ParameterType.IsArray)
                         {
-                            methodParams = new[] {parameter.Values.ToArray()};
+                            methodParams = new[] {values.ToArray()};
                         }
                         else
                         {
-                            if (parameter.Values.Count != paramsInfo.Length)
+                            if (values.Count != paramsInfo.Length)
                                 throw new MismatchOfArgumentCount(parameter.Key, paramsInfo.Length,
-                                    parameter.Values.Count);
-                            methodParams = parameter.Values
+                                    values.Count);
+                            methodParams = values
                                 .Select((s, index) => Convert.ChangeType(s, paramsInfo[index].ParameterType)).ToArray();
                         }
 
                         methodInfo.Invoke(methodInfo, methodParams);
                         break;
                     case PropertyInfo propertyInfo:
-                        SetValue(propertyInfo, parameter.Values);
+                        SetValue(propertyInfo, values);
                         break;
                 }
             }
@@ -131,20 +130,20 @@ namespace AdvancedConsoleParameters
 
         private static void SetValue(FieldInfo field, IList<string> value)
         {
-            var fieldType = field.FieldType;
-            if (fieldType.IsArray)
-                field.SetValue(field, value.ToArray());
-            else
-                field.SetValue(field, Convert.ChangeType(value[0], field.FieldType));
+            SetValue(field, field.FieldType, field.SetValue, value);
         }
 
         private static void SetValue(PropertyInfo property, IList<string> value)
         {
-            var fieldType = property.PropertyType;
-            if (fieldType.IsArray)
-                property.SetValue(property, value.ToArray());
-            else
-                property.SetValue(property, Convert.ChangeType(value[0], fieldType));
+            SetValue(property, property.PropertyType, property.SetValue, value);
+        }
+
+        private static void SetValue(MemberInfo memberInfo, Type memberType,
+            Action<object, object> setValueMethod, IList<string> values)
+        {
+            var value = memberType.IsArray ? values.ToArray() : Convert.ChangeType(values[0], memberType);
+
+            setValueMethod(memberInfo, value);
         }
     }
 }

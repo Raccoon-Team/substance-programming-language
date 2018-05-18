@@ -40,8 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\InvalidCompilerOptionsException.cs" />
     <Compile Include="Exceptions\InvalidMemberType.cs" />
     <Compile Include="Exceptions\InvalidMethodArgumentTypes.cs" />
+    <Compile Include="Exceptions\MismatchOfArgumentCount.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="ConsoleParameters.cs" />
     <Compile Include="ParameterAttribute.cs" />
