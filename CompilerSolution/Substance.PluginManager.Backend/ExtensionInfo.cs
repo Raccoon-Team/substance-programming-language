@@ -15,5 +15,11 @@
             Description = description;
             Authors = authors;
         }
+
+        public override string ToString()
+        {
+            return $"{nameof(Title)}:{Title}\n" +
+                   $"{nameof(Description)}:{Description}";
+        }
     }
 }

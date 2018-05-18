@@ -13,7 +13,11 @@ namespace Substance.PluginManager.Console
         {
             var config = new Configuration();
             var extensionManager = new ExtensionManager(config);
-           
+            foreach (var ext in extensionManager.PluginsExtension)
+            {
+                System.Console.WriteLine(ext.ToString());
+                System.Console.WriteLine();
+            }
         }
     }
 }

@@ -41,10 +41,6 @@ namespace Substance.PluginManager.Backend.Configs
                         throw new InvalidDataException("Invalid node format");
                     }
             }
-            else
-            {
-                throw new FileNotFoundException($"\"{Path.GetFullPath(path)}\" not found");
-            }
         }
 
         private static ConfigParameter ConfigParse(XmlNode node)
