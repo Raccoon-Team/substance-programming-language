@@ -3,6 +3,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using CompilerUtilities.Plugins.Contract;
+using CompilerUtilities.Plugins.Contract.Interfaces;
 
 namespace Substance.PluginManager.Backend
 {

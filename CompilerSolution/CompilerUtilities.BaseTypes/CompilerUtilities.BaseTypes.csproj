@@ -37,11 +37,10 @@
     <Compile Include="CodeProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\CompilerUtilities.BaseTypes.Interfaces\CompilerUtilities.BaseTypes.Interfaces.csproj">
-      <Project>{38eaa0c3-8b8e-41b3-afad-f36e170fe9fa}</Project>
-      <Name>CompilerUtilities.BaseTypes.Interfaces</Name>
+    <ProjectReference Include="..\CompilerUtilities.PluginContract\CompilerUtilities.Plugins.Contract.csproj">
+      <Project>{7EFA9347-8592-41C5-A8B3-C4509B1F0867}</Project>
+      <Name>CompilerUtilities.Plugins.Contract</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

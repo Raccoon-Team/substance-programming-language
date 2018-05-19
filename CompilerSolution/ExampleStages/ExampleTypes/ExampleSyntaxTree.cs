@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CompilerUtilities.BaseTypes.Interfaces;
+using CompilerUtilities.Plugins.Contract.Interfaces;
 
 namespace ExampleStages.ExampleTypes
 {

@@ -2,91 +2,135 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using CompilerUtilities.BaseTypes.Interfaces;
+using CompilerUtilities.Plugins.Contract.Interfaces;
 
 namespace ExampleStages.ExampleTypes
 {
     public class ExampleTextProcessor : ITextProcessor
     {
-        private IList<string> _presentation;
-
-        public ExampleTextProcessor(string fileName)
-        {
-            Presentation = File.ReadAllLines(fileName);
-            Length = Presentation.Count();
-        }
+        private List<string> _lines;
 
         public ExampleTextProcessor()
         {
-            
+            Presentation = Enumerable.Empty<string>();
+        }
+
+        public ExampleTextProcessor(IEnumerable<string> lines)
+        {
+            Presentation = lines;
+        }
+
+        public ExampleTextProcessor(string path)
+        {
+            LoadFromFile(path);
+        }
+
+        public IEnumerable<string> Presentation
+        {
+            get => _lines;
+            set => _lines = value.ToList();
         }
 
         public string this[int index]
         {
-            get => _presentation[index];
-            set => _presentation[index] = value;
+            get => _lines[index];
+            set => _lines[index] = value;
         }
 
-        public int Length { get; private set; }
-
-        public IEnumerable<string> Presentation
-        {
-            get => _presentation;
-            set
-            {
-                _presentation = value.ToList();
-                Length = _presentation.Count;
-            }
-        }
+        public int Length => _lines.Count;
 
         public string Cut(int lineIndex)
         {
-            throw new NotImplementedException();
+            var tmp = _lines[lineIndex];
+            _lines.RemoveAt(lineIndex);
+            return tmp;
         }
 
         public string[] CutRange(int beginIndex, int endIndex)
         {
-            throw new NotImplementedException();
+            string[] CutOperation(int begin, int end)
+            {
+                var tmpLines = _lines.GetRange(begin, end - begin + 1);
+                _lines.RemoveRange(begin, end - begin + 1);
+                return tmpLines.ToArray();
+            }
+
+            return RangeOperation(beginIndex, endIndex, CutOperation);
         }
 
         public void Insert(int lineIndex, string newLine)
         {
-            throw new NotImplementedException();
+            _lines.Insert(lineIndex, newLine);
         }
 
         public void InsertRange(int beginIndex, string[] newLines)
         {
-            throw new NotImplementedException();
+            _lines.InsertRange(beginIndex, newLines);
         }
 
         public int FindIndex(string targetLine)
         {
-            throw new NotImplementedException();
+            return _lines.IndexOf(targetLine);
         }
 
         public int FindIndex(Predicate<string> predicate)
         {
-            throw new NotImplementedException();
+            return _lines.FindIndex(predicate);
         }
 
         public string Find(Predicate<string> predicate)
         {
-            throw new NotImplementedException();
+            return _lines.Find(predicate);
         }
 
         public string[] GetRange(int beginIndex, int endIndex)
         {
-            throw new NotImplementedException();
+            string[] GetOperation(int begin, int end)
+            {
+                return _lines.GetRange(begin, end - begin + 1).ToArray();
+            }
+
+            return RangeOperation(beginIndex, endIndex, GetOperation);
         }
 
         public void LoadFromFile(string path)
         {
-            throw new NotImplementedException();
+            _lines = File.ReadAllLines(path).ToList();
         }
 
         public void SaveToFile(string path)
         {
-            throw new NotImplementedException();
+            File.WriteAllLines(path, _lines);
+        }
+
+        private void Swap(ref int first, ref int second)
+        {
+            var tmp = first;
+            first = second;
+            second = tmp;
+        }
+
+        private string[] RangeOperation(int beginIndex, int endIndex, Func<int, int, string[]> operation)
+        {
+            var resultReverse = false;
+
+            if (endIndex < beginIndex)
+            {
+                resultReverse = true;
+                Swap(ref beginIndex, ref endIndex);
+            }
+
+            IEnumerable<string> tmpLines = operation(beginIndex, endIndex);
+
+            if (resultReverse)
+                tmpLines = tmpLines.Reverse();
+
+            return tmpLines.ToArray();
+        }
+
+        public override string ToString()
+        {
+            return string.Join("\n", _lines);
         }
     }
 }

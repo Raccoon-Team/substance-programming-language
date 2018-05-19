@@ -1,4 +1,4 @@
-﻿namespace CompilerUtilities.Plugins.Contract
+﻿namespace CompilerUtilities.Plugins.Contract.Interfaces
 {
     public interface IStage<in TIn, out TOut> : ICompilerExtension
     {

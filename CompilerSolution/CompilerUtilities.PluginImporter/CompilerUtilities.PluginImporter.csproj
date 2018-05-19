@@ -65,10 +65,6 @@
       <Project>{282191F8-E9F4-4F24-8A9C-9D32F47405CD}</Project>
       <Name>AdvancedConsoleParameters</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CompilerUtilities.BaseTypes.Interfaces\CompilerUtilities.BaseTypes.Interfaces.csproj">
-      <Project>{38eaa0c3-8b8e-41b3-afad-f36e170fe9fa}</Project>
-      <Name>CompilerUtilities.BaseTypes.Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CompilerUtilities.Exceptions\CompilerUtilities.Exceptions.csproj">
       <Project>{2301F0D4-BABE-4D47-8375-E1EC9BDD13A5}</Project>
       <Name>CompilerUtilities.Exceptions</Name>

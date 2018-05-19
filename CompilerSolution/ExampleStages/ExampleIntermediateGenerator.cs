@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.Composition;
-using CompilerUtilities.BaseTypes.Interfaces;
-using CompilerUtilities.Plugins.Contract;
+using CompilerUtilities.Plugins.Contract.Interfaces;
 using CompilerUtilities.Plugins.Contract.Versions;
 using ExampleStages.ExampleTypes;
 

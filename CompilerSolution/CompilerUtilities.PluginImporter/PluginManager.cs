@@ -8,6 +8,7 @@ using System.Reflection;
 using AdvancedConsoleParameters;
 using CompilerUtilities.Exceptions;
 using CompilerUtilities.Plugins.Contract;
+using CompilerUtilities.Plugins.Contract.Interfaces;
 using CompilerUtilities.Plugins.Contract.Versions;
 
 namespace CompilerUtilities.PluginImporter

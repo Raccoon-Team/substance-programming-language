@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.BaseTypes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.ExtendedOperations", "CompilerUtilities.ExtendedOperations\CompilerUtilities.ExtendedOperations.csproj", "{54E8FDDE-B6EF-4033-AC13-3EA332FB28A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.BaseTypes.Interfaces", "CompilerUtilities.BaseTypes.Interfaces\CompilerUtilities.BaseTypes.Interfaces.csproj", "{38EAA0C3-8B8E-41B3-AFAD-F36E170FE9FA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleStages", "ExampleStages\ExampleStages.csproj", "{4D47CECA-CA9B-48B4-A74B-50360BA84A42}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerUtilities.Preprocessor", "CompilerUtilities.Preprocessor\CompilerUtilities.Preprocessor.csproj", "{5D834753-BFF4-4EFC-BBCB-67100F51FAEF}"
@@ -47,10 +45,6 @@ Global
 		{54E8FDDE-B6EF-4033-AC13-3EA332FB28A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54E8FDDE-B6EF-4033-AC13-3EA332FB28A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54E8FDDE-B6EF-4033-AC13-3EA332FB28A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38EAA0C3-8B8E-41B3-AFAD-F36E170FE9FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38EAA0C3-8B8E-41B3-AFAD-F36E170FE9FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38EAA0C3-8B8E-41B3-AFAD-F36E170FE9FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38EAA0C3-8B8E-41B3-AFAD-F36E170FE9FA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4D47CECA-CA9B-48B4-A74B-50360BA84A42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4D47CECA-CA9B-48B4-A74B-50360BA84A42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D47CECA-CA9B-48B4-A74B-50360BA84A42}.Release|Any CPU.ActiveCfg = Release|Any CPU

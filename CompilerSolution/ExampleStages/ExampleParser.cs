@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using CompilerUtilities.BaseTypes.Interfaces;
-using CompilerUtilities.Plugins.Contract;
+using CompilerUtilities.Plugins.Contract.Interfaces;
 using CompilerUtilities.Plugins.Contract.Versions;
 using ExampleStages.ExampleTypes;
 
@@ -13,14 +11,13 @@ namespace ExampleStages
     [Export(typeof(IStage<,>))]
     public class ExampleParser : IStage<IList<IToken>, ISyntaxTree>
     {
-        public uint Priority { get; }
         public string Name { get; }
         public string Author { get; }
         public string Description { get; }
+        public uint Priority { get; }
 
         public void Initialize()
         {
-
         }
 
         public ISyntaxTree Process(IList<IToken> input)
@@ -35,16 +32,12 @@ namespace ExampleStages
                 //if (input[i].Type == "Comma") continue;
                 currentNode.Nodes.Add(new ExampleSyntaxTreeNode(input[i], currentNode));
                 if (input[i].Type == "Operation" || input[i].Type == "Single Operation")
-                {
                     currentNode = currentNode.Nodes.Last();
-                }
                 else if (input[i].Type == "Register")
-                {
                     if (currentNode.Value.Type == "Single Operation")
                         currentNode = currentNode.Parent;
                     else if (currentNode.Value.Type == "Operation" && currentNode.Nodes.Count > 2)
                         currentNode = currentNode.Parent;
-                }
             }
 
             return outp;

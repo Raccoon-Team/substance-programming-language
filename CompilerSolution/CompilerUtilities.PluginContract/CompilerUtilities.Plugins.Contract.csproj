@@ -34,11 +34,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\ISyntaxTree.cs" />
+    <Compile Include="Interfaces\ISyntaxTreeNode.cs" />
+    <Compile Include="Interfaces\ITextProcessor.cs" />
+    <Compile Include="Interfaces\IToken.cs" />
     <Compile Include="Versions\RequiredCompilerVersionAttribute.cs" />
-    <Compile Include="Blanket.cs" />
-    <Compile Include="ICompilerExtension.cs" />
-    <Compile Include="IPlugin.cs" />
-    <Compile Include="IStage.cs" />
+    <Compile Include="Types\Blanket.cs" />
+    <Compile Include="Interfaces\ICompilerExtension.cs" />
+    <Compile Include="Interfaces\IPlugin.cs" />
+    <Compile Include="Interfaces\IStage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Versions\VersionPrefix.cs" />
   </ItemGroup>
