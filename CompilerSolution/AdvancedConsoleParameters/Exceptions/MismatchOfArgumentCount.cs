@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace CompilerUtilities.Exceptions
+namespace AdvancedConsoleParameters.Exceptions
 {
     public class MismatchOfArgumentCount : Exception
     {

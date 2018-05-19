@@ -21,8 +21,9 @@ namespace AdvancedConsoleParameters
         }
 
         public string Key { get; }
-        public bool IsFlag { get; private set; }
-        public string[] PossibleValues { get; private set; }
+        public bool IsFlag { get; internal set; }
+        public string Description { get; internal set; }
+        public string[] PossibleValues { get; internal set; }
 
         public List<string> Values
         {
@@ -40,14 +41,15 @@ namespace AdvancedConsoleParameters
 
         private void Validate()
         {
-            if (PossibleValues.Length > 0)
-                if (!IsFlag)
-                {
-                    if (PossibleValues.Intersect(Values).Any())
-                    {
-                        //todo throw Exception. Недопустимые параметры
-                    }
-                }
+            if (PossibleValues.Length <= 0 || IsFlag)
+                return;
+
+            var intersect = PossibleValues.Intersect(Values).ToList();
+            if (intersect.Any())
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"Argument(s) {string.Join(", ", intersect)} are not included in the list of possible values of parameter {Key}");
+            }
         }
 
         public override bool Equals(object obj)
@@ -72,6 +74,11 @@ namespace AdvancedConsoleParameters
             hashCode = hashCode * -1521134295 + EqualityComparer<string[]>.Default.GetHashCode(PossibleValues);
             hashCode = hashCode * -1521134295 + EqualityComparer<List<string>>.Default.GetHashCode(Values);
             return hashCode;
+        }
+
+        public override string ToString()
+        {
+            return $"{Key}:\t[{string.Join("|", PossibleValues)}]\r\nDescription: {Description}";
         }
     }
 }

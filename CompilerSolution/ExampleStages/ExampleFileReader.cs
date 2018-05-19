@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.IO;
+using AdvancedConsoleParameters;
 using CompilerUtilities.BaseTypes;
 using CompilerUtilities.BaseTypes.Interfaces;
 using CompilerUtilities.Exceptions;
@@ -14,17 +15,17 @@ namespace ExampleStages
     {
         public uint Priority { get; }
 
-        private ICompileOptions _options;
+        [Parameter("-input_file")]
+        private string inputFile;
 
-        public void Initialize(ICompileOptions options)
+        public void Initialize()
         {
-            _options = options;
+            
         }
 
         public ITextProcessor Process(Blanket input)
         {
-            var fileName = _options["input_file"];
-            return new ExampleTextProcessor(fileName);
+            return new ExampleTextProcessor(inputFile);
         }
 
         public ITextProcessor ReadFromFile(string path)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.IO;
+using AdvancedConsoleParameters;
 using CompilerUtilities.BaseTypes.Interfaces;
 using CompilerUtilities.Plugins.Contract;
 using CompilerUtilities.Plugins.Contract.Versions;
@@ -12,16 +13,16 @@ namespace ExampleStages
     {
         public uint Priority { get; }
 
-        private ICompileOptions _options;
+        [Parameter("-output_file")]
+        private string outputFile;
 
-        public void Initialize(ICompileOptions options)
+        public void Initialize()
         {
-            _options = options;
         }
 
         public Blanket Process(ITextProcessor input)
         {
-            File.WriteAllLines(_options["output_file"], input.Presentation);
+            File.WriteAllLines(outputFile, input.Presentation);
 
             return null;
         }

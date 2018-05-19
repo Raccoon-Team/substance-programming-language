@@ -17,7 +17,7 @@ namespace ExampleStages
         public string Author { get; }
         public string Description { get; }
 
-        public void Initialize(ICompileOptions options)
+        public void Initialize()
         {
 
         }

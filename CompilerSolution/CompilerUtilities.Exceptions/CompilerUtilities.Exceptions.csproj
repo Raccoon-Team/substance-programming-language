@@ -36,6 +36,8 @@
   <ItemGroup>
     <Compile Include="CompileException.cs" />
     <Compile Include="DuplicatedStagesException.cs" />
+    <Compile Include="ExtensionNotCompatibleException.cs" />
+    <Compile Include="RequiredAttributeNotFoundException.cs" />
     <Compile Include="StageNotFoundException.cs" />
     <Compile Include="StagesCompositionException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

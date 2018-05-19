@@ -23,6 +23,8 @@ namespace CompilerUtilities.Plugins.Contract.Versions
         public int Minor { get; private set; }
         public VersionPrefix Prefix { get; private set; }
 
+        public Version GetRequiredVersion => new Version(Major, Minor);
+
         private void Parse(string str)
         {
             var match = Regex.Match(str, @"^([ab])?(\d+).(\d+)$");

@@ -16,7 +16,7 @@ namespace ExampleStages
     {
         public uint Priority { get; }
 
-        public void Initialize(ICompileOptions options)
+        public void Initialize()
         {
             
         }

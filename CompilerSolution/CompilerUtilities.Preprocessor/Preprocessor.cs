@@ -9,11 +9,6 @@ namespace CompilerUtilities.Preprocessor
     public class Preprocessor : IPlugin<ITextProcessor>
     {
         public uint Priority { get; } = 100;
-        public string Name { get; } = "Preprocessor";
-        public string Author { get; } = "Kwelifin";
-
-        public string Description { get; } =
-            "Plugin for preprocessing source file. Support connecting directive add-ons";
 
         public ITextProcessor Activate(ITextProcessor input)
         {
