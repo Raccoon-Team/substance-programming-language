@@ -3,6 +3,7 @@ using System.Reflection;
 
 namespace AdvancedConsoleParameters.Exceptions
 {
+    [Serializable]
     public class InvalidMemberType : Exception
     {
         public InvalidMemberType(MemberInfo memberInfo, Type invalidType) : base(

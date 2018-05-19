@@ -48,8 +48,8 @@ namespace CompilerUtilities.Notifications
         {
             while (_queueMessages.Count > 0)
             {
-                var args = _queueMessages.Take();
-                NotifyAsync(args.level, args.message);
+                var (level, message) = _queueMessages.Take();
+                NotifyAsync(level, message);
             }
         }
 

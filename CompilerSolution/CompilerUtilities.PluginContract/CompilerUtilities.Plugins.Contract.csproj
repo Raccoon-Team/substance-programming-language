@@ -36,7 +36,6 @@
   <ItemGroup>
     <Compile Include="Versions\RequiredCompilerVersionAttribute.cs" />
     <Compile Include="Blanket.cs" />
-    <Compile Include="ICompileOptions.cs" />
     <Compile Include="ICompilerExtension.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="IStage.cs" />

@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.Composition;
 using CompilerUtilities.BaseTypes.Interfaces;
 using CompilerUtilities.Plugins.Contract;
+using CompilerUtilities.Plugins.Contract.Versions;
 using ExampleStages.ExampleTypes;
 
 namespace ExampleStages
 {
+    [RequiredCompilerVersion("a0.1")]
     [Export(typeof(IStage<,>))]
     public class ExampleIntermediateGenerator : IStage<ISyntaxTree, ITextProcessor>
     {

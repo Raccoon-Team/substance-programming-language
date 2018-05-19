@@ -2,6 +2,7 @@
 
 namespace AdvancedConsoleParameters.Exceptions
 {
+    [Serializable]
     public sealed class PossibleValuesOfFlagParameterException : Exception
     {
         public PossibleValuesOfFlagParameterException()

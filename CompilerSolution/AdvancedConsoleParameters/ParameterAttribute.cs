@@ -15,7 +15,7 @@ namespace AdvancedConsoleParameters
         {
             Keys = key.Split(new[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
             IsFlag = isFlag;
-            PossibleValues = string.Empty;
+            _possibleValues = string.Empty;
         }
 
         public string PossibleValues

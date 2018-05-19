@@ -9,6 +9,7 @@ using ExampleStages.ExampleTypes;
 
 namespace ExampleStages
 {
+    [RequiredCompilerVersion("a0.1")]
     [Export(typeof(IStage<,>))]
     public class ExampleParser : IStage<IList<IToken>, ISyntaxTree>
     {

@@ -41,7 +41,7 @@ namespace AdvancedConsoleParameters
 
         private void Validate()
         {
-            if (PossibleValues.Length <= 0 || IsFlag)
+            if (IsFlag || PossibleValues.Length == 0)
                 return;
 
             var intersect = PossibleValues.Intersect(Values).ToList();

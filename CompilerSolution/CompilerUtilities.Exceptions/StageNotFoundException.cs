@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace CompilerUtilities.Exceptions
 {
+    [Serializable]
     public class StageNotFoundException : Exception
     {
         public StageNotFoundException()

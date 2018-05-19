@@ -5,7 +5,6 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 using AdvancedConsoleParameters;
 using CompilerUtilities.Exceptions;
 using CompilerUtilities.Plugins.Contract;
@@ -18,24 +17,8 @@ namespace CompilerUtilities.PluginImporter
         [ImportMany(typeof(IPlugin<>))] private List<object> _plugins;
         [ImportMany(typeof(IStage<,>))] private List<object> _stages;
 
-        [Parameter("-help", true)]
-        static void ShowAvailableParameters()
-        {
-            var available = ConsoleParameters.GetAllAvailableParameters();
-            for (var i = 0; i < available.Count; i++)
-            {
-                var current = available[i];
-
-                Console.WriteLine(current);
-                Console.WriteLine();
-            }
-            Console.ReadKey();
-            Environment.Exit(0);
-        }
-
         public PluginManager(string[] args)
         {
-            args = new[] {"-help"};
             var cat = new AggregateCatalog();
             cat.Catalogs.Add(new DirectoryCatalog(Directory.GetCurrentDirectory() + "\\plugins"));
             cat.Catalogs.Add(new DirectoryCatalog(Directory.GetCurrentDirectory() + "\\stages"));
@@ -47,6 +30,21 @@ namespace CompilerUtilities.PluginImporter
             ValidateExtensions();
 
             CheckForDuplicateStages();
+        }
+
+        [Parameter("-help", true)]
+        private static void ShowAvailableParameters()
+        {
+            var available = ConsoleParameters.GetAllAvailableParameters();
+            for (var i = 0; i < available.Count; i++)
+            {
+                var current = available[i];
+
+                Console.WriteLine(current);
+                Console.WriteLine();
+            }
+            Console.ReadKey();
+            Environment.Exit(0);
         }
 
         private void ValidateExtensions()
@@ -129,7 +127,8 @@ namespace CompilerUtilities.PluginImporter
             while (sortedInput.Count > 0)
             {
                 var current =
-                    sortedInput.FirstOrDefault(o => PluginGenericArgs.GetArgs(o).TIn == PluginGenericArgs.GetArgs(outp.Last()).TOut);
+                    sortedInput.FirstOrDefault(o =>
+                        PluginGenericArgs.GetArgs(o).TIn == PluginGenericArgs.GetArgs(outp.Last()).TOut);
 
                 if (current is null)
                     if (throwException)

@@ -3,6 +3,7 @@ using System.Reflection;
 
 namespace AdvancedConsoleParameters.Exceptions
 {
+    [Serializable]
     public class InvalidMethodArgumentTypes : Exception
     {
         public InvalidMethodArgumentTypes(MethodInfo methodInfo) : base(

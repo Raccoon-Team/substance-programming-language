@@ -11,13 +11,21 @@ namespace AdvancedConsoleParameters
         public static List<Parameter> Parse(string[] args)
         {
             var parameters = new List<Parameter>();
-            var length = args.Length;
-
-            for (var i = 0; i < length; i++)
-                if (args[i][0] == '-' && !char.IsDigit(args[i][1]))
-                    parameters.Add(new Parameter(args[i]));
+            var argsLength = args.Length;
+            for (var i = 0; i < argsLength; i++)
+            {
+                var arg = args[i];
+                if (arg[0] == '-' && !char.IsDigit(arg[1]))
+                {
+                    if (parameters.Any(x => x.Key == arg))
+                        throw new DuplicateParametersException($"Parameter {arg} occurs 2 or more times in arguments", arg);
+                    parameters.Add(new Parameter(arg));
+                }
                 else
-                    parameters.Last().Values.Add(args[i]);
+                {
+                    parameters.Last().Values.Add(arg);
+                }
+            }
 
             return parameters;
         }
@@ -34,10 +42,12 @@ namespace AdvancedConsoleParameters
                     .Select(x => x.GetCustomAttribute<ParameterAttribute>())
                     .Where(x => x != null));
 
+            var splitter = new[] {'|'};
+
             return allAttributes.Select(x => new Parameter(string.Join("|", x.Keys))
             {
                 IsFlag = x.IsFlag,
-                PossibleValues = x.PossibleValues.Split(new[] {'|'}, StringSplitOptions.RemoveEmptyEntries),
+                PossibleValues = x.PossibleValues.Split(splitter, StringSplitOptions.RemoveEmptyEntries),
                 Description = x.Description
             }).ToList();
         }
@@ -51,10 +61,11 @@ namespace AdvancedConsoleParameters
         public static void Initialize(List<Parameter> parameters, object[] instances)
         {
             var members =
-                new List<(MemberInfo member, Parameter parameter, object instance)>(GetAllAttributedMembers(instances, parameters));
+                new List<(MemberInfo member, Parameter parameter, object instance)>(
+                    GetAllAttributedMembers(instances, parameters));
 
-            // ReSharper disable once ForCanBeConvertedToForeach
-            for (var i = 0; i < members.Count; i++)
+            var membersCount = members.Count;
+            for (var i = 0; i < membersCount; i++)
             {
                 var (member, parameter, instance) = members[i];
 
@@ -96,19 +107,20 @@ namespace AdvancedConsoleParameters
         private static IEnumerable<(MemberInfo member, Parameter parameter, object instance)> GetAllAttributedMembers(
             IList<object> instances, List<Parameter> parameters)
         {
-            // ReSharper disable once ForCanBeConvertedToForeach
-            for (var i = 0; i < instances.Count; i++)
+            var instancesCount = instances.Count;
+            for (var i = 0; i < instancesCount; i++)
             {
                 var instance = instances[i];
                 var members = GetAttributedMembersFromInstance(instance, parameters);
 
-                // ReSharper disable once ForCanBeConvertedToForeach
-                for (var j = 0; j < members.Count; j++)
+                var membersCount = members.Count;
+                for (var j = 0; j < membersCount; j++)
                     yield return members[j];
             }
         }
 
-        private static List<(MemberInfo member, Parameter parameter, object instance)> GetAttributedMembersFromInstance(object instance,
+        private static List<(MemberInfo member, Parameter parameter, object instance)> GetAttributedMembersFromInstance(
+            object instance,
             List<Parameter> parameters)
         {
             var outp = new List<(MemberInfo member, Parameter parameter, object instance)>();

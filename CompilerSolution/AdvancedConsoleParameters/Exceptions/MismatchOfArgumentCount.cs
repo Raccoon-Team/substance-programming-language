@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AdvancedConsoleParameters.Exceptions
 {
+    [Serializable]
     public class MismatchOfArgumentCount : Exception
     {
         public MismatchOfArgumentCount(string message, string key, int expectedArgumentCount, int currentArgumentCount) :

@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\InvalidCompilerOptionsException.cs" />
+    <Compile Include="Exceptions\DuplicateParametersException.cs" />
+    <Compile Include="Exceptions\InvalidOptionsException.cs" />
     <Compile Include="Exceptions\InvalidMemberType.cs" />
     <Compile Include="Exceptions\InvalidMethodArgumentTypes.cs" />
     <Compile Include="Exceptions\MismatchOfArgumentCount.cs" />

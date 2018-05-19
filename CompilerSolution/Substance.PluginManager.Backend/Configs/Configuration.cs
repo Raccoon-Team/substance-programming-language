@@ -26,21 +26,21 @@ namespace Substance.PluginManager.Backend.Configs
 
         private void ParseSettings(string path)
         {
-            if (File.Exists(path))
-            {
-                var xmlDocument = new XmlDocument();
-                xmlDocument.Load(path);
-                foreach (XmlNode node in xmlDocument.SelectNodes("//*/*"))
-                    try
-                    {
-                        var parameter = ConfigParse(node);
-                        _parameters.Add(parameter.Name, parameter);
-                    }
-                    catch (XmlException e)
-                    {
-                        throw new InvalidDataException("Invalid node format");
-                    }
-            }
+            if (!File.Exists(path))
+                return;
+
+            var xmlDocument = new XmlDocument();
+            xmlDocument.Load(path);
+            foreach (XmlNode node in xmlDocument.SelectNodes("//*/*"))
+                try
+                {
+                    var parameter = ConfigParse(node);
+                    _parameters.Add(parameter.Name, parameter);
+                }
+                catch (XmlException e)
+                {
+                    throw new InvalidDataException("Invalid node format");
+                }
         }
 
         private static ConfigParameter ConfigParse(XmlNode node)
@@ -63,10 +63,13 @@ namespace Substance.PluginManager.Backend.Configs
             return new ConfigParameter(name, type, value);
         }
 
-        public void Save(string path = "")
+        public void Save()
         {
-            if (string.IsNullOrEmpty(path))
-                path = _source;
+            Save(_source);
+        }
+
+        public void Save(string path)
+        {
             var xmlDocument = new XmlDocument();
 
             var xmlDeclaration = xmlDocument.CreateXmlDeclaration("1.0", "UTF-8", null);

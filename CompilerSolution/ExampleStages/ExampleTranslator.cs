@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.IO;
 using AdvancedConsoleParameters;
 using CompilerUtilities.BaseTypes.Interfaces;
@@ -8,13 +7,13 @@ using CompilerUtilities.Plugins.Contract.Versions;
 
 namespace ExampleStages
 {
+    [RequiredCompilerVersion("a0.1")]
     [Export(typeof(IStage<,>))]
     public class ExampleTranslator : IStage<ITextProcessor, Blanket>
     {
-        public uint Priority { get; }
+        [Parameter("-output_file")] private string outputFile;
 
-        [Parameter("-output_file")]
-        private string outputFile;
+        public uint Priority { get; }
 
         public void Initialize()
         {
@@ -26,6 +25,5 @@ namespace ExampleStages
 
             return null;
         }
-        
     }
 }
