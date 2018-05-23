@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using CompilerUtilities.Plugins.Contract;
 using Substance.PluginManager.Backend.Configs;
@@ -15,12 +16,13 @@ namespace Substance.PluginManager.Backend
                 throw new ArgumentException("Invalid object type");
 
             var location = Path.GetDirectoryName(plugin.GetType().Assembly.Location).ToLower();
+            var versionInfo = FileVersionInfo.GetVersionInfo(location);
             var iplugin = interfaces[0];
             var types = iplugin.GenericTypeArguments;
 
             Types = types;
             ExtensionFolder = location;
-            Info = new ExtensionInfo("Title", "Description", "Author");
+            Info = new ExtensionInfo(versionInfo.ProductName, versionInfo.FileDescription, versionInfo.CompanyName);
             Configuration = new Configuration(Path.Combine(location, "config.xaml"));
         }
 
@@ -32,10 +34,10 @@ namespace Substance.PluginManager.Backend
 
         public override string ToString()
         {
-            return $"{nameof(Info)}:\n{Info}\n" +
-                   //$"{nameof(Configuration)}: {Configuration}\n" +
-                   $"{nameof(ExtensionFolder)}: {ExtensionFolder}\n" +
-                   $"{nameof(Status)}: {Status}\n" +
+            return $"{nameof(Info)}:\n\r{Info}\n\r" +
+                   //$"{nameof(Configuration)}: {Configuration}\n\rs" +
+                   $"{nameof(ExtensionFolder)}: {ExtensionFolder}\n\r" +
+                   $"{nameof(Status)}: {Status}\n\r" +
                    $"Type: {Types[0]}";
         }
     }

@@ -4,16 +4,16 @@
     {
         public string Title;
         public string Description;
-        public string[] Authors;
+        public string Author;
         public string License;
         public string ProjectUrl;
         public string[] Tags;
 
-        public ExtensionInfo(string title, string description, params string[] authors)
+        public ExtensionInfo(string title, string description, string author)
         {
             Title = title;
             Description = description;
-            Authors = authors;
+            Author = author;
         }
 
         public override string ToString()
