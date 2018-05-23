@@ -35,15 +35,16 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExampleFileReader.cs" />
+    <Compile Include="Plugins\ExamplePreprocessor.cs" />
+    <Compile Include="Stages\ExampleFileReader.cs" />
     <Compile Include="ExampleTypes\ExampleSyntaxTree.cs" />
     <Compile Include="ExampleTypes\ExampleSyntaxTreeNode.cs" />
     <Compile Include="ExampleTypes\ExampleTextProcessor.cs" />
     <Compile Include="ExampleTypes\ExampleToken.cs" />
-    <Compile Include="ExampleTranslator.cs" />
-    <Compile Include="ExampleIntermediateGenerator.cs" />
-    <Compile Include="ExampleLexer.cs" />
-    <Compile Include="ExampleParser.cs" />
+    <Compile Include="Stages\ExampleTranslator.cs" />
+    <Compile Include="Stages\ExampleIntermediateGenerator.cs" />
+    <Compile Include="Stages\ExampleLexer.cs" />
+    <Compile Include="Stages\ExampleParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

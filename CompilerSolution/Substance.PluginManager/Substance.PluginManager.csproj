@@ -80,6 +80,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\ExtensionModel.cs" />
+    <Compile Include="Models\IListItem.cs" />
     <Compile Include="Services\WatermarkAdorner.cs" />
     <Compile Include="Services\WatermarkService.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

@@ -7,18 +7,20 @@ namespace Substance.PluginManager.ViewModels
 {
     public class MainViewModel : Screen
     {
+        private ObservableCollection<IListItem> _extensionsCollection;
+
+        private ExtensionModel _selectedExtension;
+
         public MainViewModel()
         {
-            ExtensionsCollection = new ObservableCollection<ExtensionModel>()
+            ExtensionsCollection = new ObservableCollection<IListItem>
             {
-                new ExtensionModel() {Title = "Example", Description = "Text text text"},
-                new ExtensionModel() {Title = "Sample", Description = "Lorem ipsum, lorem"}
+                new ExtensionModel {Title = "Example", Description = "Text text text"},
+                new ExtensionModel {Title = "Sample", Description = "Lorem ipsum, lorem"}
             };
         }
 
-        private ObservableCollection<ExtensionModel> _extensionsCollection;
-
-        public ObservableCollection<ExtensionModel> ExtensionsCollection
+        public ObservableCollection<IListItem> ExtensionsCollection
         {
             get => _extensionsCollection;
             set
@@ -27,8 +29,6 @@ namespace Substance.PluginManager.ViewModels
                 NotifyOfPropertyChange(() => ExtensionsCollection);
             }
         }
-
-        private ExtensionModel _selectedExtension;
 
         public ExtensionModel SelectedExtension
         {
@@ -40,9 +40,33 @@ namespace Substance.PluginManager.ViewModels
             }
         }
 
+        #region Event Handlers
+
         public void PluginsBtn_Click()
         {
             MessageBox.Show("Success!");
         }
+
+        public void SearchBtn_Click()
+        {
+            MessageBox.Show("Searching...");
+        }
+
+        public void BuildPanelBtn_Click()
+        {
+            MessageBox.Show("Build panel opening");
+        }
+
+        public void SettingsPanelBtn_Click()
+        {
+            MessageBox.Show("Settings panel opening");
+        }
+
+        public void DownloadsPanelBtn_Click()
+        {
+            MessageBox.Show("Downloads panel opening");
+        }
+
+        #endregion
     }
 }

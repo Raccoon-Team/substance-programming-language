@@ -1,6 +1,6 @@
 ﻿namespace Substance.PluginManager.Models
 {
-    public class ExtensionModel
+    public class ExtensionModel : IListItem
     {
         private string _title;
         private string _description;

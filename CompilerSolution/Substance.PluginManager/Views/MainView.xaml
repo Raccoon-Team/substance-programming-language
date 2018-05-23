@@ -22,21 +22,21 @@
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Background="#66000000">
-            <Button>
+            <Button cal:Message.Attach="[Event Click] = [Action BuildPanelBtn_Click]">
                 <Rectangle Fill="White" Width="16px" Height="16px">
                     <Rectangle.OpacityMask>
                         <VisualBrush Visual="{StaticResource appbar_control_play}" Stretch="Fill" />
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>
-            <Button>
+            <Button cal:Message.Attach="[Event Click] = [Action SettingsPanelBtn_Click]">
                 <Rectangle Fill="White" Width="16px" Height="16px">
                     <Rectangle.OpacityMask>
                         <VisualBrush Visual="{StaticResource appbar_settings}" Stretch="Fill" />
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>
-            <Button>
+            <Button cal:Message.Attach="[Event Click] = [Action DownloadsPanelBtn_Click]">
                 <Rectangle Fill="White" Width="16px" Height="16px">
                     <Rectangle.OpacityMask>
                         <VisualBrush Visual="{StaticResource appbar_download}" Stretch="Fill" />
@@ -48,7 +48,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Background="DarkGray">
                 <Grid.ColumnDefinitions>
@@ -62,7 +62,7 @@
                         </services:WatermarkService.Watermark>
                     </TextBox>
                 </AdornerDecorator>
-                <Rectangle Grid.Column="1" Fill="White" Width="16px" Height="16px" Margin="4">
+                <Rectangle Grid.Column="1" Fill="White" Width="16px" Height="16px" Margin="4" cal:Message.Attach="[Event MouseDown] = [Action SearchBtn_Click]">
                     <Rectangle.OpacityMask>
                         <VisualBrush Visual="{StaticResource appbar_magnify}" Stretch="Fill" />
                     </Rectangle.OpacityMask>
