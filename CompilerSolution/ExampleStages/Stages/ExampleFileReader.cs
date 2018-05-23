@@ -3,8 +3,6 @@ using System.IO;
 using AdvancedConsoleParameters;
 using CompilerUtilities.Exceptions;
 using CompilerUtilities.Plugins.Contract;
-using CompilerUtilities.Plugins.Contract.Interfaces;
-using CompilerUtilities.Plugins.Contract.Versions;
 using ExampleStages.Types;
 
 namespace ExampleStages.Stages

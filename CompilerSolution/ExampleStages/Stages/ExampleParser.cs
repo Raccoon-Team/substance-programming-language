@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using CompilerUtilities.Plugins.Contract.Interfaces;
-using CompilerUtilities.Plugins.Contract.Versions;
+using CompilerUtilities.Plugins.Contract;
 using ExampleStages.Types;
 
 namespace ExampleStages.Stages

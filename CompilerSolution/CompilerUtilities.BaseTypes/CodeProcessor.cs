@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using CompilerUtilities.Plugins.Contract.Interfaces;
+using CompilerUtilities.Plugins.Contract;
 
 namespace CompilerUtilities.BaseTypes
 {

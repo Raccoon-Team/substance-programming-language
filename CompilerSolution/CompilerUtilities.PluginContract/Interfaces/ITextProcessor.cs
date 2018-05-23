@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CompilerUtilities.Plugins.Contract.Interfaces
+namespace CompilerUtilities.Plugins.Contract
 {
     public interface ITextProcessor
     {

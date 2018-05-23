@@ -3,8 +3,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using CompilerUtilities.Plugins.Contract.Interfaces;
-using CompilerUtilities.Plugins.Contract.Versions;
+using CompilerUtilities.Plugins.Contract;
 using ExampleStages.Types;
 
 namespace ExampleStages.Stages

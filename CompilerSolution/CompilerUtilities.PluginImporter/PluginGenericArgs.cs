@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CompilerUtilities.Plugins.Contract;
-using CompilerUtilities.Plugins.Contract.Interfaces;
 
 namespace CompilerUtilities.PluginImporter
 {

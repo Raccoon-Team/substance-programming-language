@@ -1,4 +1,4 @@
-﻿namespace CompilerUtilities.Plugins.Contract.Versions
+﻿namespace CompilerUtilities.Plugins.Contract
 {
     public enum VersionPrefix
     {

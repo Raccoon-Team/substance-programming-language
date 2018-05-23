@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CompilerUtilities.Plugins.Contract;
-using CompilerUtilities.Plugins.Contract.Interfaces;
-using CompilerUtilities.Plugins.Contract.Versions;
 
 namespace ExampleStages.Plugins
 {
