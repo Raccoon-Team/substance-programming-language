@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using CompilerUtilities.Plugins.Contract.Interfaces;
 using CompilerUtilities.Plugins.Contract.Versions;
-using ExampleStages.ExampleTypes;
+using ExampleStages.Types;
 
-namespace ExampleStages
+namespace ExampleStages.Stages
 {
     [RequiredCompilerVersion("a0.1")]
     [Export(typeof(IStage<,>))]

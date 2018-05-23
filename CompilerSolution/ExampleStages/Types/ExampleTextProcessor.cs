@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using CompilerUtilities.Plugins.Contract.Interfaces;
 
-namespace ExampleStages.ExampleTypes
+namespace ExampleStages.Types
 {
     public class ExampleTextProcessor : ITextProcessor
     {
@@ -46,16 +46,55 @@ namespace ExampleStages.ExampleTypes
             return tmp;
         }
 
-        public string[] CutRange(int beginIndex, int endIndex)
+        public List<string> CutRange(int beginIndex, int endIndex)
         {
             string[] CutOperation(int begin, int end)
             {
-                var tmpLines = _lines.GetRange(begin, end - begin + 1);
-                _lines.RemoveRange(begin, end - begin + 1);
+                var count = end - begin + 1;
+                var tmpLines = _lines.GetRange(begin, count);
+                _lines.RemoveRange(begin, count);
                 return tmpLines.ToArray();
             }
 
             return RangeOperation(beginIndex, endIndex, CutOperation);
+        }
+
+        public List<string> CutAll(Predicate<string> predicate)
+        {
+            var length = _lines.Count;
+            var outp = new List<string>();
+            for (var i = 0; i < length; i++)
+            {
+                var line = _lines[i];
+
+                if (!predicate(line))
+                    continue;
+
+                outp.Add(line);
+                _lines.RemoveAt(i);
+                i--;
+            }
+            return outp;
+        }
+
+        public bool Remove(string targetLine)
+        {
+            return _lines.Remove(targetLine);
+        }
+
+        public void RemoveRange(int beginIndex, int endIndex)
+        {
+            _lines.RemoveRange(beginIndex, endIndex - beginIndex + 1);
+        }
+
+        public void RemoveAt(int index)
+        {
+            _lines.RemoveAt(index);
+        }
+
+        public void RemoveAll(Predicate<string> predicate)
+        {
+            _lines.RemoveAll(predicate);
         }
 
         public void Insert(int lineIndex, string newLine)
@@ -78,16 +117,30 @@ namespace ExampleStages.ExampleTypes
             return _lines.FindIndex(predicate);
         }
 
+        public int[] FindIndexes(Predicate<string> predicate)
+        {
+            var indexes = new List<int>();
+            for (var i = 0; i < _lines.Count; i++)
+                if (predicate(_lines[i]))
+                    indexes.Add(i);
+            return indexes.ToArray();
+        }
+
         public string Find(Predicate<string> predicate)
         {
             return _lines.Find(predicate);
         }
 
-        public string[] GetRange(int beginIndex, int endIndex)
+        public List<string> FindAll(Predicate<string> predicate)
         {
-            string[] GetOperation(int begin, int end)
+            return _lines.FindAll(predicate);
+        }
+
+        public List<string> GetRange(int beginIndex, int endIndex)
+        {
+            List<string> GetOperation(int begin, int end)
             {
-                return _lines.GetRange(begin, end - begin + 1).ToArray();
+                return _lines.GetRange(begin, end - begin + 1);
             }
 
             return RangeOperation(beginIndex, endIndex, GetOperation);
@@ -103,14 +156,15 @@ namespace ExampleStages.ExampleTypes
             File.WriteAllLines(path, _lines);
         }
 
-        private void Swap(ref int first, ref int second)
+        private static void Swap(ref int first, ref int second)
         {
             var tmp = first;
             first = second;
             second = tmp;
         }
 
-        private string[] RangeOperation(int beginIndex, int endIndex, Func<int, int, string[]> operation)
+        private static List<string> RangeOperation(int beginIndex, int endIndex,
+            Func<int, int, IList<string>> operation)
         {
             var resultReverse = false;
 
@@ -120,17 +174,26 @@ namespace ExampleStages.ExampleTypes
                 Swap(ref beginIndex, ref endIndex);
             }
 
-            IEnumerable<string> tmpLines = operation(beginIndex, endIndex);
+            var tmpLines = operation(beginIndex, endIndex).ToList();
 
             if (resultReverse)
-                tmpLines = tmpLines.Reverse();
+                tmpLines.Reverse();
 
-            return tmpLines.ToArray();
+            return tmpLines;
+        }
+
+        private static void RangeOperation(int beginIndex, int endIndex,
+            Action<int, int> operation)
+        {
+            if (endIndex < beginIndex)
+                Swap(ref beginIndex, ref endIndex);
+
+            operation(beginIndex, endIndex);
         }
 
         public override string ToString()
         {
-            return string.Join("\n", _lines);
+            return string.Join("\r\n", _lines);
         }
     }
 }

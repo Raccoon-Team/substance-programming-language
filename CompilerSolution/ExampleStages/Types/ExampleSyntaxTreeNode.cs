@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CompilerUtilities.Plugins.Contract.Interfaces;
 
-namespace ExampleStages.ExampleTypes
+namespace ExampleStages.Types
 {
     public class ExampleSyntaxTreeNode : ISyntaxTreeNode
     {

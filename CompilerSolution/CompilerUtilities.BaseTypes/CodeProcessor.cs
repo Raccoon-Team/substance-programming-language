@@ -46,7 +46,7 @@ namespace CompilerUtilities.BaseTypes
             return tmp;
         }
 
-        public string[] CutRange(int beginIndex, int endIndex)
+        public List<string> CutRange(int beginIndex, int endIndex)
         {
             string[] CutOperation(int begin, int end)
             {
@@ -56,6 +56,31 @@ namespace CompilerUtilities.BaseTypes
             }
 
             return RangeOperation(beginIndex, endIndex, CutOperation);
+        }
+
+        public List<string> CutAll(Predicate<string> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Remove(string targetLine)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveRange(int beginIndex, int endIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAll(Predicate<string> predicate)
+        {
+            throw new NotImplementedException();
         }
 
         public void Insert(int lineIndex, string newLine)
@@ -78,12 +103,22 @@ namespace CompilerUtilities.BaseTypes
             return _lines.FindIndex(predicate);
         }
 
+        public int[] FindIndexes(Predicate<string> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
         public string Find(Predicate<string> predicate)
         {
             return _lines.Find(predicate);
         }
 
-        public string[] GetRange(int beginIndex, int endIndex)
+        public List<string> FindAll(Predicate<string> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> GetRange(int beginIndex, int endIndex)
         {
             string[] GetOperation(int begin, int end)
             {
@@ -103,14 +138,14 @@ namespace CompilerUtilities.BaseTypes
             File.WriteAllLines(path, _lines);
         }
 
-        private void Swap(ref int first, ref int second)
+        private static void Swap(ref int first, ref int second)
         {
             var tmp = first;
             first = second;
             second = tmp;
         }
 
-        private string[] RangeOperation(int beginIndex, int endIndex, Func<int, int, string[]> operation)
+        private static List<string> RangeOperation(int beginIndex, int endIndex, Func<int, int, IList<string>> operation)
         {
             var resultReverse = false;
 
@@ -120,12 +155,12 @@ namespace CompilerUtilities.BaseTypes
                 Swap(ref beginIndex, ref endIndex);
             }
 
-            IEnumerable<string> tmpLines = operation(beginIndex, endIndex);
+            var tmpLines = operation(beginIndex, endIndex);
 
             if (resultReverse)
-                tmpLines = tmpLines.Reverse();
+                tmpLines.Reverse();
 
-            return tmpLines.ToArray();
+            return tmpLines.ToList();
         }
 
         public override string ToString()
