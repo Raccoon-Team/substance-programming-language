@@ -38,6 +38,7 @@
     <Compile Include="Interfaces\ISyntaxTreeNode.cs" />
     <Compile Include="Interfaces\ITextProcessor.cs" />
     <Compile Include="Interfaces\IToken.cs" />
+    <Compile Include="Types\TokenType.cs" />
     <Compile Include="Versions\RequiredCompilerVersionAttribute.cs" />
     <Compile Include="Types\Blanket.cs" />
     <Compile Include="Interfaces\ICompilerExtension.cs" />

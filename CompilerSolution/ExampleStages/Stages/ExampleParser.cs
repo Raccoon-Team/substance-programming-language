@@ -26,18 +26,18 @@ namespace ExampleStages.Stages
 
             var currentNode = outp.Nodes[0];
 
-            for (var i = 1; i < input.Count; i++)
-            {
-                //if (input[i].Type == "Comma") continue;
-                currentNode.Nodes.Add(new ExampleSyntaxTreeNode(input[i], currentNode));
-                if (input[i].Type == "Operation" || input[i].Type == "Single Operation")
-                    currentNode = currentNode.Nodes.Last();
-                else if (input[i].Type == "Register")
-                    if (currentNode.Value.Type == "Single Operation")
-                        currentNode = currentNode.Parent;
-                    else if (currentNode.Value.Type == "Operation" && currentNode.Nodes.Count > 2)
-                        currentNode = currentNode.Parent;
-            }
+            //for (var i = 1; i < input.Count; i++)
+            //{
+            //    //if (input[i].Type == "Comma") continue;
+            //    currentNode.Nodes.Add(new ExampleSyntaxTreeNode(input[i], currentNode));
+            //    if (input[i].Type == "Operation" || input[i].Type == "Single Operation")
+            //        currentNode = currentNode.Nodes.Last();
+            //    else if (input[i].Type == "Register")
+            //        if (currentNode.Value.Type == "Single Operation")
+            //            currentNode = currentNode.Parent;
+            //        else if (currentNode.Value.Type == "Operation" && currentNode.Nodes.Count > 2)
+            //            currentNode = currentNode.Parent;
+            //}
 
             return outp;
         }

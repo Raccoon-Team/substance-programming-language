@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using CompilerUtilities.Plugins.Contract;
 using ExampleStages.Types;
 
@@ -14,15 +14,21 @@ namespace ExampleStages.Stages
     {
         private readonly string[] ops = {"mov"};
         private readonly string[] singleOps = {"add", "mul", "div", "sub", "jmp"};
+
+        private TokenTypesCollection TokenTypesCollection;
         public uint Priority { get; }
 
         public void Initialize()
         {
+            TokenTypesCollection = new TokenTypesCollection();
+            TokenTypesCollection.Initialize();
         }
 
         public IList<IToken> Process(ITextProcessor input)
         {
-            var accum = new StringBuilder();
+            return Tokenize(input.Presentation);
+
+            /*var accum = new StringBuilder();
             var outp = new List<IToken>();
 
             var code = input.Presentation.Aggregate("", (s, s1) => s + s1);
@@ -61,6 +67,72 @@ namespace ExampleStages.Stages
                     accum.Clear();
                 }
             }
+
+            return outp;*/
+        }
+
+        private List<IToken> Tokenize(IEnumerable<string> input)
+        {
+            var accum = new StringBuilder();
+            var outp = new List<IToken>();
+
+            var isString = false;
+            //bool @continue;
+            foreach (var line in input)
+            {
+                var length = line.Length;
+
+
+                for (var i = 0; i < length; i++)
+                {
+                    //@continue = false;
+                    if (char.IsWhiteSpace(line[i]) && !isString)
+                    {
+                        accum.Clear();
+                        while (++i < length && char.IsWhiteSpace(line[i]))
+                        {
+                        }
+                        if (i == length - 1) break;
+                    }
+
+                    do
+                    {
+                        char character;
+                        if (i == length || char.IsWhiteSpace(character = line[i]) && !isString)
+                        {
+                            //@continue = true;
+                            break;
+                        }
+
+                        if (accum.Length > 0 &&
+                            !TokenTypesCollection.CompareCharCategory(character, accum[accum.Length - 1]))
+                        {
+                            i--;
+                            break;
+                        }
+
+                        if (character == '"')
+                        {
+                            isString = !isString;
+                            if (!isString)
+                                break;
+                        }
+
+                        accum.Append(character);
+                        i++;
+                    } while (true);
+
+                    //if (@continue)
+                    //    continue;
+
+                    var strAccum = accum.ToString();
+                    accum.Clear();
+                    outp.Add(new ExampleToken(strAccum, TokenTypesCollection[strAccum]));
+                }
+            }
+
+            var cw = string.Join("\r\n", outp.Select(t => $"{t.Value}:{t.Type}"));
+            Console.WriteLine(cw);
 
             return outp;
         }
