@@ -50,6 +50,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PluginGenericArgs.cs" />
@@ -72,6 +74,10 @@
     <ProjectReference Include="..\CompilerUtilities.PluginContract\CompilerUtilities.Plugins.Contract.csproj">
       <Project>{7efa9347-8592-41c5-a8b3-c4509b1f0867}</Project>
       <Name>CompilerUtilities.Plugins.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CompilerUtilities.SolutionManager\CompilerUtilities.SolutionManager.csproj">
+      <Project>{7DC0F1B8-E55F-40FF-8080-3CE03797C95E}</Project>
+      <Name>CompilerUtilities.SolutionManager</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

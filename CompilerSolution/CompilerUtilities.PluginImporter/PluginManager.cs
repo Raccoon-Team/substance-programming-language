@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using AdvancedConsoleParameters;
 using CompilerUtilities.Exceptions;
 using CompilerUtilities.Plugins.Contract;
+using CompilerUtilities.SolutionManager;
 
 namespace CompilerUtilities.PluginImporter
 {
@@ -19,6 +20,16 @@ namespace CompilerUtilities.PluginImporter
 
         public PluginManager(string[] args)
         {
+            var solutionManager = new SolutionManager.SolutionManager();
+
+            var projInfo = new ProjectInfo("MyProj") {Path = "myProj.subp"};
+            projInfo.Stages.Add("D:\\Git Repo\\substance-programming-language\\CompilerSolution\\CompilerUtilities.PluginImporter\\bin\\Debug\\stages\\ExampleStages.dll");
+            projInfo.ExtensionFiles.AddRange(new[] { "kek.ext", "jej.ext" });
+            solutionManager.AddProject(projInfo);
+
+            solutionManager.Save(Directory.GetCurrentDirectory()+"\\kek.subs");
+            Console.ReadKey();
+
             var catalog = new AggregateCatalog();
             var currentDirectory = Directory.GetCurrentDirectory();
             catalog.Catalogs.Add(new DirectoryCatalog(currentDirectory + "\\plugins"));
