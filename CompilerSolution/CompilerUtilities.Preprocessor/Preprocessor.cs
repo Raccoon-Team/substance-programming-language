@@ -1,7 +1,5 @@
 ﻿using System;
 using CompilerUtilities.Plugins.Contract;
-using CompilerUtilities.Plugins.Contract.Interfaces;
-using CompilerUtilities.Plugins.Contract.Versions;
 
 namespace CompilerUtilities.Preprocessor
 {

@@ -1,6 +1,4 @@
-﻿using CompilerUtilities.Plugins.Contract.Versions;
-
-namespace Substance.PluginManager.Backend
+﻿namespace Substance.PluginManager.Backend
 {
     public class DependenciesInfo
     {

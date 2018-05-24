@@ -37,10 +37,10 @@
   <ItemGroup>
     <Compile Include="Plugins\ExamplePreprocessor.cs" />
     <Compile Include="Stages\ExampleFileReader.cs" />
-    <Compile Include="ExampleTypes\ExampleSyntaxTree.cs" />
-    <Compile Include="ExampleTypes\ExampleSyntaxTreeNode.cs" />
-    <Compile Include="ExampleTypes\ExampleTextProcessor.cs" />
-    <Compile Include="ExampleTypes\ExampleToken.cs" />
+    <Compile Include="Types\ExampleSyntaxTree.cs" />
+    <Compile Include="Types\ExampleSyntaxTreeNode.cs" />
+    <Compile Include="Types\ExampleTextProcessor.cs" />
+    <Compile Include="Types\ExampleToken.cs" />
     <Compile Include="Stages\ExampleTranslator.cs" />
     <Compile Include="Stages\ExampleIntermediateGenerator.cs" />
     <Compile Include="Stages\ExampleLexer.cs" />

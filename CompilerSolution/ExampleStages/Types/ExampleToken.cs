@@ -1,6 +1,6 @@
-﻿using CompilerUtilities.Plugins.Contract.Interfaces;
+﻿using CompilerUtilities.Plugins.Contract;
 
-namespace ExampleStages.ExampleTypes
+namespace ExampleStages.Types
 {
     public class ExampleToken : IToken
     {

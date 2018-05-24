@@ -1,28 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CompilerUtilities.Plugins.Contract.Interfaces
+namespace CompilerUtilities.Plugins.Contract
 {
     public interface ITextProcessor
     {
-         string this[int index] { get; set; }
-         int Length { get; }
+        string this[int index] { get; set; }
+        int Length { get; }
 
-         IEnumerable<string> Presentation { get; set; }
-         string Cut(int lineIndex);
-         string[] CutRange(int beginIndex, int endIndex);
+        IEnumerable<string> Presentation { get; set; }
 
-         void Insert(int lineIndex, string newLine);
-         void InsertRange(int beginIndex, string[] newLines);
+        string Cut(int lineIndex);
+        List<string> CutRange(int beginIndex, int endIndex);
+        List<string> CutAll(Predicate<string> predicate);
 
-         int FindIndex(string targetLine);
-         int FindIndex(Predicate<string> predicate);
+        bool Remove(string targetLine);
+        void RemoveRange(int beginIndex, int endIndex);
+        void RemoveAt(int index);
+        void RemoveAll(Predicate<string> predicate);
 
-         string Find(Predicate<string> predicate);
+        void Insert(int lineIndex, string newLine);
+        void InsertRange(int beginIndex, string[] newLines);
 
-         string[] GetRange(int beginIndex, int endIndex);
+        int FindIndex(string targetLine);
+        int FindIndex(Predicate<string> predicate);
+        int[] FindIndexes(Predicate<string> predicate);
 
-         void LoadFromFile(string path);
-         void SaveToFile(string path);
+        string Find(Predicate<string> predicate);
+        List<string> FindAll(Predicate<string> predicate);
+
+        List<string> GetRange(int beginIndex, int endIndex);
+
+        void LoadFromFile(string path);
+        void SaveToFile(string path);
     }
 }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CompilerUtilities.Plugins.Contract;
-using CompilerUtilities.Plugins.Contract.Interfaces;
 
 namespace ExampleStages.Plugins
 {
+    [RequiredCompilerVersion("a0.1")]
+    [Export(typeof(IPlugin<>))]
     internal class ExamplePreprocessor : IPlugin<ITextProcessor>
     {
         public ITextProcessor Activate(ITextProcessor input)
@@ -20,16 +22,17 @@ namespace ExampleStages.Plugins
         {
             var presentation = input.Presentation.ToList();
 
-            presentation.RemoveAll(s => s.TrimStart().StartsWith("//"));
+            input.RemoveAll(s => s.TrimStart().StartsWith("//"));
 
-            var lineCommentReg = new Regex(@"(.*?)//.*?", RegexOptions.Compiled);
+            var lineCommentReg = new Regex(@"(.*?)//.*$", RegexOptions.Compiled);
 
             var presentationCount = presentation.Count;
             for (var i = 0; i < presentationCount; i++)
             {
                 var line = presentation[i];
+                var match = lineCommentReg.Match(line);
 
-                if (lineCommentReg.IsMatch(line))
+                if (match.Success)
                     presentation[i] = lineCommentReg.Replace(line, "$1");
             }
 
@@ -39,31 +42,36 @@ namespace ExampleStages.Plugins
         private static void ReplaceDefinitions(ITextProcessor input)
         {
             var presentation = input.Presentation.ToList();
+            var presentationCount = presentation.Count;
 
             var defReg = new Regex(@"#define\s+(\w+)(\(.*?\))?\s+(.*)", RegexOptions.Compiled);
 
-            for (var i = 0; i < presentation.Count; i++)
+            for (var i = 0; i < presentationCount; i++)
             {
                 var line = presentation[i];
                 var match = defReg.Match(line);
 
                 if (!match.Success) continue;
 
-                var def = new DefineMatch(match);
-                def.Process(presentation);
+                presentation.RemoveAt(i);
+                i--;
+                presentationCount--;
+
+                var def = new Define(match);
+                def.Replace(presentation);
             }
 
             input.Presentation = presentation;
         }
     }
 
-    internal class DefineMatch
+    internal class Define
     {
         private readonly string _replacement;
         private readonly Regex _regex;
         private readonly string[] _parameters;
 
-        public DefineMatch(Match match)
+        public Define(Match match)
         {
             _parameters = match.Groups[2].Value.Trim('(', ')')
                 .Split(new[] {' ', ','}, StringSplitOptions.RemoveEmptyEntries);
@@ -73,7 +81,7 @@ namespace ExampleStages.Plugins
                 _regex = new Regex($@"{match.Groups[1]}\((.*?)\)", RegexOptions.Compiled);
         }
 
-        public void Process(List<string> presentation)
+        public void Replace(List<string> presentation)
         {
             var splitter = new[] {' ', ','};
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CompilerUtilities.Plugins.Contract;
-using CompilerUtilities.Plugins.Contract.Interfaces;
 
 namespace CompilerUtilities.PluginImporter
 {
@@ -32,10 +31,21 @@ namespace CompilerUtilities.PluginImporter
             return args;
         }
 
-        public static (Type TIn, Type TOut) GetArgs(object extension)
+        public static Type[] GetArgs(object extension)
+        {
+            var args = extension.GetType()
+                .FindInterfaces(
+                    (type, criteria) => type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(IStage<,>) ||
+                                        type.GetGenericTypeDefinition() == typeof(IPlugin<>)), null)[0]
+                .GenericTypeArguments;
+
+            return args;
+        }
+
+        public static Type GetFirstArg(object extension)
         {
             var args = GetGenericArgs(extension);
-            return (args[0], args[1]);
+            return args[0];
         }
 
         public override bool Equals(object obj)

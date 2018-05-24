@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace CompilerUtilities.Plugins.Contract.Versions
+namespace CompilerUtilities.Plugins.Contract
 {
     public sealed class RequiredCompilerVersionAttribute : Attribute
     {

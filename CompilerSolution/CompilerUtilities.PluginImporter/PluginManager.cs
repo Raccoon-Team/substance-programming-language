@@ -8,25 +8,24 @@ using System.Reflection;
 using AdvancedConsoleParameters;
 using CompilerUtilities.Exceptions;
 using CompilerUtilities.Plugins.Contract;
-using CompilerUtilities.Plugins.Contract.Interfaces;
-using CompilerUtilities.Plugins.Contract.Versions;
 
 namespace CompilerUtilities.PluginImporter
 {
     public class PluginManager
     {
-        [ImportMany(typeof(IPlugin<>))] private List<object> _plugins;
-        [ImportMany(typeof(IStage<,>))] private List<object> _stages;
+        [ImportMany(typeof(IPlugin<>))] private List<ICompilerExtension> _plugins;
+        [ImportMany(typeof(IStage<,>))] private List<ICompilerExtension> _stages;
 
         public PluginManager(string[] args)
         {
-            var cat = new AggregateCatalog();
-            cat.Catalogs.Add(new DirectoryCatalog(Directory.GetCurrentDirectory() + "\\plugins"));
-            cat.Catalogs.Add(new DirectoryCatalog(Directory.GetCurrentDirectory() + "\\stages"));
-            var container = new CompositionContainer(cat);
+            var catalog = new AggregateCatalog();
+            var currentDirectory = Directory.GetCurrentDirectory();
+            catalog.Catalogs.Add(new DirectoryCatalog(currentDirectory + "\\plugins"));
+            catalog.Catalogs.Add(new DirectoryCatalog(currentDirectory + "\\stages"));
+            var container = new CompositionContainer(catalog);
             container.ComposeParts(this);
 
-            ConsoleParameters.Initialize(_plugins.Concat(_stages).Prepend(this).ToArray(), args);
+            ConsoleParameters.Initialize(_plugins.Cast<object>().Concat(_stages).Prepend(this).ToArray(), args);
 
             ValidateExtensions();
 
@@ -34,10 +33,11 @@ namespace CompilerUtilities.PluginImporter
         }
 
         [Parameter("-help", true)]
-        private static void ShowAvailableParameters()
+        private void ShowAvailableParameters()
         {
-            var available = ConsoleParameters.GetAllAvailableParameters();
-            for (var i = 0; i < available.Count; i++)
+            var available = ConsoleParameters.GetAllAvailableParameters(_plugins.Cast<object>().Concat(_stages).Prepend(this).ToArray());
+            var availableCount = available.Count;
+            for (var i = 0; i < availableCount; i++)
             {
                 var current = available[i];
 
@@ -53,8 +53,8 @@ namespace CompilerUtilities.PluginImporter
             var allExtensions = _stages.Concat(_plugins).ToList();
             var compilerVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
-            // ReSharper disable once ForCanBeConvertedToForeach
-            for (var i = 0; i < allExtensions.Count; i++)
+            var allExtensionsCount = allExtensions.Count;
+            for (var i = 0; i < allExtensionsCount; i++)
             {
                 var ext = allExtensions[i];
 
@@ -74,11 +74,11 @@ namespace CompilerUtilities.PluginImporter
 
         public void Compile()
         {
-            var chain = ComposeStages(_stages, false);
+            var chain = ComposeStages(_stages, _plugins, false);
             Compile(chain);
         }
 
-        private static void Compile(IEnumerable<object> sequence)
+        private static void Compile(IEnumerable<ICompilerExtension> sequence)
         {
             object param = new Blanket();
             var emptyParams = new object[0];
@@ -86,8 +86,21 @@ namespace CompilerUtilities.PluginImporter
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var item in sequence)
             {
-                item.GetType().GetMethod("Initialize").Invoke(item, emptyParams);
-                param = item.GetType().GetMethod("Process").Invoke(item, new[] {param});
+                var itemType = item.GetType();
+
+                var isStage =
+                    itemType.FindInterfaces(
+                        (type, criteria) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IStage<,>),
+                        null).Length > 0;
+                if (isStage)
+                {
+                    itemType.GetMethod("Initialize").Invoke(item, emptyParams);
+                    param = itemType.GetMethod("Process").Invoke(item, new[] {param});
+                }
+                else
+                {
+                    param = itemType.GetMethod("Activate").Invoke(item, new[] { param });
+                }
             }
         }
 
@@ -108,35 +121,51 @@ namespace CompilerUtilities.PluginImporter
                         $"The same stages are found with the parameters <{converted[i].TIn.Name}, {converted[i].TOut.Name}>");
         }
 
-        public List<object> ComposeStages(List<object> input, bool throwException = true)
+        public List<ICompilerExtension> ComposeStages(List<ICompilerExtension> stages, List<ICompilerExtension> plugins, bool throwException = true)
         {
-            if (input.Count == 1)
-                return input;
-            var sortedInput = new List<object>(input.OrderBy(o =>
+            if (stages.Count == 1)
+                return stages;
+            var sortedStages = new List<ICompilerExtension>(stages.OrderBy(o =>
             {
-                var (TIn, TOut) = PluginGenericArgs.GetArgs(o);
-                if (TIn == typeof(Blanket)) return 0;
-                return TOut == typeof(Blanket) ? 2 : 1;
+                var args = PluginGenericArgs.GetArgs(o);
+                if (args[0] == typeof(Blanket)) return 0;
+                return args[1] == typeof(Blanket) ? 2 : 1;
             }));
 
-            var outp = new List<object>();
+            var outp = new List<ICompilerExtension>();
 
-            var entry = sortedInput.First(o => PluginGenericArgs.GetArgs(o).TIn == typeof(Blanket));
-            sortedInput.Remove(entry);
-            outp.Add(entry);
+            var entry = sortedStages.FindIndex(o => PluginGenericArgs.GetArgs(o)[0] == typeof(Blanket));
+            outp.Add(sortedStages[entry]);
+            sortedStages.RemoveAt(entry);
 
-            while (sortedInput.Count > 0)
+            var sortedInputCount = sortedStages.Count;
+
+            while (sortedInputCount > 0)
             {
-                var current =
-                    sortedInput.FirstOrDefault(o =>
-                        PluginGenericArgs.GetArgs(o).TIn == PluginGenericArgs.GetArgs(outp.Last()).TOut);
+                var pluginIndex = plugins.FindIndex(p =>
+                    PluginGenericArgs.GetArgs(p)[0] == PluginGenericArgs.GetArgs(outp.Last()).Last());
 
-                if (current is null)
+                if (pluginIndex != -1)
+                {
+                    outp.Add(plugins[pluginIndex]);
+                    plugins.RemoveAt(pluginIndex);
+                }
+
+                var currentStage =
+                    sortedStages.FindIndex(o =>
+                    {
+                        var oIn = PluginGenericArgs.GetArgs(o)[0];
+                        var outpOut = PluginGenericArgs.GetArgs(outp.Last()).Last();
+                        return oIn == outpOut;
+                    });
+
+                if (currentStage == -1)
                     if (throwException)
                         throw new StagesCompositionException();
                     else return outp;
-                outp.Add(current);
-                sortedInput.Remove(current);
+                outp.Add(sortedStages[currentStage]);
+                sortedStages.RemoveAt(currentStage);
+                sortedInputCount--;
             }
 
             return outp;
