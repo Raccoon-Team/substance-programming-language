@@ -30,17 +30,13 @@ namespace AdvancedConsoleParameters
             return parameters;
         }
 
-        public static List<Parameter> GetAllAvailableParameters()
+        public static List<Parameter> GetAllAvailableParameters(object[] instances)
         {
-            var asm = Assembly.GetEntryAssembly();
-            var assemblies = asm.GetReferencedAssemblies().Select(Assembly.Load).Prepend(asm);
-
             var allAttributes = new List<ParameterAttribute>();
-            foreach (var assembly in assemblies)
-            foreach (var definedType in assembly.DefinedTypes)
-                allAttributes.AddRange(definedType.DeclaredMembers
-                    .Select(x => x.GetCustomAttribute<ParameterAttribute>())
-                    .Where(x => x != null));
+            foreach (var instance in instances)
+            {
+                allAttributes.AddRange(instance.GetType().GetTypeInfo().DeclaredMembers.Select(member => member.GetCustomAttribute<ParameterAttribute>()).Where(atr => atr != null));
+            }
 
             var splitter = new[] {'|'};
 

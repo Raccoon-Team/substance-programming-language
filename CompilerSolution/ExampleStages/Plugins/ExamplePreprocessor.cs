@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CompilerUtilities.Plugins.Contract;
@@ -7,6 +8,7 @@ using CompilerUtilities.Plugins.Contract;
 namespace ExampleStages.Plugins
 {
     [RequiredCompilerVersion("a0.1")]
+    [Export(typeof(IPlugin<>))]
     internal class ExamplePreprocessor : IPlugin<ITextProcessor>
     {
         public ITextProcessor Activate(ITextProcessor input)
@@ -22,14 +24,15 @@ namespace ExampleStages.Plugins
 
             input.RemoveAll(s => s.TrimStart().StartsWith("//"));
 
-            var lineCommentReg = new Regex(@"(.*?)//.*?", RegexOptions.Compiled);
+            var lineCommentReg = new Regex(@"(.*?)//.*$", RegexOptions.Compiled);
 
             var presentationCount = presentation.Count;
             for (var i = 0; i < presentationCount; i++)
             {
                 var line = presentation[i];
+                var match = lineCommentReg.Match(line);
 
-                if (lineCommentReg.IsMatch(line))
+                if (match.Success)
                     presentation[i] = lineCommentReg.Replace(line, "$1");
             }
 
@@ -49,6 +52,10 @@ namespace ExampleStages.Plugins
                 var match = defReg.Match(line);
 
                 if (!match.Success) continue;
+
+                presentation.RemoveAt(i);
+                i--;
+                presentationCount--;
 
                 var def = new Define(match);
                 def.Replace(presentation);
