@@ -1,0 +1,24 @@
+﻿<Window x:Class="Substance.PluginManager.Graphical.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Substance.PluginManager.Graphical"
+        xmlns:dock="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:dockctrl="clr-namespace:Xceed.Wpf.AvalonDock.Controls;assembly=Xceed.Wpf.AvalonDock"
+        mc:Ignorable="d"
+        Title="Substance Plugin Manager" Height="450" Width="800">
+    <dock:DockingManager DataContext="{Binding DockManagerViewModel}"
+                       DocumentsSource="{Binding Documents}" >
+
+        <dock:DockingManager.LayoutItemContainerStyle>
+            <!-- you can add additional bindings from the layoutitem to the DockWindowViewModel -->
+            <Style TargetType="{x:Type dockctrl:LayoutItem}">
+                <Setter Property="Title" Value="{Binding Model.Title}" />
+                <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
+                <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
+            </Style>
+        </dock:DockingManager.LayoutItemContainerStyle>
+
+    </dock:DockingManager>
+</Window>

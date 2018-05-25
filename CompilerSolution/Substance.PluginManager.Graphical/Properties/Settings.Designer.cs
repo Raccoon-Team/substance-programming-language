@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Substance.PluginManager.Properties
+namespace Substance.PluginManager.Graphical.Properties
 {
 
 
