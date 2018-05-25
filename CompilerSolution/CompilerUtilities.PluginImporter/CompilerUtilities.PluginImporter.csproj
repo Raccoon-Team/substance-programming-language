@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileBuffer.cs" />
     <Compile Include="PluginGenericArgs.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Program.cs" />

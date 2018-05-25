@@ -12,16 +12,13 @@ namespace ExampleStages.Stages
     [Export(typeof(IStage<,>))]
     public class ExampleLexer : IStage<ITextProcessor, IList<IToken>>
     {
-        private readonly string[] ops = {"mov"};
-        private readonly string[] singleOps = {"add", "mul", "div", "sub", "jmp"};
-
-        private TokenTypesCollection TokenTypesCollection;
+        private TokenTypesCollection _tokenTypesCollection;
         public uint Priority { get; }
 
         public void Initialize()
         {
-            TokenTypesCollection = new TokenTypesCollection();
-            TokenTypesCollection.Initialize();
+            _tokenTypesCollection = new TokenTypesCollection();
+            _tokenTypesCollection.Initialize();
         }
 
         public IList<IToken> Process(ITextProcessor input)
@@ -77,7 +74,6 @@ namespace ExampleStages.Stages
             var outp = new List<IToken>();
 
             var isString = false;
-            //bool @continue;
             foreach (var line in input)
             {
                 var length = line.Length;
@@ -85,7 +81,6 @@ namespace ExampleStages.Stages
 
                 for (var i = 0; i < length; i++)
                 {
-                    //@continue = false;
                     if (char.IsWhiteSpace(line[i]) && !isString)
                     {
                         accum.Clear();
@@ -100,12 +95,11 @@ namespace ExampleStages.Stages
                         char character;
                         if (i == length || char.IsWhiteSpace(character = line[i]) && !isString)
                         {
-                            //@continue = true;
                             break;
                         }
 
                         if (accum.Length > 0 &&
-                            !TokenTypesCollection.CompareCharCategory(character, accum[accum.Length - 1]))
+                            !_tokenTypesCollection.CompareCharCategory(character, accum[accum.Length - 1]))
                         {
                             i--;
                             break;
@@ -121,13 +115,12 @@ namespace ExampleStages.Stages
                         accum.Append(character);
                         i++;
                     } while (true);
-
-                    //if (@continue)
-                    //    continue;
+                    
+                    if (isString) continue;
 
                     var strAccum = accum.ToString();
                     accum.Clear();
-                    outp.Add(new ExampleToken(strAccum, TokenTypesCollection[strAccum]));
+                    outp.Add(new ExampleToken(strAccum, _tokenTypesCollection[strAccum]));
                 }
             }
 

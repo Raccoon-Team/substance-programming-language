@@ -28,7 +28,7 @@ namespace ExampleStages.Types
 
         public void Initialize()
         {
-            _keywords = new[] {"mov", "add", "sub", "div", "mul", "ax", "bx"};
+            _keywords = new[] {"mov", "add", "sub", "div", "mul", "ax", "bx", "si"};
             _semicolons = new[] {","};
             _operators = new string[0];
             _specials = new string[0];

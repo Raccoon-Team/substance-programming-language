@@ -34,6 +34,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IFileBuffer.cs" />
     <Compile Include="Interfaces\ISyntaxTree.cs" />
     <Compile Include="Interfaces\ISyntaxTreeNode.cs" />
     <Compile Include="Interfaces\ITextProcessor.cs" />

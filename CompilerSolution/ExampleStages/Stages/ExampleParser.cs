@@ -22,9 +22,28 @@ namespace ExampleStages.Stages
         public ISyntaxTree Process(IList<IToken> input)
         {
             var outp = new ExampleSyntaxTree();
-            outp.Nodes.Add(new ExampleSyntaxTreeNode(input[0], null));
+            outp.Nodes.Add(new ExampleSyntaxTreeNode(null, null));
 
             var currentNode = outp.Nodes[0];
+
+            for (var i = 0; i < input.Count; i++)
+            {
+                var token = input[i];
+
+                if (new[] {"mov", "add", "sub"}.Contains(token.Value))
+                {
+                    var node = new ExampleSyntaxTreeNode(input[i++], currentNode);
+                    currentNode.Nodes.Add(node);
+                    node.Nodes.Add(new ExampleSyntaxTreeNode(input[i++], node));
+                    node.Nodes.Add(new ExampleSyntaxTreeNode(input[++i], node));
+                }
+                else if (new[] { "mul", "div", "inc", "dec" }.Contains(token.Value))
+                {
+                    var node = new ExampleSyntaxTreeNode(input[i++], currentNode);
+                    currentNode.Nodes.Add(node);
+                    node.Nodes.Add(new ExampleSyntaxTreeNode(input[i], node));
+                }
+            }
 
             //for (var i = 1; i < input.Count; i++)
             //{

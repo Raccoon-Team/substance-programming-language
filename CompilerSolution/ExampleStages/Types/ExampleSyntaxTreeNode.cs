@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using CompilerUtilities.Plugins.Contract;
 
 namespace ExampleStages.Types
@@ -18,7 +20,19 @@ namespace ExampleStages.Types
 
         public override string ToString()
         {
-            return $"{Value.Type}: {Value.Value}\r\n\t{string.Join("\r\n\t", Nodes)}";
+            if (Value is null)
+                return $"Entry point:\r\n{string.Join("\r\n", Nodes)}";
+
+            var parents = 0;
+            ISyntaxTreeNode currNode = this;
+            while (currNode.Parent != null)
+            {
+                parents++;
+                currNode = currNode.Parent;
+            }
+
+            var tab = new string('\t', parents);
+            return $"{tab}{Value.Type}: {Value.Value}\r\n{string.Join("\r\n", Nodes)}";
         }
     }
 }

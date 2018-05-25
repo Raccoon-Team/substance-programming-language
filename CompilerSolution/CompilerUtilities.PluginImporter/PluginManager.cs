@@ -19,16 +19,16 @@ namespace CompilerUtilities.PluginImporter
 
         public PluginManager(string[] args)
         {
-            var solutionManager = new SolutionManager.SolutionManager();
+            //var solutionManager = new SolutionManager.SolutionManager();
 
-            var projInfo = new ProjectInfo("MyProj") {Path = "myProj.subp"};
-            projInfo.Stages.Add(
-                "D:\\Git Repo\\substance-programming-language\\CompilerSolution\\CompilerUtilities.PluginImporter\\bin\\Debug\\stages\\ExampleStages.dll");
-            projInfo.ExtensionFiles.AddRange(new[] {"kek.ext", "jej.ext"});
-            solutionManager.AddProject(projInfo);
+            //var projInfo = new ProjectInfo("MyProj") {Path = "myProj.subp"};
+            //projInfo.Stages.Add(
+            //    "D:\\Git Repo\\substance-programming-language\\CompilerSolution\\CompilerUtilities.PluginImporter\\bin\\Debug\\stages\\ExampleStages.dll");
+            //projInfo.ExtensionFiles.AddRange(new[] {"kek.ext", "jej.ext"});
+            //solutionManager.AddProject(projInfo);
 
-            solutionManager.Save(Directory.GetCurrentDirectory() + "\\kek.subs");
-            Console.ReadKey();
+            //solutionManager.Save(Directory.GetCurrentDirectory() + "\\kek.subs");
+            //Console.ReadKey();
 
             var catalog = new AggregateCatalog();
             var currentDirectory = Directory.GetCurrentDirectory();
