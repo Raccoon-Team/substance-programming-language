@@ -5,7 +5,6 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using AdvancedConsoleParameters;
 using CompilerUtilities.Exceptions;
 using CompilerUtilities.Plugins.Contract;
@@ -23,11 +22,12 @@ namespace CompilerUtilities.PluginImporter
             var solutionManager = new SolutionManager.SolutionManager();
 
             var projInfo = new ProjectInfo("MyProj") {Path = "myProj.subp"};
-            projInfo.Stages.Add("D:\\Git Repo\\substance-programming-language\\CompilerSolution\\CompilerUtilities.PluginImporter\\bin\\Debug\\stages\\ExampleStages.dll");
-            projInfo.ExtensionFiles.AddRange(new[] { "kek.ext", "jej.ext" });
+            projInfo.Stages.Add(
+                "D:\\Git Repo\\substance-programming-language\\CompilerSolution\\CompilerUtilities.PluginImporter\\bin\\Debug\\stages\\ExampleStages.dll");
+            projInfo.ExtensionFiles.AddRange(new[] {"kek.ext", "jej.ext"});
             solutionManager.AddProject(projInfo);
 
-            solutionManager.Save(Directory.GetCurrentDirectory()+"\\kek.subs");
+            solutionManager.Save(Directory.GetCurrentDirectory() + "\\kek.subs");
             Console.ReadKey();
 
             var catalog = new AggregateCatalog();
@@ -47,7 +47,9 @@ namespace CompilerUtilities.PluginImporter
         [Parameter("-help", true)]
         private void ShowAvailableParameters()
         {
-            var available = ConsoleParameters.GetAllAvailableParameters(_plugins.Cast<object>().Concat(_stages).Prepend(this).ToArray());
+            var available =
+                ConsoleParameters.GetAllAvailableParameters(_plugins.Cast<object>().Concat(_stages).Prepend(this)
+                    .ToArray());
             var availableCount = available.Count;
             for (var i = 0; i < availableCount; i++)
             {
@@ -111,7 +113,7 @@ namespace CompilerUtilities.PluginImporter
                 }
                 else
                 {
-                    param = itemType.GetMethod("Activate").Invoke(item, new[] { param });
+                    param = itemType.GetMethod("Activate").Invoke(item, new[] {param});
                 }
             }
         }
@@ -133,7 +135,8 @@ namespace CompilerUtilities.PluginImporter
                         $"The same stages are found with the parameters <{converted[i].TIn.Name}, {converted[i].TOut.Name}>");
         }
 
-        public List<ICompilerExtension> ComposeStages(List<ICompilerExtension> stages, List<ICompilerExtension> plugins, bool throwException = true)
+        public List<ICompilerExtension> ComposeStages(List<ICompilerExtension> stages, List<ICompilerExtension> plugins,
+            bool throwException = true)
         {
             if (stages.Count == 1)
                 return stages;
