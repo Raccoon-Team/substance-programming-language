@@ -18,6 +18,8 @@ namespace CompilerUtilities.PluginImporter
 
         public byte[] GetBytes(string path)
         {
+            path = Path.GetFullPath(path);
+
             if (files.ContainsKey(path))
                 return files[path];
             var bytes = File.ReadAllBytes(path);
@@ -27,6 +29,8 @@ namespace CompilerUtilities.PluginImporter
 
         public IEnumerable<string> GetLines(string path)
         {
+            path = Path.GetFullPath(path);
+
             var sb = new StringBuilder();
             var bytes = files[path];
 
@@ -53,16 +57,21 @@ namespace CompilerUtilities.PluginImporter
 
         public List<string> GetAllLines(string path)
         {
+            path = Path.GetFullPath(path);
+
             return GetLines(path).ToList();
         }
 
         public void Refresh(string path)
         {
+            path = Path.GetFullPath(path);
+
             files[path] = File.ReadAllBytes(path);
         }
 
         public void Refresh(string path, IList<string> lines)
         {
+            path = Path.GetFullPath(path);
             throw new NotImplementedException();
         }
 

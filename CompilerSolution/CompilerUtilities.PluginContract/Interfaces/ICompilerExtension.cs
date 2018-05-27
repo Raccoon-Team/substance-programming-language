@@ -2,5 +2,6 @@
 {
     public interface ICompilerExtension
     {
+        void Initialize(IFileBuffer fileBuffer);
     }
 }

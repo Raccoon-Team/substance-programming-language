@@ -95,7 +95,9 @@ namespace CompilerUtilities.PluginImporter
         private static void Compile(IEnumerable<ICompilerExtension> sequence)
         {
             object param = new Blanket();
-            var emptyParams = new object[0];
+
+            var filebuffer = new FileBuffer();
+            var emptyParams = new object[]{filebuffer};
 
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var item in sequence)

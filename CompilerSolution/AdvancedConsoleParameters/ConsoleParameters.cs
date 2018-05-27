@@ -148,7 +148,7 @@ namespace AdvancedConsoleParameters
         {
             void CheckArray(Type type, MemberInfo memberInfo)
             {
-                if (type.IsArray && type.GetElementType() != typeof(string[]))
+                if (type.IsArray && type.GetElementType() != typeof(string))
                     throw new InvalidMemberType(memberInfo, type);
             }
 

@@ -12,5 +12,10 @@ namespace CompilerUtilities.Preprocessor
         {
             throw new NotImplementedException();
         }
+
+        public void Initialize(IFileBuffer fileBuffer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

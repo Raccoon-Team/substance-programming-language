@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.Composition;
-using System.IO;
 using AdvancedConsoleParameters;
 using CompilerUtilities.Plugins.Contract;
 
@@ -9,19 +8,18 @@ namespace ExampleStages.Stages
     [Export(typeof(IStage<,>))]
     public class ExampleTranslator : IStage<ITextProcessor, Blanket>
     {
-        [Parameter("-output_file")] private string outputFile;
-
-        public uint Priority { get; }
-
-        public void Initialize()
-        {
-        }
+        [Parameter("-output_file")]
+        private string outpFile;
 
         public Blanket Process(ITextProcessor input)
         {
-            File.WriteAllLines(outputFile, input.Presentation);
-
+            input.SaveToFile(outpFile);
             return null;
+        }
+
+        public void Initialize(IFileBuffer fileBuffer)
+        {
+
         }
     }
 }

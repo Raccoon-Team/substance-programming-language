@@ -6,16 +6,16 @@ using System.Text;
 using CompilerUtilities.Plugins.Contract;
 using ExampleStages.Types;
 
-namespace ExampleStages.Stages
+namespace ExampleStages.Stages.Old
 {
     [RequiredCompilerVersion("a0.1")]
-    [Export(typeof(IStage<,>))]
+    //[Export(typeof(IStage<,>))]
     public class ExampleLexer : IStage<ITextProcessor, IList<IToken>>
     {
         private TokenTypesCollection _tokenTypesCollection;
         public uint Priority { get; }
-
-        public void Initialize()
+        
+        public void Initialize(IFileBuffer fileBuffer)
         {
             _tokenTypesCollection = new TokenTypesCollection();
             _tokenTypesCollection.Initialize();

@@ -32,8 +32,12 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Types\ConstructionInfo.cs" />
+    <Compile Include="Enums\ConstructionType.cs" />
+    <Compile Include="Types\ConstructionParameter.cs" />
     <Compile Include="Interfaces\IFileBuffer.cs" />
     <Compile Include="Interfaces\ISyntaxTree.cs" />
     <Compile Include="Interfaces\ISyntaxTreeNode.cs" />
@@ -54,5 +58,6 @@
       <Name>AdvancedConsoleParameters</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
