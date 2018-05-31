@@ -16,118 +16,118 @@ namespace ExampleStages.Stages
     {
         [Parameter("-input_file")] private string sourceFileName;
 
-        public ITextProcessor Process(IList<ConstructionInfo> input)
-        {
-            var src = File.ReadAllText(sourceFileName);
-
-            //todo причесать код, он ужасен
-            //todo оптимизировать код, он ужасен
-            //todo регексов много не бывает
-
-            foreach (var constructionInfo in input)
-            {
-                var @interface = constructionInfo.Interface.Trim();
-                var implementation = constructionInfo.Implementation.Trim();
-
-                var parts = new Regex(@"(.*?)(%[^\s]+?%)", RegexOptions.Singleline).Matches(@interface).Cast<Match>()
-                    .Select(x => (part: x.Groups[1].Value, parameter: x.Groups[2].Value)).ToList();
-
-                Match afterParamMatch = null;
-
-                for (var i = 0; i < parts.Count - 1; i++)
-                {
-                    var currentPart = PreparePart(parts[i]);
-                    var nextPart = PreparePart(parts[i + 1]);
-
-                    var beforeParamMatch = Regex.Match(src, currentPart.part);
-                    var paramStart = beforeParamMatch.Index + beforeParamMatch.Length;
-
-                    afterParamMatch = Regex.Match(src, nextPart.part);
-                    var paramEnd = afterParamMatch.Index;
-
-                    var replacement = src.Substring(paramStart, paramEnd - paramStart);
-                    implementation = implementation.Replace(currentPart.parameter, replacement);
-                    @interface = @interface.Replace(currentPart.parameter, replacement);
-                }
-
-                var lastParamMatch = Regex.Match(@interface, parts.Last().parameter, RegexOptions.Singleline);
-                var lastPart = @interface.Substring(lastParamMatch.Index + lastParamMatch.Length + 1);
-                lastPart = PreparePart(lastPart);
-
-                var startIndex = afterParamMatch.Index + afterParamMatch.Length;
-                var paramMatch = Regex.Matches(src, lastPart).Cast<Match>().First(x => x.Index > startIndex);
-
-                var paramValue = src.Substring(startIndex, paramMatch.Index - startIndex);
-                implementation = implementation.Replace(parts.Last().parameter, paramValue);
-                @interface = @interface.Replace(parts.Last().parameter, paramValue);
-
-                @interface = PreparePart(@interface);
-                src = Regex.Replace(src, @interface, implementation);
-            }
-
-            return new ExampleTextProcessor(new[] {src});
-        }
-
-        static (string part, string parameter) PreparePart((string part, string parameter) part)
-        {
-            part.part = PreparePart(part.part);
-            return part;
-        }
-
-        static string PreparePart(string part)
-        {
-            part = Regex.Replace(part, @"\s{2,}", "\\s+", RegexOptions.Compiled);
-            part = Regex.Replace(part, @"([*()\[\]])", "\\$1", RegexOptions.Compiled);
-            return part;
-        }
-
         public void Initialize(IFileBuffer fileBuffer)
         {
         }
 
-        private static int FindPartIndex(int startIndex, string src, string part)
+        public ITextProcessor Process(IList<ConstructionInfo> input)
         {
-            var partLength = part.Length;
-            var srcLength = src.Length;
+            var src = new StringBuilder(File.ReadAllText(sourceFileName));
+            foreach (var info in input)
+                ReplaceConstruction(src, info);
 
-            while (true)
-            {
-                while (src[startIndex] != part[0])
-                {
-                    startIndex++;
-                    if (startIndex == srcLength)
-                        return -1;
-                }
-
-                for (var j = 1; j < partLength; j++)
-                {
-                    if (src[startIndex + j] != part[j])
-                    {
-                        startIndex++;
-                        break;
-                    }
-
-                    if (j + 1 == partLength)
-                        return startIndex;
-                }
-            }
+            return new ExampleTextProcessor(new []{src.ToString()});
         }
 
-        private int FindClosingBraceIndex(string src, int startIndex)
+        private static bool CheckSymbol(StringBuilder input, char pattern, ref int inpIndex)
         {
-            var srcLength = src.Length;
-            var difference = 0;
-            for (var i = startIndex; i < srcLength; i++)
+            if (char.IsWhiteSpace(input[inpIndex]) && char.IsWhiteSpace(pattern))
             {
-                if (src[i] == ')')
-                    difference++;
-                else if (src[i] == '(')
-                    difference--;
-
-                if (difference == 0) return i;
+                while (char.IsWhiteSpace(input[inpIndex + 1]))
+                    inpIndex++;
+                return true;
             }
 
-            return srcLength - 1;
+            return input[inpIndex] == pattern;
+        }
+
+        private static void ReplaceConstruction(StringBuilder input, ConstructionInfo construction)
+        {
+            var inputLength = input.Length;
+
+            var parts = SplitConstruction(construction);
+            var implementation = construction.Implementation;
+            var parameters = construction.Parameters;
+
+            int constructionStart = -1, constructionLength = parts.Sum(s => s.Length);
+            // ReSharper disable once TooWideLocalVariableScope
+            int start, end = 0, lastEnd = 0;
+
+            for (var i = 0; i < parts.Count; i++)
+            {
+                var part = parts[i];
+                bool success;
+                do
+                {
+                    start = end;
+                    while (start < inputLength && !CheckSymbol(input, part[0], ref start))
+                    {
+                        start++;
+                        if (start == inputLength)
+                            return;
+                    }
+                    if (i == 0)
+                        constructionStart = start;
+                    //----------------------
+                    if (part.Length > inputLength - start)
+                        return;
+
+                    success = true;
+                    // ReSharper disable once LoopCanBeConvertedToQuery
+                    var inpIndex = start;
+                    for (var j = 0; j < part.Length; j++)
+                    {
+                        if (!CheckSymbol(input, part[j], ref inpIndex))
+                        {
+                            success = false;
+                            start++;
+                            break;
+                        }
+                        inpIndex++;
+                    }
+                    if (success)
+                        end = start + part.Length - 1;
+                    else end = start;
+                } while (!success);
+
+                if (i > 0)
+                {
+                    var parameterValue = input.ToString(lastEnd + 1, start - lastEnd - 1);
+                    constructionLength += parameterValue.Length;
+                    implementation = implementation.Replace($"%{parameters[i - 1].Name}%", parameterValue);
+                }
+                lastEnd = end;
+            }
+            input.Remove(constructionStart, constructionLength).Insert(constructionStart, implementation);
+        }
+
+        private static List<string> SplitConstruction(ConstructionInfo constructionInfo)
+        {
+            var @interface = FormatInterface(constructionInfo.Interface);
+            var parameters = constructionInfo.Parameters;
+            var paramsMatches =
+                new Regex($@"%({string.Join("|", parameters.Select(x => x.Name))})%").Matches(@interface);
+
+            var parts = new List<string>();
+            var lastIndex = 0;
+            foreach (Match match in paramsMatches)
+            {
+                var matchIndex = match.Index;
+
+                // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                if (matchIndex == lastIndex)
+                    parts.Add(string.Empty);
+                else
+                    parts.Add(@interface.Substring(lastIndex, matchIndex - lastIndex));
+                lastIndex = matchIndex + match.Length;
+            }
+            parts.Add(@interface.Substring(lastIndex));
+            return parts;
+        }
+
+        private static string FormatInterface(string input)
+        {
+            return Regex.Replace(input.Trim(), @"\s+", " ", RegexOptions.Singleline);
         }
     }
 }
