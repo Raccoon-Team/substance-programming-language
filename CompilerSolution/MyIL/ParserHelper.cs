@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using CompilerUtilities.Exceptions;
 using Sigil;
 using Sigil.NonGeneric;
 
@@ -24,20 +25,23 @@ namespace IL2MSIL
         public static int FindClosingBraceIndex(int start, IList<Token> tokens)
         {
             var diff = 0;
+            var index = start;
             var tokensCount = tokens.Count;
             do
             {
-                if (tokens[start].TokenType == TokenType.OpenBrace)
+                if (tokens[index].TokenType == TokenType.OpenBrace)
                     diff++;
-                else if (tokens[start].TokenType == TokenType.CloseBrace)
+                else if (tokens[index].TokenType == TokenType.CloseBrace)
                     diff--;
-                start++;
+                index++;
 
-                if (start == tokensCount)
-                    throw new NotImplementedException($"Не найдена закрывающая скобка. Индекс {start}");
+                //todo ClosingBraceNotFound
+                if (index == tokensCount)
+                    ExceptionManager.ThrowCompiler(ErrorCode.ClosingBraceNotFound, String.Empty, tokens[start].Line);
+                    //throw new NotImplementedException($"Closing brace not found for opening brace at index {start}, line: {tokens[start].Line}");
             } while (diff != 0);
 
-            return start - 1;
+            return index - 1;
         }
 
         public static object GetMember(string value, Dictionary<string, Type> definedTypes, LocalLookup locals,
@@ -81,7 +85,7 @@ namespace IL2MSIL
             var diff = 1;
             while (diff != 0)
             {
-                if (tokens[methodEndIndex].TokenType == TokenType.Construction)
+                if (tokens[methodEndIndex].TokenType == TokenType.Construction && tokens[methodEndIndex].Value != "ret")
                     diff++;
                 else if (tokens[methodEndIndex].TokenType == TokenType.End)
                     diff--;

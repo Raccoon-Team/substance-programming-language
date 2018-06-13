@@ -12,11 +12,11 @@ namespace ExampleStages.Stages
     public class ExampleTranslator : IStage<ITextProcessor, Blanket>
     {
         [Parameter("-output_file")]
-        private string outpFile;
+        private string _outpFile;
 
         public Blanket Process(ITextProcessor input)
         {
-            new ILTranslator().CompileToFile(Path.GetFileNameWithoutExtension(outpFile), true, input.Presentation.ToList());
+            ILTranslator.Compile(Path.GetFileNameWithoutExtension(_outpFile), true, input.Presentation.ToList());
             //input.SaveToFile(outpFile);
             return null;
         }

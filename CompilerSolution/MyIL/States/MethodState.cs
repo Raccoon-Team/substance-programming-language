@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using CompilerUtilities.Exceptions;
 using Sigil.NonGeneric;
 
 namespace IL2MSIL
@@ -34,7 +35,8 @@ namespace IL2MSIL
                 while (tokens[i].TokenType != TokenType.CloseBrace)
                 {
                     if (isType != (tokens[i].TokenType == TokenType.Type))
-                        throw new NotImplementedException();
+                        //todo TypeExpected
+                        ExceptionManager.ThrowCompiler(ErrorCode.TypeExpected, "", tokens[i].Line);
 
                     if (!isType)
                         parameters.Add((DefinedTypes[tokens[i - 1].Value], tokens[i].Value));
@@ -52,21 +54,23 @@ namespace IL2MSIL
                     if (ModifierCollection.MethodModifiers.ContainsKey(modifs[j]))
                     {
                         if (accessModifierSet)
-                            throw new NotImplementedException();
+                            ExceptionManager.ThrowCompiler(ErrorCode.AccessModifierAlreadySet, "", tokens[i].Line);
 
                         atrs |= ModifierCollection.MethodModifiers[modifs[j]];
                         accessModifierSet = true;
                     }
                     else if (ModifierCollection.MethodAttributeses.ContainsKey(modifs[j]))
                         atrs |= ModifierCollection.MethodAttributeses[modifs[j]];
-                    else throw new NotImplementedException();
+                    else
+                        ExceptionManager.ThrowCompiler(ErrorCode.ModifierExpected, "", tokens[i].Line);
                 }
 
                 var method = Emit.BuildMethod(ReturnType, parameters.Select(x => x.type).ToArray(), TypeBuilder, Name, atrs, CallingConventions.Standard);
                 StateStack.Push(new MethodBodyState(StateStack, DefinedTypes, AsmBuilder, TypeBuilder, method, parameters, i));
             }
             else
-                throw new NotImplementedException();
+                //todo UnexpectedToken
+                ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedToken, "", tokens[i].Line);
         }
     }
 }

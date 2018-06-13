@@ -4,11 +4,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using CompilerUtilities.Exceptions;
 
 namespace IL2MSIL
 {
     // ReSharper disable once InconsistentNaming
-    internal class ILTokenizer
+    internal static class ILTokenizer
     {
         private static readonly string[] constructions = {"func", "while", "if", "ret"};
         private static string[] typeDef = {"class", "struct", "interface"};
@@ -26,7 +27,7 @@ namespace IL2MSIL
             "abstract"
         };
 
-        public List<Token> Tokenize(IList<string> lines, IList<string> baseTypes, out IList<(string, TypeAttributes)> customTypes)
+        public static List<Token> Tokenize(IList<string> lines, IList<string> baseTypes, out IList<(string, TypeAttributes)> customTypes)
         {
             customTypes = ParseTypes(lines);
 
@@ -36,12 +37,14 @@ namespace IL2MSIL
             var tokens = new List<Token>();
             var quote = false;
 
-            foreach (var line in lines)
+            var linesCount = lines.Count;
+            for (var i = 0; i < linesCount; i++)
             {
+                var line = lines[i];
                 var lineLength = line.Length;
-                for (var i = 0; i < lineLength; i++)
+                for (var j = 0; j < lineLength; j++)
                 {
-                    var chr = line[i];
+                    var chr = line[j];
 
                     var isSplitter = char.IsWhiteSpace(chr) || chr == ',' || chr == '.';
 
@@ -54,12 +57,12 @@ namespace IL2MSIL
 
                     if (!quote && (isSplitter || isBraces != null))
                     {
-                        FlushAccum(accum, tokens, types);
+                        FlushAccum(accum, tokens, types, i);
                         // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                         if (isBraces == true)
-                            tokens.Add(new Token(TokenType.OpenBrace, chr.ToString()));
+                            tokens.Add(new Token(TokenType.OpenBrace, chr.ToString(), i));
                         else if (isBraces == false)
-                            tokens.Add(new Token(TokenType.CloseBrace, chr.ToString()));
+                            tokens.Add(new Token(TokenType.CloseBrace, chr.ToString(), i));
                         continue;
                     }
 
@@ -68,18 +71,18 @@ namespace IL2MSIL
 
                     accum.Append(chr);
                 }
-                FlushAccum(accum, tokens, types);
+                FlushAccum(accum, tokens, types, i);
             }
 
             return tokens;
         }
 
-        private static void FlushAccum(StringBuilder accum, ICollection<Token> tokens, IList<string> types)
+        private static void FlushAccum(StringBuilder accum, ICollection<Token> tokens, IList<string> types, int lineIndex)
         {
             if (accum.Length == 0)
                 return;
 
-            tokens.Add(ParseToken(accum, types));
+            tokens.Add(ParseToken(accum, types, lineIndex));
             accum.Clear();
         }
 
@@ -100,9 +103,12 @@ namespace IL2MSIL
 
                 var typeAttributes = match.Groups[1].Value.Split().Select(s =>
                 {
+                    if (s == string.Empty)
+                        return (TypeAttributes)0;
                     if (Enum.TryParse(s, true, out TypeAttributes atr))
                         return atr;
-                    throw new NotImplementedException("Не удалось спарсить модификаторы типа");
+                    ExceptionManager.ThrowCompiler(ErrorCode.ModifierExpected, "", i);
+                    return (TypeAttributes) 0;
                 }).Aggregate((first, second) => first | second);
 
                 types.Add((match.Groups[2].Value, typeAttributes));
@@ -111,7 +117,7 @@ namespace IL2MSIL
             return types;
         }
 
-        private static Token ParseToken(StringBuilder value, IList<string> types)
+        private static Token ParseToken(StringBuilder value, IList<string> types, int lineIndex)
         {
             TokenType type;
 
@@ -130,10 +136,10 @@ namespace IL2MSIL
             else if (typeDef.Contains(strValue))
                 type = TokenType.TypeDef;
             else if (strValue == "end")
-                return new Token(TokenType.End, string.Empty);
+                return new Token(TokenType.End, string.Empty, lineIndex);
             else type = TokenType.Identifier;
 
-            return new Token(type, strValue);
+            return new Token(type, strValue, lineIndex);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Substance.PluginManager.Backend
     public class ExtensionManager
     {
         private StageBox _stages;
-        private PluginBox _plugins;
+        private readonly PluginBox _plugins;
 
         public List<IExtension> StagesExtension;
         public List<IExtension> PluginsExtension;

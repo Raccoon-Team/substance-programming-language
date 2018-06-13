@@ -3,16 +3,16 @@ using System.Reflection;
 
 namespace IL2MSIL
 {
-    class Modifiers
+    internal class Modifiers
     {
-        private Dictionary<string, TypeAttributes> typeModifiers;
-        private Dictionary<string, FieldAttributes> fieldModifiers;
+        private readonly Dictionary<string, TypeAttributes> _typeModifiers;
+        private Dictionary<string, FieldAttributes> _fieldModifiers;
 
-        public TypeAttributes this[string name] => typeModifiers[name];
+        public TypeAttributes this[string name] => _typeModifiers[name];
 
         public Modifiers()
         {
-            typeModifiers = new Dictionary<string, TypeAttributes>
+            _typeModifiers = new Dictionary<string, TypeAttributes>
             {
                 ["public"] = TypeAttributes.Public,
                 ["abstract"] = TypeAttributes.Abstract,
@@ -20,7 +20,7 @@ namespace IL2MSIL
                 ["internal"] = TypeAttributes.NotPublic,
             };
 
-            fieldModifiers = new Dictionary<string, FieldAttributes>
+            _fieldModifiers = new Dictionary<string, FieldAttributes>
             {
                 ["public"] = FieldAttributes.Public,
                 ["private"] = FieldAttributes.Private,

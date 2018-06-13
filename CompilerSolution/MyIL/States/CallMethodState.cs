@@ -77,8 +77,8 @@ namespace IL2MSIL
                         Method.LoadLocal(local);
                         break;
                     default:
-                        var (retType, value) = ((Type, object)) member;
-                        Method.LoadConstant(retType, value.ToString());
+                        var (retType, value) = ((Type, string)) member;
+                        Method.LoadConstant(retType, value);
                         break;
                 }
             }

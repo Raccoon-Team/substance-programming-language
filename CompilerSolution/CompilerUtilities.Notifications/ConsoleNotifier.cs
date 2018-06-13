@@ -6,7 +6,7 @@ namespace CompilerUtilities.Notifications
 {
     public class ConsoleNotifier:INotifier
     {
-        private INotifier _decoratedNotifier;
+        private readonly INotifier _decoratedNotifier;
 
         public ConsoleNotifier() {}
 

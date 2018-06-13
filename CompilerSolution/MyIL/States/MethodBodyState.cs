@@ -31,7 +31,7 @@ namespace IL2MSIL
                 i++;
                 StateStack.Pop();
                 StateStack.Pop();
-                Method.Return();
+                //Method.Return();
                 Method.CreateMethod();
             }
             else

@@ -7,11 +7,13 @@ namespace IL2MSIL
     {
         public TokenType TokenType;
         public string Value;
+        public int Line;
 
-        public Token(TokenType tokenType, string value)
+        public Token(TokenType tokenType, string value, int line)
         {
             TokenType = tokenType;
             Value = value;
+            Line = line;
         }
     }
 }

@@ -11,17 +11,16 @@ namespace ExampleStages.Stages.Old
     public class ExampleFileReader : IStage<Blanket, ITextProcessor>
     {
         private IFileBuffer FileBuffer;
-        [Parameter("-input_file")] private string inputFile;
+        [Parameter("-input_file")] private string _inputFile;
 
         public ITextProcessor Process(Blanket input)
         {
-            if (File.Exists(inputFile))
+            if (File.Exists(_inputFile))
             {
-                var source = new ExampleTextProcessor();
-                source.Presentation = FileBuffer.GetLines(inputFile);
+                var source = new ExampleTextProcessor {Presentation = FileBuffer.GetLines(_inputFile)};
                 return source;
             }
-            throw new CompileException($"{nameof(ExampleFileReader)}: Файл \"{inputFile}\" не найден");
+            throw new FileNotFoundException($"{nameof(ExampleFileReader)}: Файл \"{_inputFile}\" не найден");
         }
 
         public void Initialize(IFileBuffer fileBuffer)

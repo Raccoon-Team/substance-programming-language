@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
+using CompilerUtilities.Exceptions;
 using Sigil.NonGeneric;
 
 namespace IL2MSIL
@@ -13,17 +14,17 @@ namespace IL2MSIL
     // ReSharper disable once InconsistentNaming
     public class ILTranslator
     {
-        private readonly Dictionary<string, Type> definedTypes;
-        private readonly Dictionary<string, MethodInfo> standartMethods;
-        private AssemblyBuilder asmBuilder;
-        private TypeBuilder currentTypeBuilder;
-        private Emit method;
-        private ModuleBuilder moduleBuilder;
-        private IList<Token> tokens;
+        private readonly Dictionary<string, Type> _definedTypes;
+        private readonly Dictionary<string, MethodInfo> _standartMethods;
+        private AssemblyBuilder _asmBuilder;
+        private TypeBuilder _currentTypeBuilder;
+        private Emit _method;
+        private ModuleBuilder _moduleBuilder;
+        private IList<Token> _tokens;
 
-        public ILTranslator()
+        private ILTranslator()
         {
-            definedTypes = new Dictionary<string, Type>
+            _definedTypes = new Dictionary<string, Type>
             {
                 ["void"] = typeof(void),
                 ["int"] = typeof(int),
@@ -42,7 +43,7 @@ namespace IL2MSIL
             };
 
             var console = typeof(Console);
-            standartMethods = new Dictionary<string, MethodInfo>
+            _standartMethods = new Dictionary<string, MethodInfo>
             {
                 ["print"] = console.GetMethod("Write", new[] {typeof(string)}),
                 ["println"] = console.GetMethod("WriteLine", new[] {typeof(string)}),
@@ -53,16 +54,47 @@ namespace IL2MSIL
             };
         }
 
+        public static void Compile(string assemblyName, bool isExecutable, IList<string> lines)
+        {
+            new ILTranslator().CompileToFile(assemblyName, isExecutable, lines);
+        }
+
         public void CompileToFile(string assemblyName, bool isExecutable, IList<string> lines)
         {
-            tokens = new ILTokenizer().Tokenize(lines, definedTypes.Select(x => x.Key).ToList(), out var customTypes);
+            _tokens = ILTokenizer.Tokenize(lines, _definedTypes.Select(x => x.Key).ToList(), out var customTypes);
 
             Initialize(assemblyName, isExecutable, out var fileName);
             DefineTypes(customTypes);
             
-            var stateMachine = new StateMachine(definedTypes);
-            var asm = stateMachine.GetGeneratedAssembly(tokens, assemblyName);
+            var stateMachine = new StateMachine(_definedTypes);
+            var asm = stateMachine.GetGeneratedAssembly(_tokens, assemblyName);
+            if (isExecutable)
+            {
+                SetEntryPoint();
+            }
             asm.Save(fileName);
+        }
+
+        private void SetEntryPoint()
+        {
+            var entryExists = false;
+            foreach (var type in _definedTypes.Values)
+            {
+                var main = type.GetMethod("Main", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+
+                if (main != null)
+                {
+                    //todo EntryPointAlreadyExists
+                    if (entryExists)
+                        ExceptionManager.ThrowCompiler(ErrorCode.EntryPointAlreadyExists, String.Empty, -1);
+                    _asmBuilder.SetEntryPoint(main);
+                    entryExists = true;
+                }
+            }
+
+            //todo EntryPointNotExists
+            if (!entryExists)
+                ExceptionManager.ThrowCompiler(ErrorCode.EntryPointNotExists, String.Empty, -1);
         }
 
         private void Initialize(string name, bool isExecutable, out string fileName)
@@ -76,8 +108,8 @@ namespace IL2MSIL
             var domain = Thread.GetDomain();
 
             var asmName = new AssemblyName(name);
-            asmBuilder = domain.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.RunAndSave);
-            moduleBuilder = asmBuilder.DefineDynamicModule(name, fileName);
+            _asmBuilder = domain.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.RunAndSave);
+            _moduleBuilder = _asmBuilder.DefineDynamicModule(name, fileName);
         }
 
         private void DefineTypes(IList<(string typeName, TypeAttributes attributes)> customTypes)
@@ -87,8 +119,8 @@ namespace IL2MSIL
             {
                 var (typeName, attributes) = customTypes[i];
 
-                var typeBuilder = moduleBuilder.DefineType(typeName, attributes);
-                definedTypes[typeName] = typeBuilder.AsType();
+                var typeBuilder = _moduleBuilder.DefineType(typeName, attributes);
+                _definedTypes[typeName] = typeBuilder.AsType();
             }
         }
     }

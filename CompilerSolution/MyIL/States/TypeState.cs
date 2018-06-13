@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using CompilerUtilities.Exceptions;
 
 namespace IL2MSIL
 {
@@ -23,12 +24,13 @@ namespace IL2MSIL
             if (tokens[i].TokenType == TokenType.Modifier)
             {
                 if (!ModifierCollection.TypeAttributeses.ContainsKey(tokens[i].Value))
-                    throw new NotImplementedException();
+                    ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedModifier, "", tokens[i].Line);
 
                 if (ModifierCollection.TypeModifiers.ContainsKey(tokens[i].Value))
                     if (AccesssModifier is null)
                         AccesssModifier = ModifierCollection.TypeModifiers[tokens[i].Value];
-                    else throw new NotImplementedException();
+                    else
+                        ExceptionManager.ThrowCompiler(ErrorCode.AccessModifierAlreadySet, "", tokens[i].Line);
 
                 Modifiers |= ModifierCollection.TypeAttributeses[tokens[i].Value];
                 i++;
@@ -36,7 +38,7 @@ namespace IL2MSIL
             else if (tokens[i].TokenType == TokenType.TypeDef)
             {
                 if (tokens[++i].TokenType != TokenType.Type)
-                    throw new NotImplementedException();
+                    ExceptionManager.ThrowCompiler(ErrorCode.NameExpected, "", tokens[i].Line);
 
                 Name = tokens[i++].Value;
 

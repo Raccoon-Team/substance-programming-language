@@ -34,12 +34,14 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompileException.cs" />
-    <Compile Include="DuplicatedStagesException.cs" />
-    <Compile Include="ExtensionNotCompatibleException.cs" />
-    <Compile Include="RequiredAttributeNotFoundException.cs" />
-    <Compile Include="StageNotFoundException.cs" />
-    <Compile Include="StagesCompositionException.cs" />
+    <Compile Include="CompilerExceptions\CompileException.cs" />
+    <Compile Include="CompilerManagerExceptions\DuplicatedStagesException.cs" />
+    <Compile Include="CompilerExceptions\ErrorCode.cs" />
+    <Compile Include="ExceptionManager.cs" />
+    <Compile Include="CompilerManagerExceptions\ExtensionNotCompatibleException.cs" />
+    <Compile Include="CompilerManagerExceptions\RequiredAttributeNotFoundException.cs" />
+    <Compile Include="CompilerManagerExceptions\StageNotFoundException.cs" />
+    <Compile Include="CompilerManagerExceptions\StagesCompositionException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

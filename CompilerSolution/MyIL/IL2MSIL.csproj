@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6E17AAF5-6343-4653-BC42-20A5C339CF36}</ProjectGuid>
+    <ProjectGuid>{9799F1C9-0EAE-4A18-98B0-38F761BAAAD7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IL2MSIL</RootNamespace>
@@ -47,8 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="States\Abstract\AssemblyChildState.cs" />
-    <Compile Include="CallMethodState.cs" />
-    <Compile Include="States\OperatorState.cs" />
+    <Compile Include="States\CallMethodState.cs" />
     <Compile Include="ParserHelper.cs" />
     <Compile Include="States\Abstract\MethodChildState.cs" />
     <Compile Include="ModifierCollection.cs" />
@@ -76,6 +75,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CompilerUtilities.Exceptions\CompilerUtilities.Exceptions.csproj">
+      <Project>{2301F0D4-BABE-4D47-8375-E1EC9BDD13A5}</Project>
+      <Name>CompilerUtilities.Exceptions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

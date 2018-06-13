@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
+using CompilerUtilities.Exceptions;
 
 namespace IL2MSIL
 {
@@ -35,7 +36,8 @@ namespace IL2MSIL
             }
             else
             {
-                throw new NotImplementedException();
+                //todo UnexpectedToken
+                ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedToken, "", tokens[i].Line);
             }
         }
 
