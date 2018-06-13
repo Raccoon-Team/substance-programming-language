@@ -1,168 +1,182 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="MyIL.InitializeState" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="28.25" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>States\InitializeState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.TypeState" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="19" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAJAAAAAAAAAQAAAAAABQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>States\TypeState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.UsingState" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="26" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>States\UsingState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.NamespaceState" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="21.25" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>States\NamespaceState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.NamespaceBodyState" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="23.5" Y="3" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>States\NamespaceBodyState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.TypeBodyState" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="16.75" Y="5.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>States\TypeBodyState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.FieldState" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="14.5" Y="5.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAQAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>States\FieldState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.MethodBodyState" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="12.25" Y="5.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAEAAQAAAAAAAAAAgAAAAAAAAAAAIAAAAA=</HashCode>
-      <FileName>States\MethodBodyState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.ConstructionState" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="2.75" Y="7.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>States\ConstructionState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.InstructionState" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="0.5" Y="7.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAQAIAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>States\InstructionState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.ConstructionBodyState" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="5" Y="7.75" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>States\ConstructionBodyState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.ParserHelper" Collapsed="true">
-    <Position X="30.75" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAABAAAAAAAAAIAAAAAKAAAAAAAAA=</HashCode>
-      <FileName>ParserHelper.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.StateMachine" Collapsed="true">
-    <Position X="32.5" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAABgAAAAAAAAgAAAAAA=</HashCode>
-      <FileName>StateMachine.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.ILTokenizer" Collapsed="true">
-    <Position X="30.75" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAIAAAAAAAAAAAAYAAAAAAEAAAAAAAAgAIAEAAQ=</HashCode>
-      <FileName>Tokenizer\ILTokenizer.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.ILTranslator" Collapsed="true">
-    <Position X="32.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAEIAAAAAAAAASAAAACAAAAAAABAEgAAAAAAAAAAAAg=</HashCode>
-      <FileName>ILTranslator.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.Modifiers" Collapsed="true">
-    <Position X="34.25" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAgAAAAAAAAAAQAAAA=</HashCode>
-      <FileName>Types\Modifiers.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.Token" Collapsed="true">
-    <Position X="34.25" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgA=</HashCode>
-      <FileName>Types\Token.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.MethodChildState">
-    <Position X="4" Y="5.25" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>MethodChildState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.TypeChildState">
-    <Position X="8.75" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
-      <FileName>TypeChildState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.MethodState" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="10" Y="5.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAQAAAAAAAQAAAAAAAAAAAAAAAAEAAA=</HashCode>
-      <FileName>States\MethodState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.AssemblyChildState">
-    <Position X="14.25" Y="0.5" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>AssemblyChildState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyIL.CallMethodState">
-    <Position X="7.75" Y="7.75" Width="1.5" />
+  <Class Name="IL2MSIL.CallMethodState" Collapsed="true">
+    <Position X="2.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAQAAAAACAAIAQAIAAIAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
       <FileName>CallMethodState.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MyIL.OperatorState">
-    <Position X="10.5" Y="8" Width="1.5" />
+  <Class Name="IL2MSIL.ILTranslator" Collapsed="true">
+    <Position X="34" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>OperatorState.cs</FileName>
+      <HashCode>AAEIAAAAAAAAASAAAACAAAAAAABAEgAAAAAAAAAAAAg=</HashCode>
+      <FileName>ILTranslator.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Enum Name="MyIL.TokenType" Collapsed="true">
-    <Position X="30.75" Y="2.75" Width="1.5" />
+  <Class Name="IL2MSIL.ModifierCollection" Collapsed="true">
+    <Position X="35.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAACAAAAAAEECAAAAgAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>ModifierCollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.ParserHelper" Collapsed="true">
+    <Position X="34" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAABAAAAAAAAAIAAAAAKAAAAAAAAA=</HashCode>
+      <FileName>ParserHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.StateMachine" Collapsed="true">
+    <Position X="35.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAABgAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>StateMachine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.AssemblyChildState" Collapsed="true">
+    <Position X="15.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>States\Abstract\AssemblyChildState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.MethodChildState" Collapsed="true">
+    <Position X="8.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>States\Abstract\MethodChildState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.State" Collapsed="true">
+    <Position X="15.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAABAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>States\Abstract\State.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.TypeChildState" Collapsed="true">
+    <Position X="11.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>States\Abstract\TypeChildState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.ConstructionBodyState" Collapsed="true">
+    <Position X="11.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>States\ConstructionBodyState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.ConstructionState" Collapsed="true">
+    <Position X="14" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>States\ConstructionState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.FieldState" Collapsed="true">
+    <Position X="20.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAQAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>States\FieldState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.InitializeState" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>States\InitializeState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.InstructionState" Collapsed="true">
+    <Position X="7.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAQAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>States\InstructionState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.MethodBodyState" Collapsed="true">
+    <Position X="9.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAQAAAAAAAAAAgAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>States\MethodBodyState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.MethodState" Collapsed="true">
+    <Position X="18.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAQAAAAAAAQAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>States\MethodState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.NamespaceBodyState" Collapsed="true">
+    <Position X="27.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>States\NamespaceBodyState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.NamespaceState" Collapsed="true">
+    <Position X="29.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>States\NamespaceState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.OperatorState" Collapsed="true">
+    <Position X="5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>States\OperatorState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.TypeBodyState" Collapsed="true">
+    <Position X="16.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>States\TypeBodyState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.TypeState" Collapsed="true">
+    <Position X="23" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAJAAAAAAAAAQAAAAAABQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>States\TypeState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.UsingState" Collapsed="true">
+    <Position X="25.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>States\UsingState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.ILTokenizer" Collapsed="true">
+    <Position X="32.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAYAAAAAAEAAAAAAAAgAIAEAAQ=</HashCode>
+      <FileName>Tokenizer\ILTokenizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.Modifiers" Collapsed="true">
+    <Position X="32.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAgAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Types\Modifiers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IL2MSIL.Token" Collapsed="true">
+    <Position X="32.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgA=</HashCode>
+      <FileName>Types\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="IL2MSIL.TokenType" Collapsed="true">
+    <Position X="32.25" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAYABAAAAAAAAAAAAAIAAAgAAAAAIAgAAQAAQAAAICA=</HashCode>
       <FileName>Types\TokenType.cs</FileName>

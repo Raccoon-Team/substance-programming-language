@@ -1,6 +1,9 @@
 ﻿using System.ComponentModel.Composition;
+using System.IO;
+using System.Linq;
 using AdvancedConsoleParameters;
 using CompilerUtilities.Plugins.Contract;
+using IL2MSIL;
 
 namespace ExampleStages.Stages
 {
@@ -13,7 +16,8 @@ namespace ExampleStages.Stages
 
         public Blanket Process(ITextProcessor input)
         {
-            input.SaveToFile(outpFile);
+            new ILTranslator().CompileToFile(Path.GetFileNameWithoutExtension(outpFile), true, input.Presentation.ToList());
+            //input.SaveToFile(outpFile);
             return null;
         }
 

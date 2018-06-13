@@ -65,6 +65,10 @@
       <Project>{7EFA9347-8592-41C5-A8B3-C4509B1F0867}</Project>
       <Name>CompilerUtilities.Plugins.Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyIL\IL2MSIL.csproj">
+      <Project>{6e17aaf5-6343-4653-bc42-20a5c339cf36}</Project>
+      <Name>IL2MSIL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

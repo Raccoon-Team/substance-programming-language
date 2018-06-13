@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace IL2MSIL
 {
     // ReSharper disable once InconsistentNaming
-    public class ILTokenizer
+    internal class ILTokenizer
     {
         private static readonly string[] constructions = {"func", "while", "if", "ret"};
         private static string[] typeDef = {"class", "struct", "interface"};
@@ -87,8 +87,10 @@ namespace IL2MSIL
         {
             var types = new List<(string, TypeAttributes)>();
 
-            foreach (var line in lines)
+            var linesCount = lines.Count;
+            for (var i = 0; i < linesCount; i++)
             {
+                var line = lines[i];
                 var match = Regex.Match(line,
                     @"(private|public|protected|internal|static|sealed|abstract|\s+)*\s*class\s+([^\s]+)",
                     RegexOptions.Compiled);
@@ -98,8 +100,9 @@ namespace IL2MSIL
 
                 var typeAttributes = match.Groups[1].Value.Split().Select(s =>
                 {
-                    Enum.TryParse(s, true, out TypeAttributes atr);
-                    return atr;
+                    if (Enum.TryParse(s, true, out TypeAttributes atr))
+                        return atr;
+                    throw new NotImplementedException("Не удалось спарсить модификаторы типа");
                 }).Aggregate((first, second) => first | second);
 
                 types.Add((match.Groups[2].Value, typeAttributes));
