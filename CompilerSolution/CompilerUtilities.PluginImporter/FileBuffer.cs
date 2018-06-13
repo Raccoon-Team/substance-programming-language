@@ -16,29 +16,23 @@ namespace CompilerUtilities.PluginImporter
             files = new Dictionary<string, byte[]>();
         }
 
-        public byte[] GetBytes(string path)
+        public string GetAllText(string path)
         {
-            path = Path.GetFullPath(path);
-
-            if (files.ContainsKey(path))
-                return files[path];
-            var bytes = File.ReadAllBytes(path);
-            files.Add(path, bytes);
-            return bytes;
+            return Encoding.UTF8.GetString(this[path]);
         }
 
         public IEnumerable<string> GetLines(string path)
         {
-            path = Path.GetFullPath(path);
-
             var sb = new StringBuilder();
-            var bytes = files[path];
+            var bytes = this[path];
 
             var length = bytes.Length;
             for (var i = 0; i < length; i++)
             {
-                var isR = bytes[i] == '\r';
-                if (isR || bytes[i] == '\n')
+                var @byte = bytes[i];
+
+                var isR = @byte == '\r';
+                if (isR || @byte == '\n')
                 {
                     var nextIndex = i + 1;
                     if (isR && nextIndex < length && bytes[nextIndex] == '\n')
@@ -51,28 +45,31 @@ namespace CompilerUtilities.PluginImporter
 
                 if (i == length) break;
 
-                sb.Append(bytes[i]);
+                sb.Append(@byte);
             }
         }
 
         public List<string> GetAllLines(string path)
         {
-            path = Path.GetFullPath(path);
-
             return GetLines(path).ToList();
         }
 
         public void Refresh(string path)
         {
             path = Path.GetFullPath(path);
-
             files[path] = File.ReadAllBytes(path);
         }
 
         public void Refresh(string path, IList<string> lines)
         {
             path = Path.GetFullPath(path);
-            throw new NotImplementedException();
+            files[path] = lines.Select(s => s.Select(c => (byte) c)).SelectMany(bytes => bytes).ToArray();
+        }
+
+        public void Refresh(string path, byte[] bytes)
+        {
+            path = Path.GetFullPath(path);
+            files[path] = bytes;
         }
 
         public void RefreshAll()
@@ -81,6 +78,20 @@ namespace CompilerUtilities.PluginImporter
 
             foreach (var key in keys)
                 files[key] = File.ReadAllBytes(key);
+        }
+
+        public byte[] this[string path]
+        {
+            get
+            {
+                path = Path.GetFullPath(path);
+                return files[path];
+            }
+            set
+            {
+                path = Path.GetFullPath(path);
+                files[path] = value;
+            }
         }
     }
 }

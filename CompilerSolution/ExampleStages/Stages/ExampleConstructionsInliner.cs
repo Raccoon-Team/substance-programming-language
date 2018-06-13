@@ -16,8 +16,11 @@ namespace ExampleStages.Stages
     {
         [Parameter("-input_file")] private string sourceFileName;
 
+        private IFileBuffer _fileBuffer;
+
         public void Initialize(IFileBuffer fileBuffer)
         {
+            _fileBuffer = fileBuffer;
         }
 
         public ITextProcessor Process(IList<ConstructionInfo> input)

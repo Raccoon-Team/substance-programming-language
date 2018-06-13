@@ -12,8 +12,11 @@ namespace ExampleStages.Stages
     {
         [Parameter("-constructionFiles")] private string[] constructionFiles;
 
+        private IFileBuffer _fileBuffer;
+
         public void Initialize(IFileBuffer fileBuffer)
         {
+            _fileBuffer = fileBuffer;
         }
 
         public IList<ConstructionInfo> Process(Blanket input)
