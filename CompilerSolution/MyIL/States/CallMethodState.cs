@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using CompilerUtilities.Exceptions;
 using Sigil;
 using Sigil.NonGeneric;
 
@@ -22,6 +23,9 @@ namespace IL2MSIL
 
         public override void Execute(IList<Token> tokens, ref int i)
         {
+            Type[] parameterTypes;
+
+            var methodNameToken = tokens[i];
             if (!_hasRecursiveMethodCall)
             {
                 tokensCount = tokens.Count;
@@ -29,21 +33,49 @@ namespace IL2MSIL
                 var closeIndex = ParserHelper.FindClosingBraceIndex(i + 1, tokens);
                 paramsCount = closeIndex - i - 2;
 
-                callingMethod =
-                    (MethodInfo) ((MemberInfo[]) ParserHelper.GetMember(tokens[i].Value, DefinedTypes, Method.Locals,
-                        TypeBuilder))[0];
+                //callingMethod = 
+                //    (MethodInfo) ((MemberInfo[]) ParserHelper.GetMember(tokens[i].Value, DefinedTypes, Method.Locals,
+                //        TypeBuilder))[0];
                 i++;
-                ParseParameters(tokens, ref i);
+                parameterTypes = ParseParameters(tokens, ref i);
             }
             else
             {
                 paramsCount -= recursiveState.paramsCount + 4;
-                ParseParameters(tokens, ref i);
-                i++;
+                parameterTypes = ParseParameters(tokens, ref i);
             }
+            if (parameterTypes is null)
+                return;
+
+            callingMethod = AsmBuilder.GetTypes().First(x => x.FullName == TypeBuilder.FullName).GetMethod(methodNameToken.Value, parameterTypes);
+
+            if (callingMethod is null)
+                ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedToken, string.Empty, methodNameToken.Line);
+
+            if ((callingMethod.Attributes & MethodAttributes.Static) == MethodAttributes.Static)
+                Method.Call(callingMethod);
+            else
+                Method.CallVirtual(callingMethod, TypeBuilder, parameterTypes);
+
+            StateStack.Pop();
         }
 
-        private void ParseParameters(IList<Token> tokens, ref int i)
+        private Type[] ParseParameters(IList<Token> tokens, ref int i)
+        {
+            var parameters = new Type[paramsCount];
+            var instructionState = new InstructionState(StateStack, DefinedTypes, AsmBuilder, TypeBuilder, Method);
+
+            i++;
+            for (var j = 0; j < paramsCount; j++)
+            {
+                instructionState.Execute(tokens, ref i);
+                parameters[j] = ParserHelper.GetMemberType(InstructionState.PrevMember);
+            }
+            i++;
+            return parameters;
+        }
+
+        /*private Type[] ParseParameters(IList<Token> tokens, ref int i)
         {
             var localParamsCount = paramsCount;
 
@@ -60,38 +92,22 @@ namespace IL2MSIL
                 var member = ParserHelper.GetMember(tokens[i].Value, DefinedTypes, Method.Locals, TypeBuilder,
                     BindingFlags.Public | BindingFlags.NonPublic, memberType);
 
-                if (member is MemberInfo[])
-                    member = (MethodInfo) ((MemberInfo[]) member)[0];
+                //todo если метод имеет перегрузки, будет BOOOOOOM
+                if (member is MemberInfo[] methods)
+                    member = (MethodInfo) methods[0];
 
-                switch (member)
+                if (member is MethodInfo)
                 {
-                    case FieldInfo fieldInfo:
-                        Method.LoadField(fieldInfo);
-                        break;
-                    case MethodInfo methodInfo:
-                        recursiveState = new CallMethodState(StateStack, DefinedTypes, AsmBuilder, TypeBuilder, Method);
-                        StateStack.Push(recursiveState);
-                        _hasRecursiveMethodCall = true;
-                        return;
-                    case Local local:
-                        Method.LoadLocal(local);
-                        break;
-                    default:
-                        var (retType, value) = ((Type, string)) member;
-                        Method.LoadConstant(retType, value);
-                        break;
+                    recursiveState = new CallMethodState(StateStack, DefinedTypes, AsmBuilder, TypeBuilder, Method);
+                    StateStack.Push(recursiveState);
+                    _hasRecursiveMethodCall = true;
+                    return null;
                 }
+
+                ParserHelper.PushToStack(member, Method);
             }
             i++;
-            var parameterTypes = callingMethod.GetParameters().Select(x => x.ParameterType).ToArray();
-
-            if ((callingMethod.Attributes & MethodAttributes.Static) == MethodAttributes.Static)
-                Method.Call(callingMethod);
-            //Method.Call(callingMethod, parameterTypes);
-            else
-                Method.CallVirtual(callingMethod, TypeBuilder, parameterTypes);
-
-            StateStack.Pop();
-        }
+            return callingMethod.GetParameters().Select(x => x.ParameterType).ToArray();
+        }*/
     }
 }

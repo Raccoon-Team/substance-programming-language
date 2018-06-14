@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Emit;
 using CompilerUtilities.Exceptions;
 
@@ -7,6 +8,7 @@ namespace IL2MSIL
 {
     internal class FieldState : TypeChildState
     {
+        private readonly IList<string> _modifs;
         public string Name;
         public string Type;
 
@@ -19,6 +21,8 @@ namespace IL2MSIL
             else if (tokens[i].TokenType == TokenType.Identifier)
             {
                 Name = tokens[i++].Value;
+                var fieldAttributes = ModifierCollection.GetFieldAttributes(_modifs);
+                TypeBuilder.DefineField(Name, DefinedTypes[Type], fieldAttributes);
                 StateStack.Pop();
             }
             else
@@ -28,8 +32,9 @@ namespace IL2MSIL
             }
         }
 
-        public FieldState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, TypeBuilder typeBuilder) : base(stateStack, definedTypes, asmBuilder, typeBuilder)
+        public FieldState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, TypeBuilder typeBuilder, IList<string> modifs) : base(stateStack, definedTypes, asmBuilder, typeBuilder)
         {
+            _modifs = modifs;
         }
     }
 }

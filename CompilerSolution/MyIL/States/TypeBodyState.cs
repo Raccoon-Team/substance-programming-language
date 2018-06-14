@@ -24,7 +24,7 @@ namespace IL2MSIL
             }
             else if (tokens[i].TokenType == TokenType.Type)
             {
-                StateStack.Push(new FieldState(StateStack, DefinedTypes, AsmBuilder, TypeBuilder));
+                StateStack.Push(new FieldState(StateStack, DefinedTypes, AsmBuilder, TypeBuilder, modifs.ToArray()));
                 modifs.Clear();
             }
             else if (tokens[i].TokenType == TokenType.End)

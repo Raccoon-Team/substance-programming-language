@@ -7,7 +7,6 @@ namespace Substance.PluginManager.Console
     {
         private static void Main(string[] args)
         {
-            new PluginExtension(new Kek());
             var config = new Configuration();
             var extensionManager = new ExtensionManager(config);
             foreach (var ext in extensionManager.PluginsExtension)

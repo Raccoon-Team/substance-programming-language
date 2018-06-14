@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
+using CompilerUtilities.Exceptions;
 
 namespace IL2MSIL
 {
@@ -11,12 +13,34 @@ namespace IL2MSIL
         public static Dictionary<string, MethodAttributes> MethodAttributeses;
         public static Dictionary<string, MethodAttributes> MethodModifiers;
 
-        public static Dictionary<string, FieldAttributes> FieldAttributeses;
-        public static Dictionary<string, FieldAttributes> FieldModifiers;
+        private static readonly Dictionary<string, FieldAttributes> FieldAttributeses;
+        private static readonly Dictionary<string, FieldAttributes> FieldModifiers;
 
-        public static void kek()
+        public static FieldAttributes GetFieldAttributes(IList<string> modifiers)
         {
+            var accessExists = false;
+
+            FieldAttributes attributes = 0;
             
+            for (var i = 0; i < modifiers.Count; i++)
+            {
+                if (FieldModifiers.ContainsKey(modifiers[i]))
+                {
+                    if (accessExists)
+                        ExceptionManager.ThrowCompiler(ErrorCode.AccessModifierAlreadySet, String.Empty, -1);
+
+                    attributes |= FieldModifiers[modifiers[i]];
+                    accessExists = true;
+                }
+                else
+                    attributes |= FieldAttributeses[modifiers[i]];
+            }
+
+            if (!accessExists)
+                attributes |= FieldAttributes.Private;
+            //    ExceptionManager.ThrowCompiler(ErrorCode.ModifierExpected, String.Empty);
+
+            return attributes;
         }
 
         static ModifierCollection()

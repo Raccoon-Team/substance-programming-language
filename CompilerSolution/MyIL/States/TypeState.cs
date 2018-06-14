@@ -44,6 +44,8 @@ namespace IL2MSIL
 
                 var type = _moduleBuilder.DefineType(Name, (TypeAttributes)(AccesssModifier | Modifiers));
 
+                //DefinedTypes[Name] = type;
+
                 StateStack.Push(new TypeBodyState(StateStack, DefinedTypes, AsmBuilder, type));
             }
         }

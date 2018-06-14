@@ -16,6 +16,8 @@ namespace IL2MSIL
         private bool IsInner;
         private string literal;
 
+        public static object PrevMember;
+
         public InstructionState(Stack<State> stateStack, Dictionary<string, Type> definedTypes,
             AssemblyBuilder asmBuilder, TypeBuilder typeBuilder, Emit method) : base(stateStack, definedTypes,
             asmBuilder, typeBuilder, method)
@@ -42,9 +44,13 @@ namespace IL2MSIL
 
             if (literal != null)
             {
-                var member = ParserHelper.GetMember(literal, DefinedTypes, Method.Locals, TypeBuilder);
+                //ParserHelper.PushToStack(PrevMember, Method);
+                //var member = ParserHelper.GetMember(literal, DefinedTypes, Method.Locals, TypeBuilder);
 
-                switch (member)
+                if (PrevMember is MemberInfo[] members)
+                    PrevMember = members[0];
+
+                switch (PrevMember)
                 {
                     case FieldInfo field:
                         Method.StoreField(field);
@@ -53,19 +59,17 @@ namespace IL2MSIL
                         Method.StoreLocal(local);
                         break;
                     default:
-                        //todo NotPossibleToSetValue
                         ExceptionManager.ThrowCompiler(ErrorCode.NotPossibleToSetValue, "", currentToken.Line);
                         break;
                 }
-
-                //ParserHelper.PushToStack(literal, Method, DefinedTypes, TypeBuilder);
             }
 
             if (IsInner)
             {
                 if (tokens[i + 1].TokenType != TokenType.Operator)
                 {
-                    ParserHelper.PushToStack(tokens[i].Value, Method, DefinedTypes, TypeBuilder);
+                    ParserHelper.PushToStack(tokens[i].Value, Method, DefinedTypes, TypeBuilder, AsmBuilder);
+                    i++;
                 }
                 else
                 {
@@ -73,8 +77,8 @@ namespace IL2MSIL
                     var right = tokens[i + 2].Value;
 
                     //todo узнавать, переменна€, константа или функци€ (вроде как сделал)
-                    ParserHelper.PushToStack(left, Method, DefinedTypes, TypeBuilder);
-                    ParserHelper.PushToStack(right, Method, DefinedTypes, TypeBuilder);
+                    ParserHelper.PushToStack(left, Method, DefinedTypes, TypeBuilder, AsmBuilder);
+                    ParserHelper.PushToStack(right, Method, DefinedTypes, TypeBuilder, AsmBuilder);
 
                     //todo добавить больше операций
                     switch (tokens[i + 1].Value)
@@ -100,15 +104,15 @@ namespace IL2MSIL
                 if (currentToken.TokenType == TokenType.Type)
                 {
                     if (tokens[i + 1].TokenType == TokenType.Identifier)
-                    {
                         if (!ParserHelper.CheckUnusedLocal(tokens, _methodBodyState.FirstInstructionIndex,
                             tokens[i + 1].Value))
                         {
                             var type = DefinedTypes[currentToken.Value];
                             Method.DeclareLocal(type, tokens[i + 1].Value);
+                            i++;
                         }
-                        i += 2;
-                    }
+                    i++;
+                    PrevMember = DefinedTypes[currentToken.Value];
                 }
                 else if (currentToken.Value == "=") //(currentToken.TokenType == TokenType.Operator)
                 {
@@ -128,30 +132,55 @@ namespace IL2MSIL
                         StateStack.Push(new CallMethodState(StateStack, DefinedTypes, AsmBuilder, TypeBuilder, Method));
                         return;
                     }
-                    if (tokens[i + 1].Value == "=")
-                    {
-                        i++;
-                        //StateStack.Push(new InstructionState(StateStack, DefinedTypes, AsmBuilder, TypeBuilder, Method)
-                        //{
-                        //    IsInner = true
-                        //});
-                        //literal = tokens[i].Value;
-                        //i += 2;
-                        return;
-                    }
-                    //todo UnexpectedToken
-                    ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedToken, "", currentToken.Line);
+                    //if (tokens[i + 1].Value == "=")
+                    //{
+                    //    i++;
+                    //    return;
+                    //}
+                    PrevMember = ParserHelper.GetMember(currentToken.Value, DefinedTypes, Method.Locals, TypeBuilder, AsmBuilder);
+                    i++;
+                    //ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedToken, "", currentToken.Line);
                 }
                 else if (currentToken.Value == "ret")
                 {
-                    if (tokens[i + 1].TokenType == TokenType.Identifier ||
-                        tokens[i + 1].TokenType == TokenType.Constant)
+                    var nextToken = tokens[i + 1];
+                    if (nextToken.TokenType == TokenType.Identifier ||
+                        nextToken.TokenType == TokenType.Constant)
                     {
+                        ParserHelper.PushToStack(nextToken.Value, Method, DefinedTypes, TypeBuilder, AsmBuilder);
                         i++;
-                        ParserHelper.PushToStack(tokens[i].Value, Method, DefinedTypes, TypeBuilder);
                     }
                     Method.Return();
                     i++;
+                }
+                else if (currentToken.Value == ".")
+                {
+                    MemberInfo[] members;
+                    //var PrevMember =
+                    //    ParserHelper.GetMember(tokens[i - 1].Value, DefinedTypes, Method.Locals, TypeBuilder);
+                    if (PrevMember is Type type)
+                    {
+                        type = AsmBuilder.GetTypes().First(x => x.FullName == type.FullName);
+                        members = type.GetMember(tokens[i + 1].Value);
+                    }
+                    else
+                        members = PrevMember.GetType().GetMember(tokens[i + 1].Value);
+                    if (members.Length == 0)
+                        ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedToken, string.Empty, tokens[i + 1].Line);
+
+                    PrevMember = members[0];
+
+                    if (PrevMember is MethodInfo)
+                    {
+                        i++;
+                        new CallMethodState(StateStack, DefinedTypes, AsmBuilder, TypeBuilder, Method).Execute(
+                            tokens, ref i);
+                    }
+                    else
+                    {
+                        //ParserHelper.PushToStack(PrevMember, Method);
+                        i += 2;
+                    }
                 }
             }
 
@@ -169,9 +198,9 @@ namespace IL2MSIL
 
                     var variable = tokens[i - 1].Value;
                     //todo узнавать, переменна€, константа или функци€ (вроде как сделал)
-                    ParserHelper.PushToStack(tokens[i + 1].Value, Method, DefinedTypes, TypeBuilder);
+                    ParserHelper.PushToStack(tokens[i + 1].Value, Method, DefinedTypes, TypeBuilder, AsmBuilder);
                     //todo узнавать, переменна€ или поле (вроде как сделал)
-                    var member = ParserHelper.GetMember(variable, DefinedTypes, Method.Locals, TypeBuilder);
+                    var member = ParserHelper.GetMember(variable, DefinedTypes, Method.Locals, TypeBuilder, AsmBuilder);
                     switch (member)
                     {
                         case FieldInfo fieldInfo:
@@ -194,8 +223,8 @@ namespace IL2MSIL
                 var right = tokens[i + 1].Value;
 
                 //todo узнавать, переменна€, константа или функци€ (вроде как сделал)
-                ParserHelper.PushToStack(left, Method, DefinedTypes, TypeBuilder);
-                ParserHelper.PushToStack(right, Method, DefinedTypes, TypeBuilder);
+                ParserHelper.PushToStack(left, Method, DefinedTypes, TypeBuilder, AsmBuilder);
+                ParserHelper.PushToStack(right, Method, DefinedTypes, TypeBuilder, AsmBuilder);
 
                 //todo добавить больше операций
                 switch (tokens[i].Value)

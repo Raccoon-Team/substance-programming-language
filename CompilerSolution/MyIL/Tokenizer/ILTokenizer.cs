@@ -13,7 +13,7 @@ namespace IL2MSIL
     {
         private static readonly string[] constructions = {"func", "while", "if", "ret"};
         private static string[] typeDef = {"class", "struct", "interface"};
-        private static readonly char[] operators = {'=', '*', '/', '+', '-', '~', '&', '|', '^', '!', '>', '<'};
+        private static readonly char[] operators = {'.', '=', '*', '/', '+', '-', '~', '&', '|', '^', '!', '>', '<'};
 
         private static readonly List<string> modifiers = new List<string>
         {
@@ -63,6 +63,9 @@ namespace IL2MSIL
                             tokens.Add(new Token(TokenType.OpenBrace, chr.ToString(), i));
                         else if (isBraces == false)
                             tokens.Add(new Token(TokenType.CloseBrace, chr.ToString(), i));
+
+                        if (chr == '.')
+                            tokens.Add(new Token(TokenType.Operator, ".", i));
                         continue;
                     }
 

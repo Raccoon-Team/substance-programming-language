@@ -37,15 +37,33 @@ namespace IL2MSIL
 
                 //todo ClosingBraceNotFound
                 if (index == tokensCount)
-                    ExceptionManager.ThrowCompiler(ErrorCode.ClosingBraceNotFound, String.Empty, tokens[start].Line);
-                    //throw new NotImplementedException($"Closing brace not found for opening brace at index {start}, line: {tokens[start].Line}");
+                    ExceptionManager.ThrowCompiler(ErrorCode.ClosingBraceNotFound, string.Empty, tokens[start].Line);
+                //throw new NotImplementedException($"Closing brace not found for opening brace at index {start}, line: {tokens[start].Line}");
             } while (diff != 0);
 
             return index - 1;
         }
 
+        public static Type GetMemberType(object member)
+        {
+            switch (member)
+            {
+                case MethodInfo methodInfo:
+                    return methodInfo.ReturnType;
+                case FieldInfo fieldInfo:
+                    return fieldInfo.FieldType;
+                case Local local:
+                    return local.LocalType;
+                case Type type:
+                    return type;
+                default:
+                    var (ltype, _) = ((Type, string))member;
+                    return ltype;
+            }
+        }
+
         public static object GetMember(string value, Dictionary<string, Type> definedTypes, LocalLookup locals,
-            Type currentType, BindingFlags modifiers = BindingFlags.Public | BindingFlags.NonPublic,
+            Type currentType, AssemblyBuilder asmBuilder, BindingFlags modifiers = BindingFlags.Public | BindingFlags.NonPublic,
             MemberTypes memberTypes = MemberTypes.Field | MemberTypes.Method)
         {
             if (value.StartsWith("\""))
@@ -56,27 +74,15 @@ namespace IL2MSIL
                 return (typeof(float), f.ToString());
             if (double.TryParse(value, out var d))
                 return (typeof(double), d.ToString());
-
-            if (value.Contains('.'))
-            {
-                var parts = value.Split('.');
-                var field = currentType.GetField(parts[0]);
-                if (field != null)
-                    return GetMember(value.Substring(parts[0].Length + 1), definedTypes, locals, field.FieldType,
-                        BindingFlags.Public | BindingFlags.Instance, memberTypes);
-                if (definedTypes.ContainsKey(value))
-                    return GetMember(value.Substring(parts[0].Length + 1), definedTypes, locals, definedTypes[value],
-                        BindingFlags.Public | BindingFlags.Static, memberTypes);
-            }
-            else
-            {
-                if (locals.Names.Contains(value))
-                    return locals[value];
-                ((TypeBuilder) currentType).CreateType();
-                return currentType.GetMember(value, MemberTypes.Field | MemberTypes.Method,
-                    modifiers | BindingFlags.Instance | BindingFlags.Static);
-            }
-            return null;
+            
+            if (locals.Names.Contains(value))
+                return locals[value];
+            if (definedTypes.ContainsKey(value))
+                return definedTypes[value];
+            currentType = asmBuilder.GetTypes()
+                .First(x => x.FullName == currentType.FullName);
+            return currentType.GetMember(value, MemberTypes.Field | MemberTypes.Method,
+                modifiers | BindingFlags.Instance | BindingFlags.Static);
         }
 
         public static bool CheckUnusedLocal(IList<Token> tokens, int firstInstructionIndex, string localName)
@@ -106,29 +112,36 @@ namespace IL2MSIL
             return false;
         }
 
-        public static void PushToStack(string value, Emit method, Dictionary<string, Type> definedTypes,
-            Type currentType)
+        public static Type PushToStack(object member, Emit method)
         {
-            var member = GetMember(value, definedTypes, method.Locals, currentType);
-
             switch (member)
             {
                 case MethodInfo methodInfo:
                     if ((methodInfo.Attributes & MethodAttributes.Static) == MethodAttributes.Static)
                         method.Call(methodInfo);
                     else method.CallVirtual(methodInfo);
-                    break;
+                    return methodInfo.ReturnType;
                 case FieldInfo fieldInfo:
                     method.LoadField(fieldInfo);
-                    break;
+                    return fieldInfo.FieldType;
                 case Local local:
                     method.LoadLocal(local);
-                    break;
+                    return local.LocalType;
+                case Type type:
+                    return type;
                 default:
                     var (ltype, lvalue) = ((Type, string)) member;
                     method.LoadConstant(ltype, lvalue);
-                    break;
+                    return ltype;
             }
+        }
+
+        public static Type PushToStack(string value, Emit method, Dictionary<string, Type> definedTypes,
+            Type currentType, AssemblyBuilder asmBuilder)
+        {
+            var member = GetMember(value, definedTypes, method.Locals, currentType, asmBuilder);
+
+            return PushToStack(member, method);
         }
     }
 }

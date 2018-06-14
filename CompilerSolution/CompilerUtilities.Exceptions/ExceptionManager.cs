@@ -10,16 +10,16 @@ namespace CompilerUtilities.Exceptions
         {
             compilerErrors = new Dictionary<int, (string, bool)>
             {
-                [(int) ErrorCode.UnexpectedToken] = ("Unexpected token at index {0}", true),
+                [(int) ErrorCode.UnexpectedToken] = ("Unexpected token at line {0}", true),
                 [(int) ErrorCode.EntryPointAlreadyExists] = ("Entry point already exists", false),
                 [(int) ErrorCode.EntryPointNotExists] = ("Entry point does not exists", false),
                 [(int) ErrorCode.ClosingBraceNotFound] = ("Closing brace not found for opening brace, line: {0}", true),
-                [(int) ErrorCode.NotPossibleToSetValue] = ("Is not possible to set value of method or constant. Index: {0}", true),
-                [(int) ErrorCode.TypeExpected] = ("Type expected at index {0}", true),
-                [(int) ErrorCode.AccessModifierAlreadySet] = ("Access modifier already set. Index: {0}", true),
-                [(int) ErrorCode.UnexpectedModifier] = ("Unexpected modifier at index {0}", true),
-                [(int) ErrorCode.NameExpected] = ("Name expected at index {0}", true),
-                [(int) ErrorCode.ModifierExpected] = ("Modifier expected at index {0}", true),
+                [(int) ErrorCode.NotPossibleToSetValue] = ("Is not possible to set value of method or constant. Line: {0}", true),
+                [(int) ErrorCode.TypeExpected] = ("Type expected at line {0}", true),
+                [(int) ErrorCode.AccessModifierAlreadySet] = ("Access modifier already set. Line: {0}", true),
+                [(int) ErrorCode.UnexpectedModifier] = ("Unexpected modifier at line {0}", true),
+                [(int) ErrorCode.NameExpected] = ("Name expected at line {0}", true),
+                [(int) ErrorCode.ModifierExpected] = ("Modifier expected at line {0}", true),
             };
         }
 
