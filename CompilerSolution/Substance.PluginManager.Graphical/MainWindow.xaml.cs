@@ -22,7 +22,7 @@ namespace Substance.PluginManager.Graphical
     {
         public MainWindow()
         {
-            InitializeComponent();
+            //InitializeComponent();
         }
     }
 }

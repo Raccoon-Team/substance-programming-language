@@ -63,7 +63,7 @@ namespace IL2MSIL
         }
 
         public static object GetMember(string value, Dictionary<string, Type> definedTypes, LocalLookup locals,
-            Type currentType, AssemblyBuilder asmBuilder, BindingFlags modifiers = BindingFlags.Public | BindingFlags.NonPublic,
+            TypeBuilder currentType, AssemblyBuilder asmBuilder, BindingFlags modifiers = BindingFlags.Public | BindingFlags.NonPublic,
             MemberTypes memberTypes = MemberTypes.Field | MemberTypes.Method)
         {
             if (value.StartsWith("\""))
@@ -79,10 +79,17 @@ namespace IL2MSIL
                 return locals[value];
             if (definedTypes.ContainsKey(value))
                 return definedTypes[value];
-            currentType = asmBuilder.GetTypes()
-                .First(x => x.FullName == currentType.FullName);
+            //var dynModule = asmBuilder.GetDynamicModule(currentType.Module.Name);
+            //currentType = dynModule.GetType(currentType.Name);
+            //.GetTypes()
+            //.First(x => x == currentType);
+
+            return DynamicMembers.GetInstance().GetMembers(currentType.Name).Cast<MemberInfo>().First(member => member.Name == value && (member.MemberType == MemberTypes.Field || member.MemberType == MemberTypes.Method));
+                //modifiers | BindingFlags.Instance | BindingFlags.Static);
             return currentType.GetMember(value, MemberTypes.Field | MemberTypes.Method,
-                modifiers | BindingFlags.Instance | BindingFlags.Static);
+                modifiers | BindingFlags.Instance | BindingFlags.Static); //.DeclaredMembers.First(member => member.Name == value && member.MemberType == (MemberTypes.Field | MemberTypes.Method));
+                //.GetMember(value, MemberTypes.Field | MemberTypes.Method,
+                //modifiers | BindingFlags.Instance | BindingFlags.Static);
         }
 
         public static bool CheckUnusedLocal(IList<Token> tokens, int firstInstructionIndex, string localName)
@@ -131,13 +138,15 @@ namespace IL2MSIL
                     return type;
                 default:
                     var (ltype, lvalue) = ((Type, string)) member;
-                    method.LoadConstant(ltype, lvalue);
+                    var parsed = ltype.GetMethod("Parse", new[] { typeof(string) }).Invoke(null, new[] { lvalue });
+                    method.GetType().GetMethod("LoadConstant", new Type[] { ltype }).Invoke(method, new[] { parsed });
+                    //method.LoadConstant(ltype, lvalue);
                     return ltype;
             }
         }
 
         public static Type PushToStack(string value, Emit method, Dictionary<string, Type> definedTypes,
-            Type currentType, AssemblyBuilder asmBuilder)
+            TypeBuilder currentType, AssemblyBuilder asmBuilder)
         {
             var member = GetMember(value, definedTypes, method.Locals, currentType, asmBuilder);
 

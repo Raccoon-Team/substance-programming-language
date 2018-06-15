@@ -160,7 +160,7 @@ namespace IL2MSIL
                     //    ParserHelper.GetMember(tokens[i - 1].Value, DefinedTypes, Method.Locals, TypeBuilder);
                     if (PrevMember is Type type)
                     {
-                        type = AsmBuilder.GetTypes().First(x => x.FullName == type.FullName);
+                        type = AsmBuilder.GetType(type.FullName);// .GetTypes().First(x => x.FullName == type.FullName);
                         members = type.GetMember(tokens[i + 1].Value);
                     }
                     else
