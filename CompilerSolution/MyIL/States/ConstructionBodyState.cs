@@ -20,7 +20,7 @@ namespace IL2MSIL
             }
         }
 
-        public ConstructionBodyState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, TypeBuilder typeBuilder, Emit method) : base(stateStack, definedTypes, asmBuilder, typeBuilder, method)
+        public ConstructionBodyState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, Type typeBuilder, Emit method) : base(stateStack, definedTypes, asmBuilder, typeBuilder, method)
         {
         }
     }

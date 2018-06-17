@@ -14,7 +14,7 @@ namespace IL2MSIL
         public string Name;
         private string[] modifs;
 
-        public MethodState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, TypeBuilder typeBuilder, string[] modifs) : base(stateStack, definedTypes, asmBuilder, typeBuilder)
+        public MethodState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, Type typeBuilder, string[] modifs) : base(stateStack, definedTypes, asmBuilder, typeBuilder)
         {
             this.modifs = modifs;
         }
@@ -65,11 +65,10 @@ namespace IL2MSIL
                         ExceptionManager.ThrowCompiler(ErrorCode.ModifierExpected, "", tokens[i].Line);
                 }
 
-                var method = Emit.BuildMethod(ReturnType, parameters.Select(x => x.type).ToArray(), TypeBuilder, Name, atrs, CallingConventions.Standard);
+                var method = Emit.BuildMethod(ReturnType, parameters.Select(x => x.type).ToArray(), (TypeBuilder)TypeBuilder, Name, atrs, CallingConventions.Standard);
                 StateStack.Push(new MethodBodyState(StateStack, DefinedTypes, AsmBuilder, TypeBuilder, method, parameters, i));
             }
             else
-                //todo UnexpectedToken
                 ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedToken, "", tokens[i].Line);
         }
     }

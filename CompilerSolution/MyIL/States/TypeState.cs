@@ -13,24 +13,28 @@ namespace IL2MSIL
         public TypeAttributes Modifiers;
         public string Name;
 
-        public TypeState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, ModuleBuilder moduleBuilder) : base(stateStack,definedTypes, asmBuilder)
+        public TypeState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder,
+            ModuleBuilder moduleBuilder) : base(stateStack, definedTypes, asmBuilder)
         {
             _moduleBuilder = moduleBuilder;
-            AccesssModifier = TypeAttributes.NotPublic;
+            AccesssModifier = null;
         }
 
         public override void Execute(IList<Token> tokens, ref int i)
         {
             if (tokens[i].TokenType == TokenType.Modifier)
             {
-                if (!ModifierCollection.TypeAttributeses.ContainsKey(tokens[i].Value))
-                    ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedModifier, "", tokens[i].Line);
-
                 if (ModifierCollection.TypeModifiers.ContainsKey(tokens[i].Value))
                     if (AccesssModifier is null)
+                    {
                         AccesssModifier = ModifierCollection.TypeModifiers[tokens[i].Value];
+                        i++;
+                        return;
+                    }
                     else
                         ExceptionManager.ThrowCompiler(ErrorCode.AccessModifierAlreadySet, "", tokens[i].Line);
+                else if (!ModifierCollection.TypeAttributeses.ContainsKey(tokens[i].Value))
+                    ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedModifier, "", tokens[i].Line);
 
                 Modifiers |= ModifierCollection.TypeAttributeses[tokens[i].Value];
                 i++;
@@ -41,12 +45,14 @@ namespace IL2MSIL
                     ExceptionManager.ThrowCompiler(ErrorCode.NameExpected, "", tokens[i].Line);
 
                 Name = tokens[i++].Value;
+                if (AccesssModifier is null)
+                    AccesssModifier = 0;
 
                 var type = _moduleBuilder.DefineType(Name, (TypeAttributes)(AccesssModifier | Modifiers));
+                DefinedTypes[Name] = type;
 
-                //DefinedTypes[Name] = type;
-
-                StateStack.Push(new TypeBodyState(StateStack, DefinedTypes, AsmBuilder, type));
+                StateStack.Push(new TypeBodyState(StateStack, DefinedTypes, AsmBuilder,
+                    (TypeBuilder) DefinedTypes[Name]));
             }
         }
     }

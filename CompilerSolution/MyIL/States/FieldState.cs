@@ -22,7 +22,8 @@ namespace IL2MSIL
             {
                 Name = tokens[i++].Value;
                 var fieldAttributes = ModifierCollection.GetFieldAttributes(_modifs);
-                var field = TypeBuilder.DefineField(Name, DefinedTypes[Type], fieldAttributes);
+                var field = ((TypeBuilder)TypeBuilder).DefineField(Name, DefinedTypes[Type], fieldAttributes);
+
                 DynamicMembers.GetInstance().AddMember(TypeBuilder.Name, field);
                 StateStack.Pop();
             }
@@ -33,7 +34,7 @@ namespace IL2MSIL
             }
         }
 
-        public FieldState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, TypeBuilder typeBuilder, IList<string> modifs) : base(stateStack, definedTypes, asmBuilder, typeBuilder)
+        public FieldState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, Type typeBuilder, IList<string> modifs) : base(stateStack, definedTypes, asmBuilder, typeBuilder)
         {
             _modifs = modifs;
         }

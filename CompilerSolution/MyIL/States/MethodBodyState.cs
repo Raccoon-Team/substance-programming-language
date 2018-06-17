@@ -11,7 +11,7 @@ namespace IL2MSIL
         public string[] UnusedLocals;
         public readonly int FirstInstructionIndex;
 
-        public MethodBodyState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, TypeBuilder typeBuilder, Emit method, List<(Type type, string name)> parameters, int i) : base(stateStack,
+        public MethodBodyState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, Type typeBuilder, Emit method, List<(Type type, string name)> parameters, int i) : base(stateStack,
                 definedTypes, asmBuilder, typeBuilder, method)
         {
             _parameters = parameters;
@@ -31,7 +31,6 @@ namespace IL2MSIL
                 i++;
                 StateStack.Pop();
                 StateStack.Pop();
-                //Method.Return();
                 Method.CreateMethod();
             }
             else

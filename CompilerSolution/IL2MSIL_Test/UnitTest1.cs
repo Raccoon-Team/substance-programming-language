@@ -13,12 +13,13 @@ namespace IL2MSIL_Test
     public static int Jij
 end
 
-class Program
+public class Program
 public static int Index
 
-static func void Main()
-    Index = 3
+public static func void Main()
+    Index = 3 + 5
     Kek.Jij = 4
+    string str = Index.ToString()
     ret
 end
 end".Split(new[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);

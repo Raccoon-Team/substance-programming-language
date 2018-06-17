@@ -9,7 +9,7 @@ namespace IL2MSIL
     {
         protected Emit Method;
 
-        public MethodChildState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, TypeBuilder typeBuilder, Emit method) : base(
+        public MethodChildState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, Type typeBuilder, Emit method) : base(
 stateStack, definedTypes, asmBuilder, typeBuilder)
         {
             Method = method;

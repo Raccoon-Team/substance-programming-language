@@ -13,10 +13,10 @@ namespace IL2MSIL
     {
         private bool _hasRecursiveMethodCall;
         private MethodInfo callingMethod;
-        private int paramsCount, tokensCount;
+        private int paramsCount;
         private CallMethodState recursiveState;
 
-        public CallMethodState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, TypeBuilder typeBuilder, Emit method) : base(stateStack, definedTypes, asmBuilder, typeBuilder, method)
+        public CallMethodState(Stack<State> stateStack, Dictionary<string, Type> definedTypes, AssemblyBuilder asmBuilder, Type typeBuilder, Emit method) : base(stateStack, definedTypes, asmBuilder, typeBuilder, method)
         {
         }
 
@@ -28,14 +28,9 @@ namespace IL2MSIL
             var methodNameToken = tokens[i];
             if (!_hasRecursiveMethodCall)
             {
-                tokensCount = tokens.Count;
-
                 var closeIndex = ParserHelper.FindClosingBraceIndex(i + 1, tokens);
                 paramsCount = closeIndex - i - 2;
-
-                //callingMethod = 
-                //    (MethodInfo) ((MemberInfo[]) ParserHelper.GetMember(tokens[i].Value, DefinedTypes, Method.Locals,
-                //        TypeBuilder))[0];
+                
                 i++;
                 parameterTypes = ParseParameters(tokens, ref i);
             }
@@ -47,7 +42,7 @@ namespace IL2MSIL
             if (parameterTypes is null)
                 return;
 
-            callingMethod = AsmBuilder.GetTypes().First(x => x.FullName == TypeBuilder.FullName).GetMethod(methodNameToken.Value, parameterTypes);
+            callingMethod = TypeBuilder.GetMethod(methodNameToken.Value, parameterTypes);
 
             if (callingMethod is null)
                 ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedToken, string.Empty, methodNameToken.Line);

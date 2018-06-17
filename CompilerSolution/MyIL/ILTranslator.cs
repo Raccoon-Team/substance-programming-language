@@ -64,10 +64,11 @@ namespace IL2MSIL
             _tokens = ILTokenizer.Tokenize(lines, _definedTypes.Select(x => x.Key).ToList(), out var customTypes);
 
             Initialize(assemblyName, isExecutable, out var fileName);
-            DefineTypes(customTypes);
+            //DefineTypes(customTypes);
             
             var stateMachine = new StateMachine(_definedTypes);
-            var asm = stateMachine.GetGeneratedAssembly(_tokens, assemblyName);
+            var asm = stateMachine.GetGeneratedAssembly(_tokens, assemblyName, _asmBuilder, _moduleBuilder);
+            
             if (isExecutable)
             {
                 SetEntryPoint();
@@ -80,11 +81,10 @@ namespace IL2MSIL
             var entryExists = false;
             foreach (var type in _definedTypes.Values)
             {
-                var main = type.GetMethod("Main", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+                var main = type.GetMethod("Main", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
 
                 if (main != null)
                 {
-                    //todo EntryPointAlreadyExists
                     if (entryExists)
                         ExceptionManager.ThrowCompiler(ErrorCode.EntryPointAlreadyExists, String.Empty, -1);
                     _asmBuilder.SetEntryPoint(main);
@@ -92,7 +92,6 @@ namespace IL2MSIL
                 }
             }
 
-            //todo EntryPointNotExists
             if (!entryExists)
                 ExceptionManager.ThrowCompiler(ErrorCode.EntryPointNotExists, String.Empty, -1);
         }

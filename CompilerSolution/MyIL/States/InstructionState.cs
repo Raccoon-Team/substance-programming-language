@@ -19,7 +19,7 @@ namespace IL2MSIL
         public static object PrevMember;
 
         public InstructionState(Stack<State> stateStack, Dictionary<string, Type> definedTypes,
-            AssemblyBuilder asmBuilder, TypeBuilder typeBuilder, Emit method) : base(stateStack, definedTypes,
+            AssemblyBuilder asmBuilder, Type typeBuilder, Emit method) : base(stateStack, definedTypes,
             asmBuilder, typeBuilder, method)
         {
             var bufferStack = new Stack<State>();
@@ -132,14 +132,8 @@ namespace IL2MSIL
                         StateStack.Push(new CallMethodState(StateStack, DefinedTypes, AsmBuilder, TypeBuilder, Method));
                         return;
                     }
-                    //if (tokens[i + 1].Value == "=")
-                    //{
-                    //    i++;
-                    //    return;
-                    //}
                     PrevMember = ParserHelper.GetMember(currentToken.Value, DefinedTypes, Method.Locals, TypeBuilder, AsmBuilder);
                     i++;
-                    //ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedToken, "", currentToken.Line);
                 }
                 else if (currentToken.Value == "ret")
                 {
@@ -156,11 +150,9 @@ namespace IL2MSIL
                 else if (currentToken.Value == ".")
                 {
                     MemberInfo[] members;
-                    //var PrevMember =
-                    //    ParserHelper.GetMember(tokens[i - 1].Value, DefinedTypes, Method.Locals, TypeBuilder);
                     if (PrevMember is Type type)
                     {
-                        type = AsmBuilder.GetType(type.FullName);// .GetTypes().First(x => x.FullName == type.FullName);
+                        type = DefinedTypes[type.FullName];
                         members = type.GetMember(tokens[i + 1].Value);
                     }
                     else
@@ -168,19 +160,25 @@ namespace IL2MSIL
                     if (members.Length == 0)
                         ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedToken, string.Empty, tokens[i + 1].Line);
 
-                    PrevMember = members[0];
+                    var currMember = members[0];
 
-                    if (PrevMember is MethodInfo)
+                    if (currMember is MethodInfo)
                     {
                         i++;
-                        new CallMethodState(StateStack, DefinedTypes, AsmBuilder, TypeBuilder, Method).Execute(
-                            tokens, ref i);
+                        ParserHelper.PushToStack(PrevMember, Method);
+                        Method.Box(ParserHelper.GetMemberType(PrevMember));
+
+                        var callMethodState = new CallMethodState(StateStack, DefinedTypes, AsmBuilder,
+                            ((MethodInfo) currMember).DeclaringType, Method);
+                        StateStack.Push(callMethodState);
+                        callMethodState.Execute(tokens, ref i);
+                        return;
                     }
                     else
                     {
-                        //ParserHelper.PushToStack(PrevMember, Method);
                         i += 2;
                     }
+                    PrevMember = currMember;
                 }
             }
 

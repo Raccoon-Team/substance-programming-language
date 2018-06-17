@@ -32,11 +32,10 @@ namespace IL2MSIL
                 i++;
                 StateStack.Pop();
                 StateStack.Pop();
-                TypeBuilder.CreateType();
+                ((TypeBuilder)TypeBuilder).CreateType();
             }
             else
             {
-                //todo UnexpectedToken
                 ExceptionManager.ThrowCompiler(ErrorCode.UnexpectedToken, "", tokens[i].Line);
             }
         }

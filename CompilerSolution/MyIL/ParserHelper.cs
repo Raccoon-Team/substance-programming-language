@@ -35,10 +35,8 @@ namespace IL2MSIL
                     diff--;
                 index++;
 
-                //todo ClosingBraceNotFound
                 if (index == tokensCount)
                     ExceptionManager.ThrowCompiler(ErrorCode.ClosingBraceNotFound, string.Empty, tokens[start].Line);
-                //throw new NotImplementedException($"Closing brace not found for opening brace at index {start}, line: {tokens[start].Line}");
             } while (diff != 0);
 
             return index - 1;
@@ -57,13 +55,14 @@ namespace IL2MSIL
                 case Type type:
                     return type;
                 default:
-                    var (ltype, _) = ((Type, string))member;
+                    var (ltype, _) = ((Type, string)) member;
                     return ltype;
             }
         }
 
         public static object GetMember(string value, Dictionary<string, Type> definedTypes, LocalLookup locals,
-            TypeBuilder currentType, AssemblyBuilder asmBuilder, BindingFlags modifiers = BindingFlags.Public | BindingFlags.NonPublic,
+            Type currentType, AssemblyBuilder asmBuilder,
+            BindingFlags modifiers = BindingFlags.Public | BindingFlags.NonPublic,
             MemberTypes memberTypes = MemberTypes.Field | MemberTypes.Method)
         {
             if (value.StartsWith("\""))
@@ -74,22 +73,15 @@ namespace IL2MSIL
                 return (typeof(float), f.ToString());
             if (double.TryParse(value, out var d))
                 return (typeof(double), d.ToString());
-            
+
             if (locals.Names.Contains(value))
                 return locals[value];
             if (definedTypes.ContainsKey(value))
                 return definedTypes[value];
-            //var dynModule = asmBuilder.GetDynamicModule(currentType.Module.Name);
-            //currentType = dynModule.GetType(currentType.Name);
-            //.GetTypes()
-            //.First(x => x == currentType);
 
-            return DynamicMembers.GetInstance().GetMembers(currentType.Name).Cast<MemberInfo>().First(member => member.Name == value && (member.MemberType == MemberTypes.Field || member.MemberType == MemberTypes.Method));
-                //modifiers | BindingFlags.Instance | BindingFlags.Static);
-            return currentType.GetMember(value, MemberTypes.Field | MemberTypes.Method,
-                modifiers | BindingFlags.Instance | BindingFlags.Static); //.DeclaredMembers.First(member => member.Name == value && member.MemberType == (MemberTypes.Field | MemberTypes.Method));
-                //.GetMember(value, MemberTypes.Field | MemberTypes.Method,
-                //modifiers | BindingFlags.Instance | BindingFlags.Static);
+            return DynamicMembers.GetInstance().GetMembers(currentType.Name).First(member =>
+                member.Name == value &&
+                (member.MemberType == MemberTypes.Field || member.MemberType == MemberTypes.Method));
         }
 
         public static bool CheckUnusedLocal(IList<Token> tokens, int firstInstructionIndex, string localName)
@@ -138,15 +130,15 @@ namespace IL2MSIL
                     return type;
                 default:
                     var (ltype, lvalue) = ((Type, string)) member;
-                    var parsed = ltype.GetMethod("Parse", new[] { typeof(string) }).Invoke(null, new[] { lvalue });
-                    method.GetType().GetMethod("LoadConstant", new Type[] { ltype }).Invoke(method, new[] { parsed });
+                    var parsed = ltype.GetMethod("Parse", new[] {typeof(string)}).Invoke(null, new[] {lvalue});
+                    method.GetType().GetMethod("LoadConstant", new[] {ltype}).Invoke(method, new[] {parsed});
                     //method.LoadConstant(ltype, lvalue);
                     return ltype;
             }
         }
 
         public static Type PushToStack(string value, Emit method, Dictionary<string, Type> definedTypes,
-            TypeBuilder currentType, AssemblyBuilder asmBuilder)
+            Type currentType, AssemblyBuilder asmBuilder)
         {
             var member = GetMember(value, definedTypes, method.Locals, currentType, asmBuilder);
 
